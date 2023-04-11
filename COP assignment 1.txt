@@ -14,39 +14,6 @@ public class HelloWorld {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 2:Write a program to adddition of two numbers .
 
 
@@ -70,14 +37,6 @@ public class Addnumb {
 
 
 }
-
-
-
-
-
-
-
-
 
 
 
@@ -120,48 +79,6 @@ public class Swap {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 4:Write a program to find factorial of a given number.
 
 
@@ -191,11 +108,6 @@ public class Factorial {
                 System.out.println("Factorial of Number: "+ fact);
         }
 }
-
-
-
-
-
 
 
 
@@ -242,19 +154,6 @@ public class PowerOfNumber {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 6:Check if number is a prime number or not.
 
 
@@ -291,19 +190,9 @@ public class PrimeNumber {
                 if(flag == true){
                         System.out.println("Entered Number "+number+" is PRIME!");
                 }
-                        
-                
-
-
+       
         }
-
-
 }
-
-
-
-
-
 
 
 
@@ -344,12 +233,6 @@ public class SumOfSeries {
 
 
 }
-
-
-
-
-
-
 
 
 
@@ -399,55 +282,6 @@ public class SumOfEvenOdd {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 10: Write a  program to enter a number and print its reverse.
 
 
@@ -483,14 +317,6 @@ public class ReverseNumber {
 
 
 }
-
-
-
-
-
-
-
-
 
 
 
@@ -558,39 +384,6 @@ public class Primeinrange {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 12:Write a program to check entered number is Armstrong number or not.
 
 
@@ -633,38 +426,6 @@ public class Armstrong {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 13:Write a program to find greatest of three numbers using nested if-else.
 
 
@@ -698,16 +459,6 @@ public class Greatestof3 {
 
 
 }
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -789,22 +540,6 @@ public class Pizzaamount {
                 System.out.println("---Thank You Visit Again---");
         }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -913,11 +648,6 @@ public class Arraymenu {
                 } while (choice != 7);
         }
 }
-
-
-
-
-
 
 
 
