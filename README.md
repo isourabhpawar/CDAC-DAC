@@ -1,3 +1,6 @@
+This is assignment for day 1 of COP module.
+
+
 1:write program to test Hello World.
 
 2:Write a program to adddition of two numbers .
