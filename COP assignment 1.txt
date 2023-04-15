@@ -40,14 +40,6 @@ public class Addnumb {
 
 
 
-
-
-
-
-
-
-
-
 3:Write a program to swap two numbers.
 
 
