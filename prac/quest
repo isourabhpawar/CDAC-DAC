@@ -106,7 +106,48 @@ class Solution {
     }
 }
 
-Q3.
+Q3. Number of steps
+Partially solved only one test case fails. expected output for testcase 4:3056888 ,my output:3055925.
+https://www.hackerearth.com/practice/basic-programming/input-output/basics-of-input-output/practice-problems/algorithm/make-all-equal-90a21ab2/
+
+import java.util.*;
+class TestClass {
+     public static void main(String args[] ) throws Exception {
+       
+        Scanner sc=new Scanner(System.in);
+        int size=sc.nextInt();
+        int x=1;
+        int[] a=new int[size];
+        int[] b=new int[size];
+        for (int i = 0; i < a.length; i++) {
+			a[i] = sc.nextInt();
+		}
+        for (int i = 0; i < a.length; i++) {
+			b[i] = sc.nextInt();
+		}
+        int temp=0;
+        int smallest=a[0];
+        for(int i=0;i<a.length;i++){
+            smallest=Math.min(smallest,a[i]);
+        }
+        
+        for(int i=0;i<a.length;i++){
+           
+               if(a[i]<b[i]){
+				   x=0;break;
+			   } 
+               while(a[i]>smallest){
+                    a[i]=a[i]-b[i];
+					temp++;
+                    if(a[i]+1<smallest){
+						x=0;break;
+                    }
+               }  
+	                
+        }        
+        if(x==1){System.out.println(temp);}else{System.out.println(-1);}  
+     } 
+}
 
 
 
