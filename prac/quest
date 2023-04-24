@@ -189,3 +189,54 @@ class Solution {
         }
     }
 }
+
+
+
+
+5.Maximum border
+https://www.hackerearth.com/practice/basic-programming/input-output/basics-of-input-output/practice-problems/algorithm/maximum-border-9767e14c/
+
+import java.util.Scanner;
+class TestClass {
+    public static void main(String args[]) throws Exception {
+		Scanner sc = new Scanner(System.in);
+		int testcase = sc.nextInt();
+		while(testcase>0){
+        int rows = sc.nextInt();
+		int cols = sc.nextInt();
+		String[] s = new String[rows];
+		int max = 0;
+		int max1 = 0;
+		int max2 = 0;
+		for (int i = 0; i < rows; i++) {
+			s[i] = sc.next();
+		}
+		// for (int i = 0; i < rows; i++) {
+		// 	System.out.println(s[i]);
+		// }
+
+        for(int i=0;i<rows;i++){max=0;
+            for(int j=1;j<(cols);j++){
+                
+                if(((s[i].charAt(j-1))=='#') && ((s[i].charAt(j))=='#')){
+                    max++;
+                }
+            }
+            max1=Math.max(max+1,max1);
+        }
+        // System.out.println(max1);
+
+        for(int i=1;i<rows;i++){max=1;
+            for(int j=0;j<cols;j++){
+                
+                if((s[i-1].charAt(j))=='#' && (s[i].charAt(j))=='#'){
+                    max++;
+                }
+            }
+            max2=Math.max(max,max2);
+        }
+        System.out.println(Math.max(max1,max2));
+        testcase--;
+        }  
+	}
+}
