@@ -1,0 +1,25 @@
+1:Create Date class with members day,month ,year.
+Write no argument and parameterised constructor .Create two object s and initialize them using no argument and parameterised constructor
+respectively.Print date using display function.
+
+2:Create Employee class with members id(int),name(string),dob(Date).Use above created Date class.
+Write default and parameterised constructor in Employee Class.Write accept() function to accept information and display() to display emp information.
+
+3. Create a class Person with data members as name, age, city. Write getters and setters for all the data 
+members. Also add the display function. Create Default and Parameterized constructors. Create the 
+object of this class in main method and invoke all the methods in that class.
+
+4:  Create a class Book with data members as bname,id,author,price. Write getters and setters for all the data members. Also add the display function.  
+Create the object of this class in main method and invoke all the methods in that class.
+
+5. Create a class Point with data members as x,y.  Write 
+getters and setters for all the data members. Also add the display function. Create the object of this class in main method and invoke all the methods in that class. 
+
+6. Create a class ComplexNumber with data members real, imaginary.  Write getters and setters for all the data members. Also add the display function. Create the object of this class in main method and invoke all the methods in that class.
+
+
+
+
+
+
+ 
