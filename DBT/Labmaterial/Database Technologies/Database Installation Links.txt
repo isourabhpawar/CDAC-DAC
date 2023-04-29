@@ -1,0 +1,16 @@
+Mysql download link...
+https://dev.mysql.com/downloads/installer/
+
+How to install MySQL database on Windows
+https://youtu.be/vqDb7hB2_Go
+
+Oracle download link...
+https://www.oracle.com/database/technologies/xe-prior-release-downloads.html
+
+How to Install Oracle 11g Express Edition on Windows 
+https://youtu.be/ZVzmbgiTSvk
+
+How to Install MongoDB on Windows 10
+https://youtu.be/7LjSg2WBlKg
+
+

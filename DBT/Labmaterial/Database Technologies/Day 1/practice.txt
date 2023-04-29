@@ -1,0 +1,332 @@
+Enter password: *******
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 8
+Server version: 8.0.22 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> use test;
+Database changed
+mysql> create database test
+    -> ;
+ERROR 1007 (HY000): Can't create database 'test'; database exists
+mysql> create database DACmarch23
+    -> ;
+Query OK, 1 row affected (0.04 sec)
+
+mysql> use DACmarch23
+Database changed
+mysql> source D:\mysql_databse\demobldmysql.sql
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'use test
+
+CREATE TABLE EMP
+       (EMPNO INT(4) NOT NULL,
+        ENAME varchar(' at line 2
+ERROR 1146 (42S02): Table 'dacmarch23.emp' doesn't exist
+ERROR 1146 (42S02): Table 'dacmarch23.emp' doesn't exist
+ERROR 1146 (42S02): Table 'dacmarch23.emp' doesn't exist
+ERROR 1146 (42S02): Table 'dacmarch23.emp' doesn't exist
+ERROR 1146 (42S02): Table 'dacmarch23.emp' doesn't exist
+ERROR 1146 (42S02): Table 'dacmarch23.emp' doesn't exist
+ERROR 1146 (42S02): Table 'dacmarch23.emp' doesn't exist
+ERROR 1146 (42S02): Table 'dacmarch23.emp' doesn't exist
+ERROR 1146 (42S02): Table 'dacmarch23.emp' doesn't exist
+ERROR 1146 (42S02): Table 'dacmarch23.emp' doesn't exist
+ERROR 1146 (42S02): Table 'dacmarch23.emp' doesn't exist
+ERROR 1146 (42S02): Table 'dacmarch23.emp' doesn't exist
+ERROR 1146 (42S02): Table 'dacmarch23.emp' doesn't exist
+ERROR 1146 (42S02): Table 'dacmarch23.emp' doesn't exist
+Query OK, 0 rows affected, 1 warning (0.06 sec)
+
+Query OK, 1 row affected (0.01 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 0 rows affected (0.02 sec)
+
+Query OK, 0 rows affected (0.02 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 0 rows affected (0.02 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'ON
+PROMPT Demonstration table build is complete.
+
+EXIT' at line 1
+mysql> use DACmarch23
+Database changed
+mysql> show tables;
++----------------------+
+| Tables_in_dacmarch23 |
++----------------------+
+| bonus                |
+| dept                 |
+| dummy                |
+| salgrade             |
++----------------------+
+4 rows in set (0.04 sec)
+
+mysql> CREATE TABLE EMP
+    ->        (EMPNO INT(4) NOT NULL,
+    ->         ENAME varchar(10),
+    ->         JOB varchar(9),
+    ->         MGR INT(4),
+    ->         HIREDATE DATE,
+    ->         SAL DECIMAL(7, 2),
+    ->         COMM DECIMAL(7, 2),
+    ->         DEPTNO INT(2));
+Query OK, 0 rows affected, 3 warnings (0.04 sec)
+
+mysql> INSERT INTO EMP VALUES
+    ->         (7369, 'SMITH',  'CLERK',     7902,
+    ->         STR_TO_DATE('17-DEC-1980', '%d-%b-%Y'),  800, NULL, 20);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO EMP VALUES
+    ->         (7499, 'ALLEN',  'SALESMAN',  7698,
+    ->         STR_TO_DATE('20-FEB-1981', '%d-%b-%Y'), 1600,  300, 30);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO EMP VALUES
+    ->         (7521, 'WARD',   'SALESMAN',  7698,
+    ->         STR_TO_DATE('22-FEB-1981', '%d-%b-%Y'), 1250,  500, 30);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO EMP VALUES
+    ->         (7566, 'JONES',  'MANAGER',   7839,
+    ->         STR_TO_DATE('2-APR-1981', '%d-%b-%Y'),  2975, NULL, 20);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO EMP VALUES
+    ->         (7654, 'MARTIN', 'SALESMAN',  7698,
+    ->         STR_TO_DATE('28-SEP-1981', '%d-%b-%Y'), 1250, 1400, 30);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO EMP VALUES
+    ->         (7698, 'BLAKE',  'MANAGER',   7839,
+    ->         STR_TO_DATE('1-MAY-1981', '%d-%b-%Y'),  2850, NULL, 30);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO EMP VALUES
+    ->         (7782, 'CLARK',  'MANAGER',   7839,
+    ->         STR_TO_DATE('9-JUN-1981', '%d-%b-%Y'),  2450, NULL, 10);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO EMP VALUES
+    ->         (7788, 'SCOTT',  'ANALYST',   7566,
+    ->         STR_TO_DATE('09-DEC-1982', '%d-%b-%Y'), 3000, NULL, 20);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO EMP VALUES
+    ->         (7839, 'KING',   'PRESIDENT', NULL,
+    ->         STR_TO_DATE('17-NOV-1981', '%d-%b-%Y'), 5000, NULL, 10);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO EMP VALUES
+    ->         (7844, 'TURNER', 'SALESMAN',  7698,
+    ->         STR_TO_DATE('8-SEP-1981', '%d-%b-%Y'),  1500,    0, 30);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO EMP VALUES
+    ->         (7876, 'ADAMS',  'CLERK',     7788,
+    ->         STR_TO_DATE('12-JAN-1983', '%d-%b-%Y'), 1100, NULL, 20);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO EMP VALUES
+    ->         (7900, 'JAMES',  'CLERK',     7698,
+    ->         STR_TO_DATE('3-DEC-1981', '%d-%b-%Y'),   950, NULL, 30);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO EMP VALUES
+    ->         (7902, 'FORD',   'ANALYST',   7566,
+    ->         STR_TO_DATE('3-DEC-1981', '%d-%b-%Y'),  3000, NULL, 20);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO EMP VALUES
+    ->         (7934, 'MILLER', 'CLERK',     7782,
+    ->         STR_TO_DATE('23-JAN-1982', '%d-%b-%Y'), 1300, NULL, 10);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> show tables
+    -> ;
++----------------------+
+| Tables_in_dacmarch23 |
++----------------------+
+| bonus                |
+| dept                 |
+| dummy                |
+| emp                  |
+| salgrade             |
++----------------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from emp;
++-------+--------+-----------+------+------------+---------+---------+--------+
+| EMPNO | ENAME  | JOB       | MGR  | HIREDATE   | SAL     | COMM    | DEPTNO |
++-------+--------+-----------+------+------------+---------+---------+--------+
+|  7369 | SMITH  | CLERK     | 7902 | 1980-12-17 |  800.00 |    NULL |     20 |
+|  7499 | ALLEN  | SALESMAN  | 7698 | 1981-02-20 | 1600.00 |  300.00 |     30 |
+|  7521 | WARD   | SALESMAN  | 7698 | 1981-02-22 | 1250.00 |  500.00 |     30 |
+|  7566 | JONES  | MANAGER   | 7839 | 1981-04-02 | 2975.00 |    NULL |     20 |
+|  7654 | MARTIN | SALESMAN  | 7698 | 1981-09-28 | 1250.00 | 1400.00 |     30 |
+|  7698 | BLAKE  | MANAGER   | 7839 | 1981-05-01 | 2850.00 |    NULL |     30 |
+|  7782 | CLARK  | MANAGER   | 7839 | 1981-06-09 | 2450.00 |    NULL |     10 |
+|  7788 | SCOTT  | ANALYST   | 7566 | 1982-12-09 | 3000.00 |    NULL |     20 |
+|  7839 | KING   | PRESIDENT | NULL | 1981-11-17 | 5000.00 |    NULL |     10 |
+|  7844 | TURNER | SALESMAN  | 7698 | 1981-09-08 | 1500.00 |    0.00 |     30 |
+|  7876 | ADAMS  | CLERK     | 7788 | 1983-01-12 | 1100.00 |    NULL |     20 |
+|  7900 | JAMES  | CLERK     | 7698 | 1981-12-03 |  950.00 |    NULL |     30 |
+|  7902 | FORD   | ANALYST   | 7566 | 1981-12-03 | 3000.00 |    NULL |     20 |
+|  7934 | MILLER | CLERK     | 7782 | 1982-01-23 | 1300.00 |    NULL |     10 |
++-------+--------+-----------+------+------------+---------+---------+--------+
+14 rows in set (0.00 sec)
+
+mysql> select * from dept;
++--------+------------+----------+
+| DEPTNO | DNAME      | LOC      |
++--------+------------+----------+
+|     10 | ACCOUNTING | NEW YORK |
+|     20 | RESEARCH   | DALLAS   |
+|     30 | SALES      | CHICAGO  |
+|     40 | OPERATIONS | BOSTON   |
++--------+------------+----------+
+4 rows in set (0.00 sec)
+
+mysql> select * from salgrade
+    -> ;
++-------+-------+-------+
+| GRADE | LOSAL | HISAL |
++-------+-------+-------+
+|     1 |   700 |  1200 |
+|     2 |  1201 |  1400 |
+|     3 |  1401 |  2000 |
+|     4 |  2001 |  3000 |
+|     5 |  3001 |  9999 |
++-------+-------+-------+
+5 rows in set (0.00 sec)
+
+mysql> desc emp;
++----------+--------------+------+-----+---------+-------+
+| Field    | Type         | Null | Key | Default | Extra |
++----------+--------------+------+-----+---------+-------+
+| EMPNO    | int          | NO   |     | NULL    |       |
+| ENAME    | varchar(10)  | YES  |     | NULL    |       |
+| JOB      | varchar(9)   | YES  |     | NULL    |       |
+| MGR      | int          | YES  |     | NULL    |       |
+| HIREDATE | date         | YES  |     | NULL    |       |
+| SAL      | decimal(7,2) | YES  |     | NULL    |       |
+| COMM     | decimal(7,2) | YES  |     | NULL    |       |
+| DEPTNO   | int          | YES  |     | NULL    |       |
++----------+--------------+------+-----+---------+-------+
+8 rows in set (0.01 sec)
+
+mysql> desc dept;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| DEPTNO | int         | YES  |     | NULL    |       |
+| DNAME  | varchar(14) | YES  |     | NULL    |       |
+| LOC    | varchar(13) | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> select * from emp;
++-------+--------+-----------+------+------------+---------+---------+--------+
+| EMPNO | ENAME  | JOB       | MGR  | HIREDATE   | SAL     | COMM    | DEPTNO |
++-------+--------+-----------+------+------------+---------+---------+--------+
+|  7369 | SMITH  | CLERK     | 7902 | 1980-12-17 |  800.00 |    NULL |     20 |
+|  7499 | ALLEN  | SALESMAN  | 7698 | 1981-02-20 | 1600.00 |  300.00 |     30 |
+|  7521 | WARD   | SALESMAN  | 7698 | 1981-02-22 | 1250.00 |  500.00 |     30 |
+|  7566 | JONES  | MANAGER   | 7839 | 1981-04-02 | 2975.00 |    NULL |     20 |
+|  7654 | MARTIN | SALESMAN  | 7698 | 1981-09-28 | 1250.00 | 1400.00 |     30 |
+|  7698 | BLAKE  | MANAGER   | 7839 | 1981-05-01 | 2850.00 |    NULL |     30 |
+|  7782 | CLARK  | MANAGER   | 7839 | 1981-06-09 | 2450.00 |    NULL |     10 |
+|  7788 | SCOTT  | ANALYST   | 7566 | 1982-12-09 | 3000.00 |    NULL |     20 |
+|  7839 | KING   | PRESIDENT | NULL | 1981-11-17 | 5000.00 |    NULL |     10 |
+|  7844 | TURNER | SALESMAN  | 7698 | 1981-09-08 | 1500.00 |    0.00 |     30 |
+|  7876 | ADAMS  | CLERK     | 7788 | 1983-01-12 | 1100.00 |    NULL |     20 |
+|  7900 | JAMES  | CLERK     | 7698 | 1981-12-03 |  950.00 |    NULL |     30 |
+|  7902 | FORD   | ANALYST   | 7566 | 1981-12-03 | 3000.00 |    NULL |     20 |
+|  7934 | MILLER | CLERK     | 7782 | 1982-01-23 | 1300.00 |    NULL |     10 |
++-------+--------+-----------+------+------------+---------+---------+--------+
+14 rows in set (0.00 sec)
+
+mysql> select *
+    ->  from emp
+    ->  where sal >1500 and deptno=30;
++-------+-------+----------+------+------------+---------+--------+--------+
+| EMPNO | ENAME | JOB      | MGR  | HIREDATE   | SAL     | COMM   | DEPTNO |
++-------+-------+----------+------+------------+---------+--------+--------+
+|  7499 | ALLEN | SALESMAN | 7698 | 1981-02-20 | 1600.00 | 300.00 |     30 |
+|  7698 | BLAKE | MANAGER  | 7839 | 1981-05-01 | 2850.00 |   NULL |     30 |
++-------+-------+----------+------+------------+---------+--------+--------+
+2 rows in set (0.00 sec)
+
+mysql> select *
+    ->  from emp
+    ->  where sal >1500 or1 deptno=30;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'or1 deptno=30' at line 3
+mysql> select *
+    ->  from emp
+    ->  where sal >1500 or deptno=30;
++-------+--------+-----------+------+------------+---------+---------+--------+
+| EMPNO | ENAME  | JOB       | MGR  | HIREDATE   | SAL     | COMM    | DEPTNO |
++-------+--------+-----------+------+------------+---------+---------+--------+
+|  7499 | ALLEN  | SALESMAN  | 7698 | 1981-02-20 | 1600.00 |  300.00 |     30 |
+|  7521 | WARD   | SALESMAN  | 7698 | 1981-02-22 | 1250.00 |  500.00 |     30 |
+|  7566 | JONES  | MANAGER   | 7839 | 1981-04-02 | 2975.00 |    NULL |     20 |
+|  7654 | MARTIN | SALESMAN  | 7698 | 1981-09-28 | 1250.00 | 1400.00 |     30 |
+|  7698 | BLAKE  | MANAGER   | 7839 | 1981-05-01 | 2850.00 |    NULL |     30 |
+|  7782 | CLARK  | MANAGER   | 7839 | 1981-06-09 | 2450.00 |    NULL |     10 |
+|  7788 | SCOTT  | ANALYST   | 7566 | 1982-12-09 | 3000.00 |    NULL |     20 |
+|  7839 | KING   | PRESIDENT | NULL | 1981-11-17 | 5000.00 |    NULL |     10 |
+|  7844 | TURNER | SALESMAN  | 7698 | 1981-09-08 | 1500.00 |    0.00 |     30 |
+|  7900 | JAMES  | CLERK     | 7698 | 1981-12-03 |  950.00 |    NULL |     30 |
+|  7902 | FORD   | ANALYST   | 7566 | 1981-12-03 | 3000.00 |    NULL |     20 |
++-------+--------+-----------+------+------------+---------+---------+--------+
+11 rows in set (0.00 sec)
+
+mysql> select *
+    -> from emp
+    -> where deptno in (20,30);
++-------+--------+----------+------+------------+---------+---------+--------+
+| EMPNO | ENAME  | JOB      | MGR  | HIREDATE   | SAL     | COMM    | DEPTNO |
++-------+--------+----------+------+------------+---------+---------+--------+
+|  7369 | SMITH  | CLERK    | 7902 | 1980-12-17 |  800.00 |    NULL |     20 |
+|  7499 | ALLEN  | SALESMAN | 7698 | 1981-02-20 | 1600.00 |  300.00 |     30 |
+|  7521 | WARD   | SALESMAN | 7698 | 1981-02-22 | 1250.00 |  500.00 |     30 |
+|  7566 | JONES  | MANAGER  | 7839 | 1981-04-02 | 2975.00 |    NULL |     20 |
+|  7654 | MARTIN | SALESMAN | 7698 | 1981-09-28 | 1250.00 | 1400.00 |     30 |
+|  7698 | BLAKE  | MANAGER  | 7839 | 1981-05-01 | 2850.00 |    NULL |     30 |
+|  7788 | SCOTT  | ANALYST  | 7566 | 1982-12-09 | 3000.00 |    NULL |     20 |
+|  7844 | TURNER | SALESMAN | 7698 | 1981-09-08 | 1500.00 |    0.00 |     30 |
+|  7876 | ADAMS  | CLERK    | 7788 | 1983-01-12 | 1100.00 |    NULL |     20 |
+|  7900 | JAMES  | CLERK    | 7698 | 1981-12-03 |  950.00 |    NULL |     30 |
+|  7902 | FORD   | ANALYST  | 7566 | 1981-12-03 | 3000.00 |    NULL |     20 |
++-------+--------+----------+------+------------+---------+---------+--------+
+11 rows in set (0.00 sec)
+
+mysql>

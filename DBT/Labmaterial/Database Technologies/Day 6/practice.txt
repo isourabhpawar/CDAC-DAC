@@ -1,0 +1,1617 @@
+Enter password: *******
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 16
+Server version: 8.0.22 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> use DACmarch23
+Database changed
+mysql> Create table mytable3
+    -> (id int primary key
+    -> Name varchar(20));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Name varchar(20))' at line 3
+mysql> Create table mytable3
+    -> (id int primary key,
+    -> Name varchar(20));
+Query OK, 0 rows affected (0.11 sec)
+
+mysql> insert into mytable3 values(1,'aaa');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into mytable3 values(2,'bbb');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from mytable3;
++----+------+
+| id | Name |
++----+------+
+|  1 | aaa  |
+|  2 | bbb  |
++----+------+
+2 rows in set (0.00 sec)
+
+mysql> alter table mytabl3
+    -> add mobile int ^C
+mysql> alter table mytable3
+    -> add mobile int not null;
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc mytable3;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| id     | int         | NO   | PRI | NULL    |       |
+| Name   | varchar(20) | YES  |     | NULL    |       |
+| mobile | int         | NO   |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+3 rows in set (0.02 sec)
+
+mysql> select * from mytable3;
++----+------+--------+
+| id | Name | mobile |
++----+------+--------+
+|  1 | aaa  |      0 |
+|  2 | bbb  |      0 |
++----+------+--------+
+2 rows in set (0.00 sec)
+
+mysql> alter table mytable3
+    -> add address varchar(20) not null;
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from mytable3;
++----+------+--------+---------+
+| id | Name | mobile | address |
++----+------+--------+---------+
+|  1 | aaa  |      0 |         |
+|  2 | bbb  |      0 |         |
++----+------+--------+---------+
+2 rows in set (0.00 sec)
+
+mysql> update mytable3
+    -> set address='baner'
+    -> ;
+Query OK, 2 rows affected (0.01 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+mysql> select * from mytable3;
++----+------+--------+---------+
+| id | Name | mobile | address |
++----+------+--------+---------+
+|  1 | aaa  |      0 | baner   |
+|  2 | bbb  |      0 | baner   |
++----+------+--------+---------+
+2 rows in set (0.00 sec)
+
+mysql> alter table
+    -> modify address varchar(20) unique;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'address varchar(20) unique' at line 2
+mysql> alter table mytable3
+    -> add constraint un unique(address);
+ERROR 1062 (23000): Duplicate entry 'baner' for key 'mytable3.un'
+mysql> create table emphistory
+    -> (select * from emp);
+Query OK, 17 rows affected (0.07 sec)
+Records: 17  Duplicates: 0  Warnings: 0
+
+mysql> desc emphistory;
++----------+--------------+------+-----+---------+-------+
+| Field    | Type         | Null | Key | Default | Extra |
++----------+--------------+------+-----+---------+-------+
+| EMPNO    | int          | NO   |     | NULL    |       |
+| ENAME    | varchar(10)  | YES  |     | NULL    |       |
+| JOB      | varchar(9)   | YES  |     | NULL    |       |
+| MGR      | int          | YES  |     | NULL    |       |
+| HIREDATE | date         | YES  |     | NULL    |       |
+| SAL      | decimal(7,2) | YES  |     | NULL    |       |
+| COMM     | decimal(7,2) | YES  |     | NULL    |       |
+| DEPTNO   | int          | YES  |     | NULL    |       |
++----------+--------------+------+-----+---------+-------+
+8 rows in set (0.01 sec)
+
+mysql> create table emphistory
+    -> ^C
+mysql> create table emphistory1
+    -> (select * from emp where 1=2);
+Query OK, 0 rows affected (0.03 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc emphistory1;
++----------+--------------+------+-----+---------+-------+
+| Field    | Type         | Null | Key | Default | Extra |
++----------+--------------+------+-----+---------+-------+
+| EMPNO    | int          | NO   |     | NULL    |       |
+| ENAME    | varchar(10)  | YES  |     | NULL    |       |
+| JOB      | varchar(9)   | YES  |     | NULL    |       |
+| MGR      | int          | YES  |     | NULL    |       |
+| HIREDATE | date         | YES  |     | NULL    |       |
+| SAL      | decimal(7,2) | YES  |     | NULL    |       |
+| COMM     | decimal(7,2) | YES  |     | NULL    |       |
+| DEPTNO   | int          | YES  |     | NULL    |       |
++----------+--------------+------+-----+---------+-------+
+8 rows in set (0.01 sec)
+
+mysql> select * from emphistory;
++-------+------------+-----------+------+------------+---------+---------+--------+
+| EMPNO | ENAME      | JOB       | MGR  | HIREDATE   | SAL     | COMM    | DEPTNO |
++-------+------------+-----------+------+------------+---------+---------+--------+
+|  7369 | SMITH      | CLERK     | 7902 | 1980-12-17 |  800.00 |    NULL |     20 |
+|  7499 | ALLENXXXXX | SALESMAN  | 7698 | 1981-02-20 | 1600.00 |  300.00 |     30 |
+|  7521 | WARD       | SALESMAN  | 7698 | 1981-02-22 | 1250.00 |  500.00 |     30 |
+|  7566 | JONES      | MANAGER   | 7839 | 1981-04-02 | 2975.00 |    NULL |     20 |
+|  7654 | MARTIN     | SALESMAN  | 7698 | 1981-09-28 | 1250.00 | 1400.00 |     30 |
+|  7698 | BLAKE      | MANAGER   | 7839 | 1981-05-01 | 2850.00 |    NULL |     30 |
+|  7782 | CLARK      | MANAGER   | 7839 | 1981-06-09 | 2450.00 |    NULL |     10 |
+|  7788 | SCOTT      | ANALYST   | 7566 | 1982-12-09 | 3000.00 |    NULL |     20 |
+|  7839 | KING       | PRESIDENT | NULL | 1981-11-17 | 5000.00 |    NULL |     10 |
+|  7844 | TURNER     | SALESMAN  | 7698 | 1981-09-08 | 1500.00 |    0.00 |     30 |
+|  7876 | ADAMS      | CLERK     | 7788 | 1983-01-12 | 1100.00 |    NULL |     20 |
+|  7900 | JAMES      | CLERK     | 7698 | 1981-12-03 |  950.00 |    NULL |     30 |
+|  7902 | FORD       | ANALYST   | 7566 | 1981-12-03 | 3000.00 |    NULL |     20 |
+|  7934 | MILLER     | CLERK     | 7782 | 1982-01-23 | 1300.00 |    NULL |     10 |
+|   101 | Ashutosh   | CLERK     | 7902 | 2000-10-11 | 3456.00 |  345.00 |     10 |
+|   102 | Mugdha     | CLERK     | 7902 | 2000-10-11 | 3456.00 |  345.00 |     10 |
+|   103 | Tanaya     | NULL      | NULL | NULL       | 7555.00 |    NULL |   NULL |
++-------+------------+-----------+------+------------+---------+---------+--------+
+17 rows in set (0.00 sec)
+
+mysql> select * from emphistory1;
+Empty set (0.00 sec)
+
+mysql> desc emp;
++----------+--------------+------+-----+---------+-------+
+| Field    | Type         | Null | Key | Default | Extra |
++----------+--------------+------+-----+---------+-------+
+| EMPNO    | int          | NO   |     | NULL    |       |
+| ENAME    | varchar(10)  | YES  |     | NULL    |       |
+| JOB      | varchar(9)   | YES  |     | NULL    |       |
+| MGR      | int          | YES  |     | NULL    |       |
+| HIREDATE | date         | YES  |     | NULL    |       |
+| SAL      | decimal(7,2) | YES  |     | NULL    |       |
+| COMM     | decimal(7,2) | YES  |     | NULL    |       |
+| DEPTNO   | int          | YES  | MUL | NULL    |       |
++----------+--------------+------+-----+---------+-------+
+8 rows in set (0.00 sec)
+
+mysql> select empno,ename,sal,deptno
+    -> from emp;
++-------+------------+---------+--------+
+| empno | ename      | sal     | deptno |
++-------+------------+---------+--------+
+|  7369 | SMITH      |  800.00 |     20 |
+|  7499 | ALLENXXXXX | 1600.00 |     30 |
+|  7521 | WARD       | 1250.00 |     30 |
+|  7566 | JONES      | 2975.00 |     20 |
+|  7654 | MARTIN     | 1250.00 |     30 |
+|  7698 | BLAKE      | 2850.00 |     30 |
+|  7782 | CLARK      | 2450.00 |     10 |
+|  7788 | SCOTT      | 3000.00 |     20 |
+|  7839 | KING       | 5000.00 |     10 |
+|  7844 | TURNER     | 1500.00 |     30 |
+|  7876 | ADAMS      | 1100.00 |     20 |
+|  7900 | JAMES      |  950.00 |     30 |
+|  7902 | FORD       | 3000.00 |     20 |
+|  7934 | MILLER     | 1300.00 |     10 |
+|   101 | Ashutosh   | 3456.00 |     10 |
+|   102 | Mugdha     | 3456.00 |     10 |
+|   103 | Tanaya     | 7555.00 |   NULL |
++-------+------------+---------+--------+
+17 rows in set (0.00 sec)
+
+mysql> select * from salgrade;
++-------+-------+-------+
+| GRADE | LOSAL | HISAL |
++-------+-------+-------+
+|     1 |   700 |  1200 |
+|     2 |  1201 |  1400 |
+|     3 |  1401 |  2000 |
+|     4 |  2001 |  3000 |
+|     5 |  3001 |  9999 |
++-------+-------+-------+
+5 rows in set (0.00 sec)
+
+mysql> select empno,sal,grade,losal,hisal
+    -> from emp e,salgrade s;
++-------+---------+-------+-------+-------+
+| empno | sal     | grade | losal | hisal |
++-------+---------+-------+-------+-------+
+|  7369 |  800.00 |     1 |   700 |  1200 |
+|  7369 |  800.00 |     2 |  1201 |  1400 |
+|  7369 |  800.00 |     3 |  1401 |  2000 |
+|  7369 |  800.00 |     4 |  2001 |  3000 |
+|  7369 |  800.00 |     5 |  3001 |  9999 |
+|  7499 | 1600.00 |     1 |   700 |  1200 |
+|  7499 | 1600.00 |     2 |  1201 |  1400 |
+|  7499 | 1600.00 |     3 |  1401 |  2000 |
+|  7499 | 1600.00 |     4 |  2001 |  3000 |
+|  7499 | 1600.00 |     5 |  3001 |  9999 |
+|  7521 | 1250.00 |     1 |   700 |  1200 |
+|  7521 | 1250.00 |     2 |  1201 |  1400 |
+|  7521 | 1250.00 |     3 |  1401 |  2000 |
+|  7521 | 1250.00 |     4 |  2001 |  3000 |
+|  7521 | 1250.00 |     5 |  3001 |  9999 |
+|  7566 | 2975.00 |     1 |   700 |  1200 |
+|  7566 | 2975.00 |     2 |  1201 |  1400 |
+|  7566 | 2975.00 |     3 |  1401 |  2000 |
+|  7566 | 2975.00 |     4 |  2001 |  3000 |
+|  7566 | 2975.00 |     5 |  3001 |  9999 |
+|  7654 | 1250.00 |     1 |   700 |  1200 |
+|  7654 | 1250.00 |     2 |  1201 |  1400 |
+|  7654 | 1250.00 |     3 |  1401 |  2000 |
+|  7654 | 1250.00 |     4 |  2001 |  3000 |
+|  7654 | 1250.00 |     5 |  3001 |  9999 |
+|  7698 | 2850.00 |     1 |   700 |  1200 |
+|  7698 | 2850.00 |     2 |  1201 |  1400 |
+|  7698 | 2850.00 |     3 |  1401 |  2000 |
+|  7698 | 2850.00 |     4 |  2001 |  3000 |
+|  7698 | 2850.00 |     5 |  3001 |  9999 |
+|  7782 | 2450.00 |     1 |   700 |  1200 |
+|  7782 | 2450.00 |     2 |  1201 |  1400 |
+|  7782 | 2450.00 |     3 |  1401 |  2000 |
+|  7782 | 2450.00 |     4 |  2001 |  3000 |
+|  7782 | 2450.00 |     5 |  3001 |  9999 |
+|  7788 | 3000.00 |     1 |   700 |  1200 |
+|  7788 | 3000.00 |     2 |  1201 |  1400 |
+|  7788 | 3000.00 |     3 |  1401 |  2000 |
+|  7788 | 3000.00 |     4 |  2001 |  3000 |
+|  7788 | 3000.00 |     5 |  3001 |  9999 |
+|  7839 | 5000.00 |     1 |   700 |  1200 |
+|  7839 | 5000.00 |     2 |  1201 |  1400 |
+|  7839 | 5000.00 |     3 |  1401 |  2000 |
+|  7839 | 5000.00 |     4 |  2001 |  3000 |
+|  7839 | 5000.00 |     5 |  3001 |  9999 |
+|  7844 | 1500.00 |     1 |   700 |  1200 |
+|  7844 | 1500.00 |     2 |  1201 |  1400 |
+|  7844 | 1500.00 |     3 |  1401 |  2000 |
+|  7844 | 1500.00 |     4 |  2001 |  3000 |
+|  7844 | 1500.00 |     5 |  3001 |  9999 |
+|  7876 | 1100.00 |     1 |   700 |  1200 |
+|  7876 | 1100.00 |     2 |  1201 |  1400 |
+|  7876 | 1100.00 |     3 |  1401 |  2000 |
+|  7876 | 1100.00 |     4 |  2001 |  3000 |
+|  7876 | 1100.00 |     5 |  3001 |  9999 |
+|  7900 |  950.00 |     1 |   700 |  1200 |
+|  7900 |  950.00 |     2 |  1201 |  1400 |
+|  7900 |  950.00 |     3 |  1401 |  2000 |
+|  7900 |  950.00 |     4 |  2001 |  3000 |
+|  7900 |  950.00 |     5 |  3001 |  9999 |
+|  7902 | 3000.00 |     1 |   700 |  1200 |
+|  7902 | 3000.00 |     2 |  1201 |  1400 |
+|  7902 | 3000.00 |     3 |  1401 |  2000 |
+|  7902 | 3000.00 |     4 |  2001 |  3000 |
+|  7902 | 3000.00 |     5 |  3001 |  9999 |
+|  7934 | 1300.00 |     1 |   700 |  1200 |
+|  7934 | 1300.00 |     2 |  1201 |  1400 |
+|  7934 | 1300.00 |     3 |  1401 |  2000 |
+|  7934 | 1300.00 |     4 |  2001 |  3000 |
+|  7934 | 1300.00 |     5 |  3001 |  9999 |
+|   101 | 3456.00 |     1 |   700 |  1200 |
+|   101 | 3456.00 |     2 |  1201 |  1400 |
+|   101 | 3456.00 |     3 |  1401 |  2000 |
+|   101 | 3456.00 |     4 |  2001 |  3000 |
+|   101 | 3456.00 |     5 |  3001 |  9999 |
+|   102 | 3456.00 |     1 |   700 |  1200 |
+|   102 | 3456.00 |     2 |  1201 |  1400 |
+|   102 | 3456.00 |     3 |  1401 |  2000 |
+|   102 | 3456.00 |     4 |  2001 |  3000 |
+|   102 | 3456.00 |     5 |  3001 |  9999 |
+|   103 | 7555.00 |     1 |   700 |  1200 |
+|   103 | 7555.00 |     2 |  1201 |  1400 |
+|   103 | 7555.00 |     3 |  1401 |  2000 |
+|   103 | 7555.00 |     4 |  2001 |  3000 |
+|   103 | 7555.00 |     5 |  3001 |  9999 |
++-------+---------+-------+-------+-------+
+85 rows in set (0.00 sec)
+
+mysql> select empno,name,sal,grade,losal,hisal
+    -> from ^C
+mysql> select empno,ename,sal,grade,losal,hisal
+    -> from emp e,salgrade s;
++-------+------------+---------+-------+-------+-------+
+| empno | ename      | sal     | grade | losal | hisal |
++-------+------------+---------+-------+-------+-------+
+|  7369 | SMITH      |  800.00 |     1 |   700 |  1200 |
+|  7369 | SMITH      |  800.00 |     2 |  1201 |  1400 |
+|  7369 | SMITH      |  800.00 |     3 |  1401 |  2000 |
+|  7369 | SMITH      |  800.00 |     4 |  2001 |  3000 |
+|  7369 | SMITH      |  800.00 |     5 |  3001 |  9999 |
+|  7499 | ALLENXXXXX | 1600.00 |     1 |   700 |  1200 |
+|  7499 | ALLENXXXXX | 1600.00 |     2 |  1201 |  1400 |
+|  7499 | ALLENXXXXX | 1600.00 |     3 |  1401 |  2000 |
+|  7499 | ALLENXXXXX | 1600.00 |     4 |  2001 |  3000 |
+|  7499 | ALLENXXXXX | 1600.00 |     5 |  3001 |  9999 |
+|  7521 | WARD       | 1250.00 |     1 |   700 |  1200 |
+|  7521 | WARD       | 1250.00 |     2 |  1201 |  1400 |
+|  7521 | WARD       | 1250.00 |     3 |  1401 |  2000 |
+|  7521 | WARD       | 1250.00 |     4 |  2001 |  3000 |
+|  7521 | WARD       | 1250.00 |     5 |  3001 |  9999 |
+|  7566 | JONES      | 2975.00 |     1 |   700 |  1200 |
+|  7566 | JONES      | 2975.00 |     2 |  1201 |  1400 |
+|  7566 | JONES      | 2975.00 |     3 |  1401 |  2000 |
+|  7566 | JONES      | 2975.00 |     4 |  2001 |  3000 |
+|  7566 | JONES      | 2975.00 |     5 |  3001 |  9999 |
+|  7654 | MARTIN     | 1250.00 |     1 |   700 |  1200 |
+|  7654 | MARTIN     | 1250.00 |     2 |  1201 |  1400 |
+|  7654 | MARTIN     | 1250.00 |     3 |  1401 |  2000 |
+|  7654 | MARTIN     | 1250.00 |     4 |  2001 |  3000 |
+|  7654 | MARTIN     | 1250.00 |     5 |  3001 |  9999 |
+|  7698 | BLAKE      | 2850.00 |     1 |   700 |  1200 |
+|  7698 | BLAKE      | 2850.00 |     2 |  1201 |  1400 |
+|  7698 | BLAKE      | 2850.00 |     3 |  1401 |  2000 |
+|  7698 | BLAKE      | 2850.00 |     4 |  2001 |  3000 |
+|  7698 | BLAKE      | 2850.00 |     5 |  3001 |  9999 |
+|  7782 | CLARK      | 2450.00 |     1 |   700 |  1200 |
+|  7782 | CLARK      | 2450.00 |     2 |  1201 |  1400 |
+|  7782 | CLARK      | 2450.00 |     3 |  1401 |  2000 |
+|  7782 | CLARK      | 2450.00 |     4 |  2001 |  3000 |
+|  7782 | CLARK      | 2450.00 |     5 |  3001 |  9999 |
+|  7788 | SCOTT      | 3000.00 |     1 |   700 |  1200 |
+|  7788 | SCOTT      | 3000.00 |     2 |  1201 |  1400 |
+|  7788 | SCOTT      | 3000.00 |     3 |  1401 |  2000 |
+|  7788 | SCOTT      | 3000.00 |     4 |  2001 |  3000 |
+|  7788 | SCOTT      | 3000.00 |     5 |  3001 |  9999 |
+|  7839 | KING       | 5000.00 |     1 |   700 |  1200 |
+|  7839 | KING       | 5000.00 |     2 |  1201 |  1400 |
+|  7839 | KING       | 5000.00 |     3 |  1401 |  2000 |
+|  7839 | KING       | 5000.00 |     4 |  2001 |  3000 |
+|  7839 | KING       | 5000.00 |     5 |  3001 |  9999 |
+|  7844 | TURNER     | 1500.00 |     1 |   700 |  1200 |
+|  7844 | TURNER     | 1500.00 |     2 |  1201 |  1400 |
+|  7844 | TURNER     | 1500.00 |     3 |  1401 |  2000 |
+|  7844 | TURNER     | 1500.00 |     4 |  2001 |  3000 |
+|  7844 | TURNER     | 1500.00 |     5 |  3001 |  9999 |
+|  7876 | ADAMS      | 1100.00 |     1 |   700 |  1200 |
+|  7876 | ADAMS      | 1100.00 |     2 |  1201 |  1400 |
+|  7876 | ADAMS      | 1100.00 |     3 |  1401 |  2000 |
+|  7876 | ADAMS      | 1100.00 |     4 |  2001 |  3000 |
+|  7876 | ADAMS      | 1100.00 |     5 |  3001 |  9999 |
+|  7900 | JAMES      |  950.00 |     1 |   700 |  1200 |
+|  7900 | JAMES      |  950.00 |     2 |  1201 |  1400 |
+|  7900 | JAMES      |  950.00 |     3 |  1401 |  2000 |
+|  7900 | JAMES      |  950.00 |     4 |  2001 |  3000 |
+|  7900 | JAMES      |  950.00 |     5 |  3001 |  9999 |
+|  7902 | FORD       | 3000.00 |     1 |   700 |  1200 |
+|  7902 | FORD       | 3000.00 |     2 |  1201 |  1400 |
+|  7902 | FORD       | 3000.00 |     3 |  1401 |  2000 |
+|  7902 | FORD       | 3000.00 |     4 |  2001 |  3000 |
+|  7902 | FORD       | 3000.00 |     5 |  3001 |  9999 |
+|  7934 | MILLER     | 1300.00 |     1 |   700 |  1200 |
+|  7934 | MILLER     | 1300.00 |     2 |  1201 |  1400 |
+|  7934 | MILLER     | 1300.00 |     3 |  1401 |  2000 |
+|  7934 | MILLER     | 1300.00 |     4 |  2001 |  3000 |
+|  7934 | MILLER     | 1300.00 |     5 |  3001 |  9999 |
+|   101 | Ashutosh   | 3456.00 |     1 |   700 |  1200 |
+|   101 | Ashutosh   | 3456.00 |     2 |  1201 |  1400 |
+|   101 | Ashutosh   | 3456.00 |     3 |  1401 |  2000 |
+|   101 | Ashutosh   | 3456.00 |     4 |  2001 |  3000 |
+|   101 | Ashutosh   | 3456.00 |     5 |  3001 |  9999 |
+|   102 | Mugdha     | 3456.00 |     1 |   700 |  1200 |
+|   102 | Mugdha     | 3456.00 |     2 |  1201 |  1400 |
+|   102 | Mugdha     | 3456.00 |     3 |  1401 |  2000 |
+|   102 | Mugdha     | 3456.00 |     4 |  2001 |  3000 |
+|   102 | Mugdha     | 3456.00 |     5 |  3001 |  9999 |
+|   103 | Tanaya     | 7555.00 |     1 |   700 |  1200 |
+|   103 | Tanaya     | 7555.00 |     2 |  1201 |  1400 |
+|   103 | Tanaya     | 7555.00 |     3 |  1401 |  2000 |
+|   103 | Tanaya     | 7555.00 |     4 |  2001 |  3000 |
+|   103 | Tanaya     | 7555.00 |     5 |  3001 |  9999 |
++-------+------------+---------+-------+-------+-------+
+85 rows in set (0.00 sec)
+
+mysql> select empno,ename,sal,grade,losal,hisal
+    -> from emp e,salgrade s
+    -> where e.sal between s.losal and s.hisal;
++-------+------------+---------+-------+-------+-------+
+| empno | ename      | sal     | grade | losal | hisal |
++-------+------------+---------+-------+-------+-------+
+|  7369 | SMITH      |  800.00 |     1 |   700 |  1200 |
+|  7499 | ALLENXXXXX | 1600.00 |     3 |  1401 |  2000 |
+|  7521 | WARD       | 1250.00 |     2 |  1201 |  1400 |
+|  7566 | JONES      | 2975.00 |     4 |  2001 |  3000 |
+|  7654 | MARTIN     | 1250.00 |     2 |  1201 |  1400 |
+|  7698 | BLAKE      | 2850.00 |     4 |  2001 |  3000 |
+|  7782 | CLARK      | 2450.00 |     4 |  2001 |  3000 |
+|  7788 | SCOTT      | 3000.00 |     4 |  2001 |  3000 |
+|  7839 | KING       | 5000.00 |     5 |  3001 |  9999 |
+|  7844 | TURNER     | 1500.00 |     3 |  1401 |  2000 |
+|  7876 | ADAMS      | 1100.00 |     1 |   700 |  1200 |
+|  7900 | JAMES      |  950.00 |     1 |   700 |  1200 |
+|  7902 | FORD       | 3000.00 |     4 |  2001 |  3000 |
+|  7934 | MILLER     | 1300.00 |     2 |  1201 |  1400 |
+|   101 | Ashutosh   | 3456.00 |     5 |  3001 |  9999 |
+|   102 | Mugdha     | 3456.00 |     5 |  3001 |  9999 |
+|   103 | Tanaya     | 7555.00 |     5 |  3001 |  9999 |
++-------+------------+---------+-------+-------+-------+
+17 rows in set (0.00 sec)
+
+mysql> select * from student;
++------+---------+---------+
+| Sid  | Sname   | Address |
++------+---------+---------+
+|    1 | Revati  | Baner   |
+|    2 | Rajan   | Baner   |
+|   10 | Atharva | Baner   |
+|   11 | Bhavika | Baner   |
+| 1001 | Bhavika | Baner   |
+| 1002 | Sameer  | Baner   |
++------+---------+---------+
+6 rows in set (0.01 sec)
+
+mysql> select * from course;
+ERROR 1146 (42S02): Table 'dacmarch23.course' doesn't exist
+mysql> select * from coursedata;
++-------+--------+----------+------+
+| cname | roomid | duration | fid  |
++-------+--------+----------+------+
+| .net  |   NULL |       10 | NULL |
+| c++   |   NULL |        5 | NULL |
+| java  |   NULL |       10 | NULL |
++-------+--------+----------+------+
+3 rows in set (0.00 sec)
+
+mysql> select * from stud_marks;
++-----+--------+-------+
+| sid | course | marks |
++-----+--------+-------+
+|   1 | java   |    99 |
+|   2 | c++    |    95 |
+|   2 | java   |    95 |
++-----+--------+-------+
+3 rows in set (0.00 sec)
+
+mysql> select *
+    -> from student s, stud_marks sm,coursedata c
+    -> where s.sid=sm.sid and sm.course=c.cname;
++-----+--------+---------+-----+--------+-------+-------+--------+----------+------+
+| Sid | Sname  | Address | sid | course | marks | cname | roomid | duration | fid  |
++-----+--------+---------+-----+--------+-------+-------+--------+----------+------+
+|   1 | Revati | Baner   |   1 | java   |    99 | java  |   NULL |       10 | NULL |
+|   2 | Rajan  | Baner   |   2 | c++    |    95 | c++   |   NULL |        5 | NULL |
+|   2 | Rajan  | Baner   |   2 | java   |    95 | java  |   NULL |       10 | NULL |
++-----+--------+---------+-----+--------+-------+-------+--------+----------+------+
+3 rows in set (0.00 sec)
+
+mysql> select *
+    -> from student s, stud_marks sm,coursedata c
+    -> where s.sid=sm.sid and sm.course=c.cname and sname='Rajan';
++-----+-------+---------+-----+--------+-------+-------+--------+----------+------+
+| Sid | Sname | Address | sid | course | marks | cname | roomid | duration | fid  |
++-----+-------+---------+-----+--------+-------+-------+--------+----------+------+
+|   2 | Rajan | Baner   |   2 | c++    |    95 | c++   |   NULL |        5 | NULL |
+|   2 | Rajan | Baner   |   2 | java   |    95 | java  |   NULL |       10 | NULL |
++-----+-------+---------+-----+--------+-------+-------+--------+----------+------+
+2 rows in set (0.00 sec)
+
+mysql> Select empno,ename,sal,e. deptno,grade,dname
+    -> From emp e,dept d, salgrade s
+    -> Where e.deptno=d.deptno and e.sal between s.losal and s.hisal
+    -> and dname in ('sales','purchase');
++-------+------------+---------+--------+-------+-------+
+| empno | ename      | sal     | deptno | grade | dname |
++-------+------------+---------+--------+-------+-------+
+|  7900 | JAMES      |  950.00 |     30 |     1 | SALES |
+|  7521 | WARD       | 1250.00 |     30 |     2 | SALES |
+|  7654 | MARTIN     | 1250.00 |     30 |     2 | SALES |
+|  7499 | ALLENXXXXX | 1600.00 |     30 |     3 | SALES |
+|  7844 | TURNER     | 1500.00 |     30 |     3 | SALES |
+|  7698 | BLAKE      | 2850.00 |     30 |     4 | SALES |
++-------+------------+---------+--------+-------+-------+
+6 rows in set (0.00 sec)
+
+mysql> Select empno,ename,sal,e. deptno,grade,dname
+    -> From emp e,dept d, salgrade s
+    -> Where e.deptno=d.deptno and e.sal between s.losal and s.hisal;
++-------+------------+---------+--------+-------+------------+
+| empno | ename      | sal     | deptno | grade | dname      |
++-------+------------+---------+--------+-------+------------+
+|  7369 | SMITH      |  800.00 |     20 |     1 | RESEARCH   |
+|  7499 | ALLENXXXXX | 1600.00 |     30 |     3 | SALES      |
+|  7521 | WARD       | 1250.00 |     30 |     2 | SALES      |
+|  7566 | JONES      | 2975.00 |     20 |     4 | RESEARCH   |
+|  7654 | MARTIN     | 1250.00 |     30 |     2 | SALES      |
+|  7698 | BLAKE      | 2850.00 |     30 |     4 | SALES      |
+|  7782 | CLARK      | 2450.00 |     10 |     4 | ACCOUNTING |
+|  7788 | SCOTT      | 3000.00 |     20 |     4 | RESEARCH   |
+|  7839 | KING       | 5000.00 |     10 |     5 | ACCOUNTING |
+|  7844 | TURNER     | 1500.00 |     30 |     3 | SALES      |
+|  7876 | ADAMS      | 1100.00 |     20 |     1 | RESEARCH   |
+|  7900 | JAMES      |  950.00 |     30 |     1 | SALES      |
+|  7902 | FORD       | 3000.00 |     20 |     4 | RESEARCH   |
+|  7934 | MILLER     | 1300.00 |     10 |     2 | ACCOUNTING |
+|   101 | Ashutosh   | 3456.00 |     10 |     5 | ACCOUNTING |
+|   102 | Mugdha     | 3456.00 |     10 |     5 | ACCOUNTING |
++-------+------------+---------+--------+-------+------------+
+16 rows in set (0.00 sec)
+
+mysql> select * from emp e
+    -> ;
++-------+------------+-----------+------+------------+---------+---------+--------+
+| EMPNO | ENAME      | JOB       | MGR  | HIREDATE   | SAL     | COMM    | DEPTNO |
++-------+------------+-----------+------+------------+---------+---------+--------+
+|  7369 | SMITH      | CLERK     | 7902 | 1980-12-17 |  800.00 |    NULL |     20 |
+|  7499 | ALLENXXXXX | SALESMAN  | 7698 | 1981-02-20 | 1600.00 |  300.00 |     30 |
+|  7521 | WARD       | SALESMAN  | 7698 | 1981-02-22 | 1250.00 |  500.00 |     30 |
+|  7566 | JONES      | MANAGER   | 7839 | 1981-04-02 | 2975.00 |    NULL |     20 |
+|  7654 | MARTIN     | SALESMAN  | 7698 | 1981-09-28 | 1250.00 | 1400.00 |     30 |
+|  7698 | BLAKE      | MANAGER   | 7839 | 1981-05-01 | 2850.00 |    NULL |     30 |
+|  7782 | CLARK      | MANAGER   | 7839 | 1981-06-09 | 2450.00 |    NULL |     10 |
+|  7788 | SCOTT      | ANALYST   | 7566 | 1982-12-09 | 3000.00 |    NULL |     20 |
+|  7839 | KING       | PRESIDENT | NULL | 1981-11-17 | 5000.00 |    NULL |     10 |
+|  7844 | TURNER     | SALESMAN  | 7698 | 1981-09-08 | 1500.00 |    0.00 |     30 |
+|  7876 | ADAMS      | CLERK     | 7788 | 1983-01-12 | 1100.00 |    NULL |     20 |
+|  7900 | JAMES      | CLERK     | 7698 | 1981-12-03 |  950.00 |    NULL |     30 |
+|  7902 | FORD       | ANALYST   | 7566 | 1981-12-03 | 3000.00 |    NULL |     20 |
+|  7934 | MILLER     | CLERK     | 7782 | 1982-01-23 | 1300.00 |    NULL |     10 |
+|   101 | Ashutosh   | CLERK     | 7902 | 2000-10-11 | 3456.00 |  345.00 |     10 |
+|   102 | Mugdha     | CLERK     | 7902 | 2000-10-11 | 3456.00 |  345.00 |     10 |
+|   103 | Tanaya     | NULL      | NULL | NULL       | 7555.00 |    NULL |   NULL |
++-------+------------+-----------+------+------------+---------+---------+--------+
+17 rows in set (0.00 sec)
+
+mysql> select * from emp m;
++-------+------------+-----------+------+------------+---------+---------+--------+
+| EMPNO | ENAME      | JOB       | MGR  | HIREDATE   | SAL     | COMM    | DEPTNO |
++-------+------------+-----------+------+------------+---------+---------+--------+
+|  7369 | SMITH      | CLERK     | 7902 | 1980-12-17 |  800.00 |    NULL |     20 |
+|  7499 | ALLENXXXXX | SALESMAN  | 7698 | 1981-02-20 | 1600.00 |  300.00 |     30 |
+|  7521 | WARD       | SALESMAN  | 7698 | 1981-02-22 | 1250.00 |  500.00 |     30 |
+|  7566 | JONES      | MANAGER   | 7839 | 1981-04-02 | 2975.00 |    NULL |     20 |
+|  7654 | MARTIN     | SALESMAN  | 7698 | 1981-09-28 | 1250.00 | 1400.00 |     30 |
+|  7698 | BLAKE      | MANAGER   | 7839 | 1981-05-01 | 2850.00 |    NULL |     30 |
+|  7782 | CLARK      | MANAGER   | 7839 | 1981-06-09 | 2450.00 |    NULL |     10 |
+|  7788 | SCOTT      | ANALYST   | 7566 | 1982-12-09 | 3000.00 |    NULL |     20 |
+|  7839 | KING       | PRESIDENT | NULL | 1981-11-17 | 5000.00 |    NULL |     10 |
+|  7844 | TURNER     | SALESMAN  | 7698 | 1981-09-08 | 1500.00 |    0.00 |     30 |
+|  7876 | ADAMS      | CLERK     | 7788 | 1983-01-12 | 1100.00 |    NULL |     20 |
+|  7900 | JAMES      | CLERK     | 7698 | 1981-12-03 |  950.00 |    NULL |     30 |
+|  7902 | FORD       | ANALYST   | 7566 | 1981-12-03 | 3000.00 |    NULL |     20 |
+|  7934 | MILLER     | CLERK     | 7782 | 1982-01-23 | 1300.00 |    NULL |     10 |
+|   101 | Ashutosh   | CLERK     | 7902 | 2000-10-11 | 3456.00 |  345.00 |     10 |
+|   102 | Mugdha     | CLERK     | 7902 | 2000-10-11 | 3456.00 |  345.00 |     10 |
+|   103 | Tanaya     | NULL      | NULL | NULL       | 7555.00 |    NULL |   NULL |
++-------+------------+-----------+------+------------+---------+---------+--------+
+17 rows in set (0.00 sec)
+
+mysql> select e.empno,e.ename,m.empno,m.ename
+    -> from emp e,emp m
+    -> ;
++-------+------------+-------+------------+
+| empno | ename      | empno | ename      |
++-------+------------+-------+------------+
+|  7369 | SMITH      |  7369 | SMITH      |
+|  7499 | ALLENXXXXX |  7369 | SMITH      |
+|  7521 | WARD       |  7369 | SMITH      |
+|  7566 | JONES      |  7369 | SMITH      |
+|  7654 | MARTIN     |  7369 | SMITH      |
+|  7698 | BLAKE      |  7369 | SMITH      |
+|  7782 | CLARK      |  7369 | SMITH      |
+|  7788 | SCOTT      |  7369 | SMITH      |
+|  7839 | KING       |  7369 | SMITH      |
+|  7844 | TURNER     |  7369 | SMITH      |
+|  7876 | ADAMS      |  7369 | SMITH      |
+|  7900 | JAMES      |  7369 | SMITH      |
+|  7902 | FORD       |  7369 | SMITH      |
+|  7934 | MILLER     |  7369 | SMITH      |
+|   101 | Ashutosh   |  7369 | SMITH      |
+|   102 | Mugdha     |  7369 | SMITH      |
+|   103 | Tanaya     |  7369 | SMITH      |
+|  7369 | SMITH      |  7499 | ALLENXXXXX |
+|  7499 | ALLENXXXXX |  7499 | ALLENXXXXX |
+|  7521 | WARD       |  7499 | ALLENXXXXX |
+|  7566 | JONES      |  7499 | ALLENXXXXX |
+|  7654 | MARTIN     |  7499 | ALLENXXXXX |
+|  7698 | BLAKE      |  7499 | ALLENXXXXX |
+|  7782 | CLARK      |  7499 | ALLENXXXXX |
+|  7788 | SCOTT      |  7499 | ALLENXXXXX |
+|  7839 | KING       |  7499 | ALLENXXXXX |
+|  7844 | TURNER     |  7499 | ALLENXXXXX |
+|  7876 | ADAMS      |  7499 | ALLENXXXXX |
+|  7900 | JAMES      |  7499 | ALLENXXXXX |
+|  7902 | FORD       |  7499 | ALLENXXXXX |
+|  7934 | MILLER     |  7499 | ALLENXXXXX |
+|   101 | Ashutosh   |  7499 | ALLENXXXXX |
+|   102 | Mugdha     |  7499 | ALLENXXXXX |
+|   103 | Tanaya     |  7499 | ALLENXXXXX |
+|  7369 | SMITH      |  7521 | WARD       |
+|  7499 | ALLENXXXXX |  7521 | WARD       |
+|  7521 | WARD       |  7521 | WARD       |
+|  7566 | JONES      |  7521 | WARD       |
+|  7654 | MARTIN     |  7521 | WARD       |
+|  7698 | BLAKE      |  7521 | WARD       |
+|  7782 | CLARK      |  7521 | WARD       |
+|  7788 | SCOTT      |  7521 | WARD       |
+|  7839 | KING       |  7521 | WARD       |
+|  7844 | TURNER     |  7521 | WARD       |
+|  7876 | ADAMS      |  7521 | WARD       |
+|  7900 | JAMES      |  7521 | WARD       |
+|  7902 | FORD       |  7521 | WARD       |
+|  7934 | MILLER     |  7521 | WARD       |
+|   101 | Ashutosh   |  7521 | WARD       |
+|   102 | Mugdha     |  7521 | WARD       |
+|   103 | Tanaya     |  7521 | WARD       |
+|  7369 | SMITH      |  7566 | JONES      |
+|  7499 | ALLENXXXXX |  7566 | JONES      |
+|  7521 | WARD       |  7566 | JONES      |
+|  7566 | JONES      |  7566 | JONES      |
+|  7654 | MARTIN     |  7566 | JONES      |
+|  7698 | BLAKE      |  7566 | JONES      |
+|  7782 | CLARK      |  7566 | JONES      |
+|  7788 | SCOTT      |  7566 | JONES      |
+|  7839 | KING       |  7566 | JONES      |
+|  7844 | TURNER     |  7566 | JONES      |
+|  7876 | ADAMS      |  7566 | JONES      |
+|  7900 | JAMES      |  7566 | JONES      |
+|  7902 | FORD       |  7566 | JONES      |
+|  7934 | MILLER     |  7566 | JONES      |
+|   101 | Ashutosh   |  7566 | JONES      |
+|   102 | Mugdha     |  7566 | JONES      |
+|   103 | Tanaya     |  7566 | JONES      |
+|  7369 | SMITH      |  7654 | MARTIN     |
+|  7499 | ALLENXXXXX |  7654 | MARTIN     |
+|  7521 | WARD       |  7654 | MARTIN     |
+|  7566 | JONES      |  7654 | MARTIN     |
+|  7654 | MARTIN     |  7654 | MARTIN     |
+|  7698 | BLAKE      |  7654 | MARTIN     |
+|  7782 | CLARK      |  7654 | MARTIN     |
+|  7788 | SCOTT      |  7654 | MARTIN     |
+|  7839 | KING       |  7654 | MARTIN     |
+|  7844 | TURNER     |  7654 | MARTIN     |
+|  7876 | ADAMS      |  7654 | MARTIN     |
+|  7900 | JAMES      |  7654 | MARTIN     |
+|  7902 | FORD       |  7654 | MARTIN     |
+|  7934 | MILLER     |  7654 | MARTIN     |
+|   101 | Ashutosh   |  7654 | MARTIN     |
+|   102 | Mugdha     |  7654 | MARTIN     |
+|   103 | Tanaya     |  7654 | MARTIN     |
+|  7369 | SMITH      |  7698 | BLAKE      |
+|  7499 | ALLENXXXXX |  7698 | BLAKE      |
+|  7521 | WARD       |  7698 | BLAKE      |
+|  7566 | JONES      |  7698 | BLAKE      |
+|  7654 | MARTIN     |  7698 | BLAKE      |
+|  7698 | BLAKE      |  7698 | BLAKE      |
+|  7782 | CLARK      |  7698 | BLAKE      |
+|  7788 | SCOTT      |  7698 | BLAKE      |
+|  7839 | KING       |  7698 | BLAKE      |
+|  7844 | TURNER     |  7698 | BLAKE      |
+|  7876 | ADAMS      |  7698 | BLAKE      |
+|  7900 | JAMES      |  7698 | BLAKE      |
+|  7902 | FORD       |  7698 | BLAKE      |
+|  7934 | MILLER     |  7698 | BLAKE      |
+|   101 | Ashutosh   |  7698 | BLAKE      |
+|   102 | Mugdha     |  7698 | BLAKE      |
+|   103 | Tanaya     |  7698 | BLAKE      |
+|  7369 | SMITH      |  7782 | CLARK      |
+|  7499 | ALLENXXXXX |  7782 | CLARK      |
+|  7521 | WARD       |  7782 | CLARK      |
+|  7566 | JONES      |  7782 | CLARK      |
+|  7654 | MARTIN     |  7782 | CLARK      |
+|  7698 | BLAKE      |  7782 | CLARK      |
+|  7782 | CLARK      |  7782 | CLARK      |
+|  7788 | SCOTT      |  7782 | CLARK      |
+|  7839 | KING       |  7782 | CLARK      |
+|  7844 | TURNER     |  7782 | CLARK      |
+|  7876 | ADAMS      |  7782 | CLARK      |
+|  7900 | JAMES      |  7782 | CLARK      |
+|  7902 | FORD       |  7782 | CLARK      |
+|  7934 | MILLER     |  7782 | CLARK      |
+|   101 | Ashutosh   |  7782 | CLARK      |
+|   102 | Mugdha     |  7782 | CLARK      |
+|   103 | Tanaya     |  7782 | CLARK      |
+|  7369 | SMITH      |  7788 | SCOTT      |
+|  7499 | ALLENXXXXX |  7788 | SCOTT      |
+|  7521 | WARD       |  7788 | SCOTT      |
+|  7566 | JONES      |  7788 | SCOTT      |
+|  7654 | MARTIN     |  7788 | SCOTT      |
+|  7698 | BLAKE      |  7788 | SCOTT      |
+|  7782 | CLARK      |  7788 | SCOTT      |
+|  7788 | SCOTT      |  7788 | SCOTT      |
+|  7839 | KING       |  7788 | SCOTT      |
+|  7844 | TURNER     |  7788 | SCOTT      |
+|  7876 | ADAMS      |  7788 | SCOTT      |
+|  7900 | JAMES      |  7788 | SCOTT      |
+|  7902 | FORD       |  7788 | SCOTT      |
+|  7934 | MILLER     |  7788 | SCOTT      |
+|   101 | Ashutosh   |  7788 | SCOTT      |
+|   102 | Mugdha     |  7788 | SCOTT      |
+|   103 | Tanaya     |  7788 | SCOTT      |
+|  7369 | SMITH      |  7839 | KING       |
+|  7499 | ALLENXXXXX |  7839 | KING       |
+|  7521 | WARD       |  7839 | KING       |
+|  7566 | JONES      |  7839 | KING       |
+|  7654 | MARTIN     |  7839 | KING       |
+|  7698 | BLAKE      |  7839 | KING       |
+|  7782 | CLARK      |  7839 | KING       |
+|  7788 | SCOTT      |  7839 | KING       |
+|  7839 | KING       |  7839 | KING       |
+|  7844 | TURNER     |  7839 | KING       |
+|  7876 | ADAMS      |  7839 | KING       |
+|  7900 | JAMES      |  7839 | KING       |
+|  7902 | FORD       |  7839 | KING       |
+|  7934 | MILLER     |  7839 | KING       |
+|   101 | Ashutosh   |  7839 | KING       |
+|   102 | Mugdha     |  7839 | KING       |
+|   103 | Tanaya     |  7839 | KING       |
+|  7369 | SMITH      |  7844 | TURNER     |
+|  7499 | ALLENXXXXX |  7844 | TURNER     |
+|  7521 | WARD       |  7844 | TURNER     |
+|  7566 | JONES      |  7844 | TURNER     |
+|  7654 | MARTIN     |  7844 | TURNER     |
+|  7698 | BLAKE      |  7844 | TURNER     |
+|  7782 | CLARK      |  7844 | TURNER     |
+|  7788 | SCOTT      |  7844 | TURNER     |
+|  7839 | KING       |  7844 | TURNER     |
+|  7844 | TURNER     |  7844 | TURNER     |
+|  7876 | ADAMS      |  7844 | TURNER     |
+|  7900 | JAMES      |  7844 | TURNER     |
+|  7902 | FORD       |  7844 | TURNER     |
+|  7934 | MILLER     |  7844 | TURNER     |
+|   101 | Ashutosh   |  7844 | TURNER     |
+|   102 | Mugdha     |  7844 | TURNER     |
+|   103 | Tanaya     |  7844 | TURNER     |
+|  7369 | SMITH      |  7876 | ADAMS      |
+|  7499 | ALLENXXXXX |  7876 | ADAMS      |
+|  7521 | WARD       |  7876 | ADAMS      |
+|  7566 | JONES      |  7876 | ADAMS      |
+|  7654 | MARTIN     |  7876 | ADAMS      |
+|  7698 | BLAKE      |  7876 | ADAMS      |
+|  7782 | CLARK      |  7876 | ADAMS      |
+|  7788 | SCOTT      |  7876 | ADAMS      |
+|  7839 | KING       |  7876 | ADAMS      |
+|  7844 | TURNER     |  7876 | ADAMS      |
+|  7876 | ADAMS      |  7876 | ADAMS      |
+|  7900 | JAMES      |  7876 | ADAMS      |
+|  7902 | FORD       |  7876 | ADAMS      |
+|  7934 | MILLER     |  7876 | ADAMS      |
+|   101 | Ashutosh   |  7876 | ADAMS      |
+|   102 | Mugdha     |  7876 | ADAMS      |
+|   103 | Tanaya     |  7876 | ADAMS      |
+|  7369 | SMITH      |  7900 | JAMES      |
+|  7499 | ALLENXXXXX |  7900 | JAMES      |
+|  7521 | WARD       |  7900 | JAMES      |
+|  7566 | JONES      |  7900 | JAMES      |
+|  7654 | MARTIN     |  7900 | JAMES      |
+|  7698 | BLAKE      |  7900 | JAMES      |
+|  7782 | CLARK      |  7900 | JAMES      |
+|  7788 | SCOTT      |  7900 | JAMES      |
+|  7839 | KING       |  7900 | JAMES      |
+|  7844 | TURNER     |  7900 | JAMES      |
+|  7876 | ADAMS      |  7900 | JAMES      |
+|  7900 | JAMES      |  7900 | JAMES      |
+|  7902 | FORD       |  7900 | JAMES      |
+|  7934 | MILLER     |  7900 | JAMES      |
+|   101 | Ashutosh   |  7900 | JAMES      |
+|   102 | Mugdha     |  7900 | JAMES      |
+|   103 | Tanaya     |  7900 | JAMES      |
+|  7369 | SMITH      |  7902 | FORD       |
+|  7499 | ALLENXXXXX |  7902 | FORD       |
+|  7521 | WARD       |  7902 | FORD       |
+|  7566 | JONES      |  7902 | FORD       |
+|  7654 | MARTIN     |  7902 | FORD       |
+|  7698 | BLAKE      |  7902 | FORD       |
+|  7782 | CLARK      |  7902 | FORD       |
+|  7788 | SCOTT      |  7902 | FORD       |
+|  7839 | KING       |  7902 | FORD       |
+|  7844 | TURNER     |  7902 | FORD       |
+|  7876 | ADAMS      |  7902 | FORD       |
+|  7900 | JAMES      |  7902 | FORD       |
+|  7902 | FORD       |  7902 | FORD       |
+|  7934 | MILLER     |  7902 | FORD       |
+|   101 | Ashutosh   |  7902 | FORD       |
+|   102 | Mugdha     |  7902 | FORD       |
+|   103 | Tanaya     |  7902 | FORD       |
+|  7369 | SMITH      |  7934 | MILLER     |
+|  7499 | ALLENXXXXX |  7934 | MILLER     |
+|  7521 | WARD       |  7934 | MILLER     |
+|  7566 | JONES      |  7934 | MILLER     |
+|  7654 | MARTIN     |  7934 | MILLER     |
+|  7698 | BLAKE      |  7934 | MILLER     |
+|  7782 | CLARK      |  7934 | MILLER     |
+|  7788 | SCOTT      |  7934 | MILLER     |
+|  7839 | KING       |  7934 | MILLER     |
+|  7844 | TURNER     |  7934 | MILLER     |
+|  7876 | ADAMS      |  7934 | MILLER     |
+|  7900 | JAMES      |  7934 | MILLER     |
+|  7902 | FORD       |  7934 | MILLER     |
+|  7934 | MILLER     |  7934 | MILLER     |
+|   101 | Ashutosh   |  7934 | MILLER     |
+|   102 | Mugdha     |  7934 | MILLER     |
+|   103 | Tanaya     |  7934 | MILLER     |
+|  7369 | SMITH      |   101 | Ashutosh   |
+|  7499 | ALLENXXXXX |   101 | Ashutosh   |
+|  7521 | WARD       |   101 | Ashutosh   |
+|  7566 | JONES      |   101 | Ashutosh   |
+|  7654 | MARTIN     |   101 | Ashutosh   |
+|  7698 | BLAKE      |   101 | Ashutosh   |
+|  7782 | CLARK      |   101 | Ashutosh   |
+|  7788 | SCOTT      |   101 | Ashutosh   |
+|  7839 | KING       |   101 | Ashutosh   |
+|  7844 | TURNER     |   101 | Ashutosh   |
+|  7876 | ADAMS      |   101 | Ashutosh   |
+|  7900 | JAMES      |   101 | Ashutosh   |
+|  7902 | FORD       |   101 | Ashutosh   |
+|  7934 | MILLER     |   101 | Ashutosh   |
+|   101 | Ashutosh   |   101 | Ashutosh   |
+|   102 | Mugdha     |   101 | Ashutosh   |
+|   103 | Tanaya     |   101 | Ashutosh   |
+|  7369 | SMITH      |   102 | Mugdha     |
+|  7499 | ALLENXXXXX |   102 | Mugdha     |
+|  7521 | WARD       |   102 | Mugdha     |
+|  7566 | JONES      |   102 | Mugdha     |
+|  7654 | MARTIN     |   102 | Mugdha     |
+|  7698 | BLAKE      |   102 | Mugdha     |
+|  7782 | CLARK      |   102 | Mugdha     |
+|  7788 | SCOTT      |   102 | Mugdha     |
+|  7839 | KING       |   102 | Mugdha     |
+|  7844 | TURNER     |   102 | Mugdha     |
+|  7876 | ADAMS      |   102 | Mugdha     |
+|  7900 | JAMES      |   102 | Mugdha     |
+|  7902 | FORD       |   102 | Mugdha     |
+|  7934 | MILLER     |   102 | Mugdha     |
+|   101 | Ashutosh   |   102 | Mugdha     |
+|   102 | Mugdha     |   102 | Mugdha     |
+|   103 | Tanaya     |   102 | Mugdha     |
+|  7369 | SMITH      |   103 | Tanaya     |
+|  7499 | ALLENXXXXX |   103 | Tanaya     |
+|  7521 | WARD       |   103 | Tanaya     |
+|  7566 | JONES      |   103 | Tanaya     |
+|  7654 | MARTIN     |   103 | Tanaya     |
+|  7698 | BLAKE      |   103 | Tanaya     |
+|  7782 | CLARK      |   103 | Tanaya     |
+|  7788 | SCOTT      |   103 | Tanaya     |
+|  7839 | KING       |   103 | Tanaya     |
+|  7844 | TURNER     |   103 | Tanaya     |
+|  7876 | ADAMS      |   103 | Tanaya     |
+|  7900 | JAMES      |   103 | Tanaya     |
+|  7902 | FORD       |   103 | Tanaya     |
+|  7934 | MILLER     |   103 | Tanaya     |
+|   101 | Ashutosh   |   103 | Tanaya     |
+|   102 | Mugdha     |   103 | Tanaya     |
+|   103 | Tanaya     |   103 | Tanaya     |
++-------+------------+-------+------------+
+289 rows in set (0.00 sec)
+
+mysql> select e.empno,e.ename,e.mgr,m.empno,m.ename
+    -> from emp e,emp m;
++-------+------------+------+-------+------------+
+| empno | ename      | mgr  | empno | ename      |
++-------+------------+------+-------+------------+
+|  7369 | SMITH      | 7902 |  7369 | SMITH      |
+|  7499 | ALLENXXXXX | 7698 |  7369 | SMITH      |
+|  7521 | WARD       | 7698 |  7369 | SMITH      |
+|  7566 | JONES      | 7839 |  7369 | SMITH      |
+|  7654 | MARTIN     | 7698 |  7369 | SMITH      |
+|  7698 | BLAKE      | 7839 |  7369 | SMITH      |
+|  7782 | CLARK      | 7839 |  7369 | SMITH      |
+|  7788 | SCOTT      | 7566 |  7369 | SMITH      |
+|  7839 | KING       | NULL |  7369 | SMITH      |
+|  7844 | TURNER     | 7698 |  7369 | SMITH      |
+|  7876 | ADAMS      | 7788 |  7369 | SMITH      |
+|  7900 | JAMES      | 7698 |  7369 | SMITH      |
+|  7902 | FORD       | 7566 |  7369 | SMITH      |
+|  7934 | MILLER     | 7782 |  7369 | SMITH      |
+|   101 | Ashutosh   | 7902 |  7369 | SMITH      |
+|   102 | Mugdha     | 7902 |  7369 | SMITH      |
+|   103 | Tanaya     | NULL |  7369 | SMITH      |
+|  7369 | SMITH      | 7902 |  7499 | ALLENXXXXX |
+|  7499 | ALLENXXXXX | 7698 |  7499 | ALLENXXXXX |
+|  7521 | WARD       | 7698 |  7499 | ALLENXXXXX |
+|  7566 | JONES      | 7839 |  7499 | ALLENXXXXX |
+|  7654 | MARTIN     | 7698 |  7499 | ALLENXXXXX |
+|  7698 | BLAKE      | 7839 |  7499 | ALLENXXXXX |
+|  7782 | CLARK      | 7839 |  7499 | ALLENXXXXX |
+|  7788 | SCOTT      | 7566 |  7499 | ALLENXXXXX |
+|  7839 | KING       | NULL |  7499 | ALLENXXXXX |
+|  7844 | TURNER     | 7698 |  7499 | ALLENXXXXX |
+|  7876 | ADAMS      | 7788 |  7499 | ALLENXXXXX |
+|  7900 | JAMES      | 7698 |  7499 | ALLENXXXXX |
+|  7902 | FORD       | 7566 |  7499 | ALLENXXXXX |
+|  7934 | MILLER     | 7782 |  7499 | ALLENXXXXX |
+|   101 | Ashutosh   | 7902 |  7499 | ALLENXXXXX |
+|   102 | Mugdha     | 7902 |  7499 | ALLENXXXXX |
+|   103 | Tanaya     | NULL |  7499 | ALLENXXXXX |
+|  7369 | SMITH      | 7902 |  7521 | WARD       |
+|  7499 | ALLENXXXXX | 7698 |  7521 | WARD       |
+|  7521 | WARD       | 7698 |  7521 | WARD       |
+|  7566 | JONES      | 7839 |  7521 | WARD       |
+|  7654 | MARTIN     | 7698 |  7521 | WARD       |
+|  7698 | BLAKE      | 7839 |  7521 | WARD       |
+|  7782 | CLARK      | 7839 |  7521 | WARD       |
+|  7788 | SCOTT      | 7566 |  7521 | WARD       |
+|  7839 | KING       | NULL |  7521 | WARD       |
+|  7844 | TURNER     | 7698 |  7521 | WARD       |
+|  7876 | ADAMS      | 7788 |  7521 | WARD       |
+|  7900 | JAMES      | 7698 |  7521 | WARD       |
+|  7902 | FORD       | 7566 |  7521 | WARD       |
+|  7934 | MILLER     | 7782 |  7521 | WARD       |
+|   101 | Ashutosh   | 7902 |  7521 | WARD       |
+|   102 | Mugdha     | 7902 |  7521 | WARD       |
+|   103 | Tanaya     | NULL |  7521 | WARD       |
+|  7369 | SMITH      | 7902 |  7566 | JONES      |
+|  7499 | ALLENXXXXX | 7698 |  7566 | JONES      |
+|  7521 | WARD       | 7698 |  7566 | JONES      |
+|  7566 | JONES      | 7839 |  7566 | JONES      |
+|  7654 | MARTIN     | 7698 |  7566 | JONES      |
+|  7698 | BLAKE      | 7839 |  7566 | JONES      |
+|  7782 | CLARK      | 7839 |  7566 | JONES      |
+|  7788 | SCOTT      | 7566 |  7566 | JONES      |
+|  7839 | KING       | NULL |  7566 | JONES      |
+|  7844 | TURNER     | 7698 |  7566 | JONES      |
+|  7876 | ADAMS      | 7788 |  7566 | JONES      |
+|  7900 | JAMES      | 7698 |  7566 | JONES      |
+|  7902 | FORD       | 7566 |  7566 | JONES      |
+|  7934 | MILLER     | 7782 |  7566 | JONES      |
+|   101 | Ashutosh   | 7902 |  7566 | JONES      |
+|   102 | Mugdha     | 7902 |  7566 | JONES      |
+|   103 | Tanaya     | NULL |  7566 | JONES      |
+|  7369 | SMITH      | 7902 |  7654 | MARTIN     |
+|  7499 | ALLENXXXXX | 7698 |  7654 | MARTIN     |
+|  7521 | WARD       | 7698 |  7654 | MARTIN     |
+|  7566 | JONES      | 7839 |  7654 | MARTIN     |
+|  7654 | MARTIN     | 7698 |  7654 | MARTIN     |
+|  7698 | BLAKE      | 7839 |  7654 | MARTIN     |
+|  7782 | CLARK      | 7839 |  7654 | MARTIN     |
+|  7788 | SCOTT      | 7566 |  7654 | MARTIN     |
+|  7839 | KING       | NULL |  7654 | MARTIN     |
+|  7844 | TURNER     | 7698 |  7654 | MARTIN     |
+|  7876 | ADAMS      | 7788 |  7654 | MARTIN     |
+|  7900 | JAMES      | 7698 |  7654 | MARTIN     |
+|  7902 | FORD       | 7566 |  7654 | MARTIN     |
+|  7934 | MILLER     | 7782 |  7654 | MARTIN     |
+|   101 | Ashutosh   | 7902 |  7654 | MARTIN     |
+|   102 | Mugdha     | 7902 |  7654 | MARTIN     |
+|   103 | Tanaya     | NULL |  7654 | MARTIN     |
+|  7369 | SMITH      | 7902 |  7698 | BLAKE      |
+|  7499 | ALLENXXXXX | 7698 |  7698 | BLAKE      |
+|  7521 | WARD       | 7698 |  7698 | BLAKE      |
+|  7566 | JONES      | 7839 |  7698 | BLAKE      |
+|  7654 | MARTIN     | 7698 |  7698 | BLAKE      |
+|  7698 | BLAKE      | 7839 |  7698 | BLAKE      |
+|  7782 | CLARK      | 7839 |  7698 | BLAKE      |
+|  7788 | SCOTT      | 7566 |  7698 | BLAKE      |
+|  7839 | KING       | NULL |  7698 | BLAKE      |
+|  7844 | TURNER     | 7698 |  7698 | BLAKE      |
+|  7876 | ADAMS      | 7788 |  7698 | BLAKE      |
+|  7900 | JAMES      | 7698 |  7698 | BLAKE      |
+|  7902 | FORD       | 7566 |  7698 | BLAKE      |
+|  7934 | MILLER     | 7782 |  7698 | BLAKE      |
+|   101 | Ashutosh   | 7902 |  7698 | BLAKE      |
+|   102 | Mugdha     | 7902 |  7698 | BLAKE      |
+|   103 | Tanaya     | NULL |  7698 | BLAKE      |
+|  7369 | SMITH      | 7902 |  7782 | CLARK      |
+|  7499 | ALLENXXXXX | 7698 |  7782 | CLARK      |
+|  7521 | WARD       | 7698 |  7782 | CLARK      |
+|  7566 | JONES      | 7839 |  7782 | CLARK      |
+|  7654 | MARTIN     | 7698 |  7782 | CLARK      |
+|  7698 | BLAKE      | 7839 |  7782 | CLARK      |
+|  7782 | CLARK      | 7839 |  7782 | CLARK      |
+|  7788 | SCOTT      | 7566 |  7782 | CLARK      |
+|  7839 | KING       | NULL |  7782 | CLARK      |
+|  7844 | TURNER     | 7698 |  7782 | CLARK      |
+|  7876 | ADAMS      | 7788 |  7782 | CLARK      |
+|  7900 | JAMES      | 7698 |  7782 | CLARK      |
+|  7902 | FORD       | 7566 |  7782 | CLARK      |
+|  7934 | MILLER     | 7782 |  7782 | CLARK      |
+|   101 | Ashutosh   | 7902 |  7782 | CLARK      |
+|   102 | Mugdha     | 7902 |  7782 | CLARK      |
+|   103 | Tanaya     | NULL |  7782 | CLARK      |
+|  7369 | SMITH      | 7902 |  7788 | SCOTT      |
+|  7499 | ALLENXXXXX | 7698 |  7788 | SCOTT      |
+|  7521 | WARD       | 7698 |  7788 | SCOTT      |
+|  7566 | JONES      | 7839 |  7788 | SCOTT      |
+|  7654 | MARTIN     | 7698 |  7788 | SCOTT      |
+|  7698 | BLAKE      | 7839 |  7788 | SCOTT      |
+|  7782 | CLARK      | 7839 |  7788 | SCOTT      |
+|  7788 | SCOTT      | 7566 |  7788 | SCOTT      |
+|  7839 | KING       | NULL |  7788 | SCOTT      |
+|  7844 | TURNER     | 7698 |  7788 | SCOTT      |
+|  7876 | ADAMS      | 7788 |  7788 | SCOTT      |
+|  7900 | JAMES      | 7698 |  7788 | SCOTT      |
+|  7902 | FORD       | 7566 |  7788 | SCOTT      |
+|  7934 | MILLER     | 7782 |  7788 | SCOTT      |
+|   101 | Ashutosh   | 7902 |  7788 | SCOTT      |
+|   102 | Mugdha     | 7902 |  7788 | SCOTT      |
+|   103 | Tanaya     | NULL |  7788 | SCOTT      |
+|  7369 | SMITH      | 7902 |  7839 | KING       |
+|  7499 | ALLENXXXXX | 7698 |  7839 | KING       |
+|  7521 | WARD       | 7698 |  7839 | KING       |
+|  7566 | JONES      | 7839 |  7839 | KING       |
+|  7654 | MARTIN     | 7698 |  7839 | KING       |
+|  7698 | BLAKE      | 7839 |  7839 | KING       |
+|  7782 | CLARK      | 7839 |  7839 | KING       |
+|  7788 | SCOTT      | 7566 |  7839 | KING       |
+|  7839 | KING       | NULL |  7839 | KING       |
+|  7844 | TURNER     | 7698 |  7839 | KING       |
+|  7876 | ADAMS      | 7788 |  7839 | KING       |
+|  7900 | JAMES      | 7698 |  7839 | KING       |
+|  7902 | FORD       | 7566 |  7839 | KING       |
+|  7934 | MILLER     | 7782 |  7839 | KING       |
+|   101 | Ashutosh   | 7902 |  7839 | KING       |
+|   102 | Mugdha     | 7902 |  7839 | KING       |
+|   103 | Tanaya     | NULL |  7839 | KING       |
+|  7369 | SMITH      | 7902 |  7844 | TURNER     |
+|  7499 | ALLENXXXXX | 7698 |  7844 | TURNER     |
+|  7521 | WARD       | 7698 |  7844 | TURNER     |
+|  7566 | JONES      | 7839 |  7844 | TURNER     |
+|  7654 | MARTIN     | 7698 |  7844 | TURNER     |
+|  7698 | BLAKE      | 7839 |  7844 | TURNER     |
+|  7782 | CLARK      | 7839 |  7844 | TURNER     |
+|  7788 | SCOTT      | 7566 |  7844 | TURNER     |
+|  7839 | KING       | NULL |  7844 | TURNER     |
+|  7844 | TURNER     | 7698 |  7844 | TURNER     |
+|  7876 | ADAMS      | 7788 |  7844 | TURNER     |
+|  7900 | JAMES      | 7698 |  7844 | TURNER     |
+|  7902 | FORD       | 7566 |  7844 | TURNER     |
+|  7934 | MILLER     | 7782 |  7844 | TURNER     |
+|   101 | Ashutosh   | 7902 |  7844 | TURNER     |
+|   102 | Mugdha     | 7902 |  7844 | TURNER     |
+|   103 | Tanaya     | NULL |  7844 | TURNER     |
+|  7369 | SMITH      | 7902 |  7876 | ADAMS      |
+|  7499 | ALLENXXXXX | 7698 |  7876 | ADAMS      |
+|  7521 | WARD       | 7698 |  7876 | ADAMS      |
+|  7566 | JONES      | 7839 |  7876 | ADAMS      |
+|  7654 | MARTIN     | 7698 |  7876 | ADAMS      |
+|  7698 | BLAKE      | 7839 |  7876 | ADAMS      |
+|  7782 | CLARK      | 7839 |  7876 | ADAMS      |
+|  7788 | SCOTT      | 7566 |  7876 | ADAMS      |
+|  7839 | KING       | NULL |  7876 | ADAMS      |
+|  7844 | TURNER     | 7698 |  7876 | ADAMS      |
+|  7876 | ADAMS      | 7788 |  7876 | ADAMS      |
+|  7900 | JAMES      | 7698 |  7876 | ADAMS      |
+|  7902 | FORD       | 7566 |  7876 | ADAMS      |
+|  7934 | MILLER     | 7782 |  7876 | ADAMS      |
+|   101 | Ashutosh   | 7902 |  7876 | ADAMS      |
+|   102 | Mugdha     | 7902 |  7876 | ADAMS      |
+|   103 | Tanaya     | NULL |  7876 | ADAMS      |
+|  7369 | SMITH      | 7902 |  7900 | JAMES      |
+|  7499 | ALLENXXXXX | 7698 |  7900 | JAMES      |
+|  7521 | WARD       | 7698 |  7900 | JAMES      |
+|  7566 | JONES      | 7839 |  7900 | JAMES      |
+|  7654 | MARTIN     | 7698 |  7900 | JAMES      |
+|  7698 | BLAKE      | 7839 |  7900 | JAMES      |
+|  7782 | CLARK      | 7839 |  7900 | JAMES      |
+|  7788 | SCOTT      | 7566 |  7900 | JAMES      |
+|  7839 | KING       | NULL |  7900 | JAMES      |
+|  7844 | TURNER     | 7698 |  7900 | JAMES      |
+|  7876 | ADAMS      | 7788 |  7900 | JAMES      |
+|  7900 | JAMES      | 7698 |  7900 | JAMES      |
+|  7902 | FORD       | 7566 |  7900 | JAMES      |
+|  7934 | MILLER     | 7782 |  7900 | JAMES      |
+|   101 | Ashutosh   | 7902 |  7900 | JAMES      |
+|   102 | Mugdha     | 7902 |  7900 | JAMES      |
+|   103 | Tanaya     | NULL |  7900 | JAMES      |
+|  7369 | SMITH      | 7902 |  7902 | FORD       |
+|  7499 | ALLENXXXXX | 7698 |  7902 | FORD       |
+|  7521 | WARD       | 7698 |  7902 | FORD       |
+|  7566 | JONES      | 7839 |  7902 | FORD       |
+|  7654 | MARTIN     | 7698 |  7902 | FORD       |
+|  7698 | BLAKE      | 7839 |  7902 | FORD       |
+|  7782 | CLARK      | 7839 |  7902 | FORD       |
+|  7788 | SCOTT      | 7566 |  7902 | FORD       |
+|  7839 | KING       | NULL |  7902 | FORD       |
+|  7844 | TURNER     | 7698 |  7902 | FORD       |
+|  7876 | ADAMS      | 7788 |  7902 | FORD       |
+|  7900 | JAMES      | 7698 |  7902 | FORD       |
+|  7902 | FORD       | 7566 |  7902 | FORD       |
+|  7934 | MILLER     | 7782 |  7902 | FORD       |
+|   101 | Ashutosh   | 7902 |  7902 | FORD       |
+|   102 | Mugdha     | 7902 |  7902 | FORD       |
+|   103 | Tanaya     | NULL |  7902 | FORD       |
+|  7369 | SMITH      | 7902 |  7934 | MILLER     |
+|  7499 | ALLENXXXXX | 7698 |  7934 | MILLER     |
+|  7521 | WARD       | 7698 |  7934 | MILLER     |
+|  7566 | JONES      | 7839 |  7934 | MILLER     |
+|  7654 | MARTIN     | 7698 |  7934 | MILLER     |
+|  7698 | BLAKE      | 7839 |  7934 | MILLER     |
+|  7782 | CLARK      | 7839 |  7934 | MILLER     |
+|  7788 | SCOTT      | 7566 |  7934 | MILLER     |
+|  7839 | KING       | NULL |  7934 | MILLER     |
+|  7844 | TURNER     | 7698 |  7934 | MILLER     |
+|  7876 | ADAMS      | 7788 |  7934 | MILLER     |
+|  7900 | JAMES      | 7698 |  7934 | MILLER     |
+|  7902 | FORD       | 7566 |  7934 | MILLER     |
+|  7934 | MILLER     | 7782 |  7934 | MILLER     |
+|   101 | Ashutosh   | 7902 |  7934 | MILLER     |
+|   102 | Mugdha     | 7902 |  7934 | MILLER     |
+|   103 | Tanaya     | NULL |  7934 | MILLER     |
+|  7369 | SMITH      | 7902 |   101 | Ashutosh   |
+|  7499 | ALLENXXXXX | 7698 |   101 | Ashutosh   |
+|  7521 | WARD       | 7698 |   101 | Ashutosh   |
+|  7566 | JONES      | 7839 |   101 | Ashutosh   |
+|  7654 | MARTIN     | 7698 |   101 | Ashutosh   |
+|  7698 | BLAKE      | 7839 |   101 | Ashutosh   |
+|  7782 | CLARK      | 7839 |   101 | Ashutosh   |
+|  7788 | SCOTT      | 7566 |   101 | Ashutosh   |
+|  7839 | KING       | NULL |   101 | Ashutosh   |
+|  7844 | TURNER     | 7698 |   101 | Ashutosh   |
+|  7876 | ADAMS      | 7788 |   101 | Ashutosh   |
+|  7900 | JAMES      | 7698 |   101 | Ashutosh   |
+|  7902 | FORD       | 7566 |   101 | Ashutosh   |
+|  7934 | MILLER     | 7782 |   101 | Ashutosh   |
+|   101 | Ashutosh   | 7902 |   101 | Ashutosh   |
+|   102 | Mugdha     | 7902 |   101 | Ashutosh   |
+|   103 | Tanaya     | NULL |   101 | Ashutosh   |
+|  7369 | SMITH      | 7902 |   102 | Mugdha     |
+|  7499 | ALLENXXXXX | 7698 |   102 | Mugdha     |
+|  7521 | WARD       | 7698 |   102 | Mugdha     |
+|  7566 | JONES      | 7839 |   102 | Mugdha     |
+|  7654 | MARTIN     | 7698 |   102 | Mugdha     |
+|  7698 | BLAKE      | 7839 |   102 | Mugdha     |
+|  7782 | CLARK      | 7839 |   102 | Mugdha     |
+|  7788 | SCOTT      | 7566 |   102 | Mugdha     |
+|  7839 | KING       | NULL |   102 | Mugdha     |
+|  7844 | TURNER     | 7698 |   102 | Mugdha     |
+|  7876 | ADAMS      | 7788 |   102 | Mugdha     |
+|  7900 | JAMES      | 7698 |   102 | Mugdha     |
+|  7902 | FORD       | 7566 |   102 | Mugdha     |
+|  7934 | MILLER     | 7782 |   102 | Mugdha     |
+|   101 | Ashutosh   | 7902 |   102 | Mugdha     |
+|   102 | Mugdha     | 7902 |   102 | Mugdha     |
+|   103 | Tanaya     | NULL |   102 | Mugdha     |
+|  7369 | SMITH      | 7902 |   103 | Tanaya     |
+|  7499 | ALLENXXXXX | 7698 |   103 | Tanaya     |
+|  7521 | WARD       | 7698 |   103 | Tanaya     |
+|  7566 | JONES      | 7839 |   103 | Tanaya     |
+|  7654 | MARTIN     | 7698 |   103 | Tanaya     |
+|  7698 | BLAKE      | 7839 |   103 | Tanaya     |
+|  7782 | CLARK      | 7839 |   103 | Tanaya     |
+|  7788 | SCOTT      | 7566 |   103 | Tanaya     |
+|  7839 | KING       | NULL |   103 | Tanaya     |
+|  7844 | TURNER     | 7698 |   103 | Tanaya     |
+|  7876 | ADAMS      | 7788 |   103 | Tanaya     |
+|  7900 | JAMES      | 7698 |   103 | Tanaya     |
+|  7902 | FORD       | 7566 |   103 | Tanaya     |
+|  7934 | MILLER     | 7782 |   103 | Tanaya     |
+|   101 | Ashutosh   | 7902 |   103 | Tanaya     |
+|   102 | Mugdha     | 7902 |   103 | Tanaya     |
+|   103 | Tanaya     | NULL |   103 | Tanaya     |
++-------+------------+------+-------+------------+
+289 rows in set (0.00 sec)
+
+mysql> select e.empno,e.ename,e.mgr,m.empno,m.ename
+    -> from emp e,emp m
+    -> where e.mgr=m.empno;
++-------+------------+------+-------+-------+
+| empno | ename      | mgr  | empno | ename |
++-------+------------+------+-------+-------+
+|  7788 | SCOTT      | 7566 |  7566 | JONES |
+|  7902 | FORD       | 7566 |  7566 | JONES |
+|  7499 | ALLENXXXXX | 7698 |  7698 | BLAKE |
+|  7521 | WARD       | 7698 |  7698 | BLAKE |
+|  7654 | MARTIN     | 7698 |  7698 | BLAKE |
+|  7844 | TURNER     | 7698 |  7698 | BLAKE |
+|  7900 | JAMES      | 7698 |  7698 | BLAKE |
+|  7934 | MILLER     | 7782 |  7782 | CLARK |
+|  7876 | ADAMS      | 7788 |  7788 | SCOTT |
+|  7566 | JONES      | 7839 |  7839 | KING  |
+|  7698 | BLAKE      | 7839 |  7839 | KING  |
+|  7782 | CLARK      | 7839 |  7839 | KING  |
+|  7369 | SMITH      | 7902 |  7902 | FORD  |
+|   101 | Ashutosh   | 7902 |  7902 | FORD  |
+|   102 | Mugdha     | 7902 |  7902 | FORD  |
++-------+------------+------+-------+-------+
+15 rows in set (0.00 sec)
+
+mysql> select e.empno,e.ename,e.mgr,m.empno,m.ename
+    -> from emp e,emp m
+    -> where
+    -> e.mgr=m.empno;
++-------+------------+------+-------+-------+
+| empno | ename      | mgr  | empno | ename |
++-------+------------+------+-------+-------+
+|  7788 | SCOTT      | 7566 |  7566 | JONES |
+|  7902 | FORD       | 7566 |  7566 | JONES |
+|  7499 | ALLENXXXXX | 7698 |  7698 | BLAKE |
+|  7521 | WARD       | 7698 |  7698 | BLAKE |
+|  7654 | MARTIN     | 7698 |  7698 | BLAKE |
+|  7844 | TURNER     | 7698 |  7698 | BLAKE |
+|  7900 | JAMES      | 7698 |  7698 | BLAKE |
+|  7934 | MILLER     | 7782 |  7782 | CLARK |
+|  7876 | ADAMS      | 7788 |  7788 | SCOTT |
+|  7566 | JONES      | 7839 |  7839 | KING  |
+|  7698 | BLAKE      | 7839 |  7839 | KING  |
+|  7782 | CLARK      | 7839 |  7839 | KING  |
+|  7369 | SMITH      | 7902 |  7902 | FORD  |
+|   101 | Ashutosh   | 7902 |  7902 | FORD  |
+|   102 | Mugdha     | 7902 |  7902 | FORD  |
++-------+------------+------+-------+-------+
+15 rows in set (0.00 sec)
+
+mysql> select * from emp
+    -> ;
++-------+------------+-----------+------+------------+---------+---------+--------+
+| EMPNO | ENAME      | JOB       | MGR  | HIREDATE   | SAL     | COMM    | DEPTNO |
++-------+------------+-----------+------+------------+---------+---------+--------+
+|  7369 | SMITH      | CLERK     | 7902 | 1980-12-17 |  800.00 |    NULL |     20 |
+|  7499 | ALLENXXXXX | SALESMAN  | 7698 | 1981-02-20 | 1600.00 |  300.00 |     30 |
+|  7521 | WARD       | SALESMAN  | 7698 | 1981-02-22 | 1250.00 |  500.00 |     30 |
+|  7566 | JONES      | MANAGER   | 7839 | 1981-04-02 | 2975.00 |    NULL |     20 |
+|  7654 | MARTIN     | SALESMAN  | 7698 | 1981-09-28 | 1250.00 | 1400.00 |     30 |
+|  7698 | BLAKE      | MANAGER   | 7839 | 1981-05-01 | 2850.00 |    NULL |     30 |
+|  7782 | CLARK      | MANAGER   | 7839 | 1981-06-09 | 2450.00 |    NULL |     10 |
+|  7788 | SCOTT      | ANALYST   | 7566 | 1982-12-09 | 3000.00 |    NULL |     20 |
+|  7839 | KING       | PRESIDENT | NULL | 1981-11-17 | 5000.00 |    NULL |     10 |
+|  7844 | TURNER     | SALESMAN  | 7698 | 1981-09-08 | 1500.00 |    0.00 |     30 |
+|  7876 | ADAMS      | CLERK     | 7788 | 1983-01-12 | 1100.00 |    NULL |     20 |
+|  7900 | JAMES      | CLERK     | 7698 | 1981-12-03 |  950.00 |    NULL |     30 |
+|  7902 | FORD       | ANALYST   | 7566 | 1981-12-03 | 3000.00 |    NULL |     20 |
+|  7934 | MILLER     | CLERK     | 7782 | 1982-01-23 | 1300.00 |    NULL |     10 |
+|   101 | Ashutosh   | CLERK     | 7902 | 2000-10-11 | 3456.00 |  345.00 |     10 |
+|   102 | Mugdha     | CLERK     | 7902 | 2000-10-11 | 3456.00 |  345.00 |     10 |
+|   103 | Tanaya     | NULL      | NULL | NULL       | 7555.00 |    NULL |   NULL |
++-------+------------+-----------+------+------------+---------+---------+--------+
+17 rows in set (0.00 sec)
+
+mysql> select * from dept;
++--------+------------+----------+
+| DEPTNO | DNAME      | LOC      |
++--------+------------+----------+
+|     10 | ACCOUNTING | NEW YORK |
+|     20 | RESEARCH   | DALLAS   |
+|     30 | SALES      | CHICAGO  |
+|     40 | OPERATIONS | BOSTON   |
++--------+------------+----------+
+4 rows in set (0.00 sec)
+
+mysql> select empno,ename,e.deptno,d.deptno,d.dname
+    -> from emp e , dept d
+    -> where e.deptno=d.deptno;
++-------+------------+--------+--------+------------+
+| empno | ename      | deptno | deptno | dname      |
++-------+------------+--------+--------+------------+
+|  7782 | CLARK      |     10 |     10 | ACCOUNTING |
+|  7839 | KING       |     10 |     10 | ACCOUNTING |
+|  7934 | MILLER     |     10 |     10 | ACCOUNTING |
+|   101 | Ashutosh   |     10 |     10 | ACCOUNTING |
+|   102 | Mugdha     |     10 |     10 | ACCOUNTING |
+|  7369 | SMITH      |     20 |     20 | RESEARCH   |
+|  7566 | JONES      |     20 |     20 | RESEARCH   |
+|  7788 | SCOTT      |     20 |     20 | RESEARCH   |
+|  7876 | ADAMS      |     20 |     20 | RESEARCH   |
+|  7902 | FORD       |     20 |     20 | RESEARCH   |
+|  7499 | ALLENXXXXX |     30 |     30 | SALES      |
+|  7521 | WARD       |     30 |     30 | SALES      |
+|  7654 | MARTIN     |     30 |     30 | SALES      |
+|  7698 | BLAKE      |     30 |     30 | SALES      |
+|  7844 | TURNER     |     30 |     30 | SALES      |
+|  7900 | JAMES      |     30 |     30 | SALES      |
++-------+------------+--------+--------+------------+
+16 rows in set (0.00 sec)
+
+mysql> select empno,ename,e.deptno,d.deptno,d.dname
+    -> from emp e , dept d
+    -> where e.deptno=d.deptno;
++-------+------------+--------+--------+------------+
+| empno | ename      | deptno | deptno | dname      |
++-------+------------+--------+--------+------------+
+|  7782 | CLARK      |     10 |     10 | ACCOUNTING |
+|  7839 | KING       |     10 |     10 | ACCOUNTING |
+|  7934 | MILLER     |     10 |     10 | ACCOUNTING |
+|   101 | Ashutosh   |     10 |     10 | ACCOUNTING |
+|   102 | Mugdha     |     10 |     10 | ACCOUNTING |
+|  7369 | SMITH      |     20 |     20 | RESEARCH   |
+|  7566 | JONES      |     20 |     20 | RESEARCH   |
+|  7788 | SCOTT      |     20 |     20 | RESEARCH   |
+|  7876 | ADAMS      |     20 |     20 | RESEARCH   |
+|  7902 | FORD       |     20 |     20 | RESEARCH   |
+|  7499 | ALLENXXXXX |     30 |     30 | SALES      |
+|  7521 | WARD       |     30 |     30 | SALES      |
+|  7654 | MARTIN     |     30 |     30 | SALES      |
+|  7698 | BLAKE      |     30 |     30 | SALES      |
+|  7844 | TURNER     |     30 |     30 | SALES      |
+|  7900 | JAMES      |     30 |     30 | SALES      |
++-------+------------+--------+--------+------------+
+16 rows in set (0.00 sec)
+
+mysql> Select empno,ename,sal,dname
+    -> From emp e right join dept d on e.deptno=d.deptno;
++-------+------------+---------+------------+
+| empno | ename      | sal     | dname      |
++-------+------------+---------+------------+
+|  7782 | CLARK      | 2450.00 | ACCOUNTING |
+|  7839 | KING       | 5000.00 | ACCOUNTING |
+|  7934 | MILLER     | 1300.00 | ACCOUNTING |
+|   101 | Ashutosh   | 3456.00 | ACCOUNTING |
+|   102 | Mugdha     | 3456.00 | ACCOUNTING |
+|  7369 | SMITH      |  800.00 | RESEARCH   |
+|  7566 | JONES      | 2975.00 | RESEARCH   |
+|  7788 | SCOTT      | 3000.00 | RESEARCH   |
+|  7876 | ADAMS      | 1100.00 | RESEARCH   |
+|  7902 | FORD       | 3000.00 | RESEARCH   |
+|  7499 | ALLENXXXXX | 1600.00 | SALES      |
+|  7521 | WARD       | 1250.00 | SALES      |
+|  7654 | MARTIN     | 1250.00 | SALES      |
+|  7698 | BLAKE      | 2850.00 | SALES      |
+|  7844 | TURNER     | 1500.00 | SALES      |
+|  7900 | JAMES      |  950.00 | SALES      |
+|  NULL | NULL       |    NULL | OPERATIONS |
++-------+------------+---------+------------+
+17 rows in set (0.00 sec)
+
+mysql> Select empno,ename,sal,e.deptno,d.deptno,dname
+    -> from emp e right join dept d on e.deptno=d.deptno;
++-------+------------+---------+--------+--------+------------+
+| empno | ename      | sal     | deptno | deptno | dname      |
++-------+------------+---------+--------+--------+------------+
+|  7782 | CLARK      | 2450.00 |     10 |     10 | ACCOUNTING |
+|  7839 | KING       | 5000.00 |     10 |     10 | ACCOUNTING |
+|  7934 | MILLER     | 1300.00 |     10 |     10 | ACCOUNTING |
+|   101 | Ashutosh   | 3456.00 |     10 |     10 | ACCOUNTING |
+|   102 | Mugdha     | 3456.00 |     10 |     10 | ACCOUNTING |
+|  7369 | SMITH      |  800.00 |     20 |     20 | RESEARCH   |
+|  7566 | JONES      | 2975.00 |     20 |     20 | RESEARCH   |
+|  7788 | SCOTT      | 3000.00 |     20 |     20 | RESEARCH   |
+|  7876 | ADAMS      | 1100.00 |     20 |     20 | RESEARCH   |
+|  7902 | FORD       | 3000.00 |     20 |     20 | RESEARCH   |
+|  7499 | ALLENXXXXX | 1600.00 |     30 |     30 | SALES      |
+|  7521 | WARD       | 1250.00 |     30 |     30 | SALES      |
+|  7654 | MARTIN     | 1250.00 |     30 |     30 | SALES      |
+|  7698 | BLAKE      | 2850.00 |     30 |     30 | SALES      |
+|  7844 | TURNER     | 1500.00 |     30 |     30 | SALES      |
+|  7900 | JAMES      |  950.00 |     30 |     30 | SALES      |
+|  NULL | NULL       |    NULL |   NULL |     40 | OPERATIONS |
++-------+------------+---------+--------+--------+------------+
+17 rows in set (0.00 sec)
+
+mysql> Select empno,ename,sal,e.deptno,d.deptno,dname
+    -> from emp e left join dept d on e.deptno=d.deptno;
++-------+------------+---------+--------+--------+------------+
+| empno | ename      | sal     | deptno | deptno | dname      |
++-------+------------+---------+--------+--------+------------+
+|  7369 | SMITH      |  800.00 |     20 |     20 | RESEARCH   |
+|  7499 | ALLENXXXXX | 1600.00 |     30 |     30 | SALES      |
+|  7521 | WARD       | 1250.00 |     30 |     30 | SALES      |
+|  7566 | JONES      | 2975.00 |     20 |     20 | RESEARCH   |
+|  7654 | MARTIN     | 1250.00 |     30 |     30 | SALES      |
+|  7698 | BLAKE      | 2850.00 |     30 |     30 | SALES      |
+|  7782 | CLARK      | 2450.00 |     10 |     10 | ACCOUNTING |
+|  7788 | SCOTT      | 3000.00 |     20 |     20 | RESEARCH   |
+|  7839 | KING       | 5000.00 |     10 |     10 | ACCOUNTING |
+|  7844 | TURNER     | 1500.00 |     30 |     30 | SALES      |
+|  7876 | ADAMS      | 1100.00 |     20 |     20 | RESEARCH   |
+|  7900 | JAMES      |  950.00 |     30 |     30 | SALES      |
+|  7902 | FORD       | 3000.00 |     20 |     20 | RESEARCH   |
+|  7934 | MILLER     | 1300.00 |     10 |     10 | ACCOUNTING |
+|   101 | Ashutosh   | 3456.00 |     10 |     10 | ACCOUNTING |
+|   102 | Mugdha     | 3456.00 |     10 |     10 | ACCOUNTING |
+|   103 | Tanaya     | 7555.00 |   NULL |   NULL | NULL       |
++-------+------------+---------+--------+--------+------------+
+17 rows in set (0.00 sec)
+
+mysql> Select empno,ename,sal,dname
+    -> From emp e left join dept d on e.deptno=d.deptno
+    -> union
+    ->         Select empno,ename,sal,dname
+    ->         From emp e right join dept d on e.deptno=d.deptno;
++-------+------------+---------+------------+
+| empno | ename      | sal     | dname      |
++-------+------------+---------+------------+
+|  7369 | SMITH      |  800.00 | RESEARCH   |
+|  7499 | ALLENXXXXX | 1600.00 | SALES      |
+|  7521 | WARD       | 1250.00 | SALES      |
+|  7566 | JONES      | 2975.00 | RESEARCH   |
+|  7654 | MARTIN     | 1250.00 | SALES      |
+|  7698 | BLAKE      | 2850.00 | SALES      |
+|  7782 | CLARK      | 2450.00 | ACCOUNTING |
+|  7788 | SCOTT      | 3000.00 | RESEARCH   |
+|  7839 | KING       | 5000.00 | ACCOUNTING |
+|  7844 | TURNER     | 1500.00 | SALES      |
+|  7876 | ADAMS      | 1100.00 | RESEARCH   |
+|  7900 | JAMES      |  950.00 | SALES      |
+|  7902 | FORD       | 3000.00 | RESEARCH   |
+|  7934 | MILLER     | 1300.00 | ACCOUNTING |
+|   101 | Ashutosh   | 3456.00 | ACCOUNTING |
+|   102 | Mugdha     | 3456.00 | ACCOUNTING |
+|   103 | Tanaya     | 7555.00 | NULL       |
+|  NULL | NULL       |    NULL | OPERATIONS |
++-------+------------+---------+------------+
+18 rows in set (0.00 sec)
+
+mysql> select s.sid,s.sname,sm.sid,sm.course,sm.marks
+    -> from student s inner join stud_marks sm on s.sid=sm.sid;
++-----+--------+-----+--------+-------+
+| sid | sname  | sid | course | marks |
++-----+--------+-----+--------+-------+
+|   1 | Revati |   1 | java   |    99 |
+|   2 | Rajan  |   2 | c++    |    95 |
+|   2 | Rajan  |   2 | java   |    95 |
++-----+--------+-----+--------+-------+
+3 rows in set (0.00 sec)
+
+mysql> select s.sid,s.sname,sm.sid,sm.course,sm.marks
+    -> from student s left join stud_marks sm on s.sid=sm.sid;
++------+---------+------+--------+-------+
+| sid  | sname   | sid  | course | marks |
++------+---------+------+--------+-------+
+|    1 | Revati  |    1 | java   |    99 |
+|    2 | Rajan   |    2 | c++    |    95 |
+|    2 | Rajan   |    2 | java   |    95 |
+|   10 | Atharva | NULL | NULL   |  NULL |
+|   11 | Bhavika | NULL | NULL   |  NULL |
+| 1001 | Bhavika | NULL | NULL   |  NULL |
+| 1002 | Sameer  | NULL | NULL   |  NULL |
++------+---------+------+--------+-------+
+7 rows in set (0.00 sec)
+
+mysql> select s.sid,s.sname,sm.sid,sm.course,sm.marks
+    -> from student s inner join stud_marks sm on s.sid=sm.sid;
++-----+--------+-----+--------+-------+
+| sid | sname  | sid | course | marks |
++-----+--------+-----+--------+-------+
+|   1 | Revati |   1 | java   |    99 |
+|   2 | Rajan  |   2 | c++    |    95 |
+|   2 | Rajan  |   2 | java   |    95 |
++-----+--------+-----+--------+-------+
+3 rows in set (0.00 sec)
+
+mysql> select s.sid,s.sname,sm.sid,sm.course,sm.marks,c.cname,c.duration
+    -> from student s inner join stud_marks sm on s.sid=sm.sid inner join corsedata
+    -> on c.cname
+    -> ^C
+mysql> select s.sid,s.sname,sm.sid,sm.course,sm.marks,c.cname,c.duration
+    -> from student s inner join stud_marks sm on s.sid=sm.sid inner join coursedata
+    -> c on c.cname=sm.course;
++-----+--------+-----+--------+-------+-------+----------+
+| sid | sname  | sid | course | marks | cname | duration |
++-----+--------+-----+--------+-------+-------+----------+
+|   1 | Revati |   1 | java   |    99 | java  |       10 |
+|   2 | Rajan  |   2 | c++    |    95 | c++   |        5 |
+|   2 | Rajan  |   2 | java   |    95 | java  |       10 |
++-----+--------+-----+--------+-------+-------+----------+
+3 rows in set (0.00 sec)
+
+mysql> select *
+    -> from student s left join stud_marks sm on s.sid=sm.sid;
++------+---------+---------+------+--------+-------+
+| Sid  | Sname   | Address | sid  | course | marks |
++------+---------+---------+------+--------+-------+
+|    1 | Revati  | Baner   |    1 | java   |    99 |
+|    2 | Rajan   | Baner   |    2 | c++    |    95 |
+|    2 | Rajan   | Baner   |    2 | java   |    95 |
+|   10 | Atharva | Baner   | NULL | NULL   |  NULL |
+|   11 | Bhavika | Baner   | NULL | NULL   |  NULL |
+| 1001 | Bhavika | Baner   | NULL | NULL   |  NULL |
+| 1002 | Sameer  | Baner   | NULL | NULL   |  NULL |
++------+---------+---------+------+--------+-------+
+7 rows in set (0.00 sec)
+
+mysql> select *
+    -> from student s left join stud_marks sm on s.sid=sm.sid left join
+    -> coursedata c on sm.course=c.cname;
++------+---------+---------+------+--------+-------+-------+--------+----------+------+
+| Sid  | Sname   | Address | sid  | course | marks | cname | roomid | duration | fid  |
++------+---------+---------+------+--------+-------+-------+--------+----------+------+
+|    1 | Revati  | Baner   |    1 | java   |    99 | java  |   NULL |       10 | NULL |
+|    2 | Rajan   | Baner   |    2 | c++    |    95 | c++   |   NULL |        5 | NULL |
+|    2 | Rajan   | Baner   |    2 | java   |    95 | java  |   NULL |       10 | NULL |
+|   10 | Atharva | Baner   | NULL | NULL   |  NULL | NULL  |   NULL |     NULL | NULL |
+|   11 | Bhavika | Baner   | NULL | NULL   |  NULL | NULL  |   NULL |     NULL | NULL |
+| 1001 | Bhavika | Baner   | NULL | NULL   |  NULL | NULL  |   NULL |     NULL | NULL |
+| 1002 | Sameer  | Baner   | NULL | NULL   |  NULL | NULL  |   NULL |     NULL | NULL |
++------+---------+---------+------+--------+-------+-------+--------+----------+------+
+7 rows in set (0.00 sec)
+
+mysql> select * from course;
+ERROR 1146 (42S02): Table 'dacmarch23.course' doesn't exist
+mysql> select * from coursedata;
++-------+--------+----------+------+
+| cname | roomid | duration | fid  |
++-------+--------+----------+------+
+| .net  |   NULL |       10 | NULL |
+| c++   |   NULL |        5 | NULL |
+| java  |   NULL |       10 | NULL |
++-------+--------+----------+------+
+3 rows in set (0.00 sec)
+
+mysql> select *
+    -> from stud_marks sm right join coursedata c on sm.course=c.cname;
++------+--------+-------+-------+--------+----------+------+
+| sid  | course | marks | cname | roomid | duration | fid  |
++------+--------+-------+-------+--------+----------+------+
+| NULL | NULL   |  NULL | .net  |   NULL |       10 | NULL |
+|    2 | c++    |    95 | c++   |   NULL |        5 | NULL |
+|    1 | java   |    99 | java  |   NULL |       10 | NULL |
+|    2 | java   |    95 | java  |   NULL |       10 | NULL |
++------+--------+-------+-------+--------+----------+------+
+4 rows in set (0.00 sec)
+
+mysql> select s.sid,s.sname,s.address,sm.sid,sm.course,sm.marks,c.cname,c.duration
+    -> from student s left join stud_marks sm on s.sid=sm.sid left join
+    -> coursedata c on sm.course=c.cname
+    -> union
+    -> select null,null,null,sm.sid,sm.course,sm.marks,c.cname,c.duration
+    -> from stud_marks sm right join coursedata c on sm.course=c.cname;
++------+---------+---------+------+--------+-------+-------+----------+
+| sid  | sname   | address | sid  | course | marks | cname | duration |
++------+---------+---------+------+--------+-------+-------+----------+
+|    1 | Revati  | Baner   |    1 | java   |    99 | java  |       10 |
+|    2 | Rajan   | Baner   |    2 | c++    |    95 | c++   |        5 |
+|    2 | Rajan   | Baner   |    2 | java   |    95 | java  |       10 |
+|   10 | Atharva | Baner   | NULL | NULL   |  NULL | NULL  |     NULL |
+|   11 | Bhavika | Baner   | NULL | NULL   |  NULL | NULL  |     NULL |
+| 1001 | Bhavika | Baner   | NULL | NULL   |  NULL | NULL  |     NULL |
+| 1002 | Sameer  | Baner   | NULL | NULL   |  NULL | NULL  |     NULL |
+| NULL | NULL    | NULL    | NULL | NULL   |  NULL | .net  |       10 |
+| NULL | NULL    | NULL    |    2 | c++    |    95 | c++   |        5 |
+| NULL | NULL    | NULL    |    1 | java   |    99 | java  |       10 |
+| NULL | NULL    | NULL    |    2 | java   |    95 | java  |       10 |
++------+---------+---------+------+--------+-------+-------+----------+
+11 rows in set (0.00 sec)
+
+mysql> select sm.sid,sm.course,sm.marks,c.cname,c.duration
+    -> from stud_marks sm right join coursedata c on sm.course=c.cname;
++------+--------+-------+-------+----------+
+| sid  | course | marks | cname | duration |
++------+--------+-------+-------+----------+
+| NULL | NULL   |  NULL | .net  |       10 |
+|    2 | c++    |    95 | c++   |        5 |
+|    1 | java   |    99 | java  |       10 |
+|    2 | java   |    95 | java  |       10 |
++------+--------+-------+-------+----------+
+4 rows in set (0.00 sec)
+
+mysql> select sm.sid,sm.course,sm.marks,c.cname,c.duration
+    -> from stud_marks sm right join coursedata c on sm.course=c.cname;
++------+--------+-------+-------+----------+
+| sid  | course | marks | cname | duration |
++------+--------+-------+-------+----------+
+| NULL | NULL   |  NULL | .net  |       10 |
+|    2 | c++    |    95 | c++   |        5 |
+|    1 | java   |    99 | java  |       10 |
+|    2 | java   |    95 | java  |       10 |
++------+--------+-------+-------+----------+
+4 rows in set (0.00 sec)
+
+mysql> select sm.sid,sm.course,sm.marks,c.cname,c.duration
+    -> from stud_marks sm right join coursedata c on sm.course=c.cname
+    -> where sm.course is null;
++------+--------+-------+-------+----------+
+| sid  | course | marks | cname | duration |
++------+--------+-------+-------+----------+
+| NULL | NULL   |  NULL | .net  |       10 |
++------+--------+-------+-------+----------+
+1 row in set (0.00 sec)
+
+mysql> select s.sid,s.sname,s.address,sm.sid,sm.course,sm.marks,c.cname,c.duration
+    -> from student s left join stud_marks sm on s.sid=sm.sid left join
+    -> coursedata c on sm.course=c.cname
+    -> union
+    -> select null,null,null,sm.sid,sm.course,sm.marks,c.cname,c.duration
+    -> from stud_marks sm right join coursedata c on sm.course=c.cname
+    -> where sm.course is null;
++------+---------+---------+------+--------+-------+-------+----------+
+| sid  | sname   | address | sid  | course | marks | cname | duration |
++------+---------+---------+------+--------+-------+-------+----------+
+|    1 | Revati  | Baner   |    1 | java   |    99 | java  |       10 |
+|    2 | Rajan   | Baner   |    2 | c++    |    95 | c++   |        5 |
+|    2 | Rajan   | Baner   |    2 | java   |    95 | java  |       10 |
+|   10 | Atharva | Baner   | NULL | NULL   |  NULL | NULL  |     NULL |
+|   11 | Bhavika | Baner   | NULL | NULL   |  NULL | NULL  |     NULL |
+| 1001 | Bhavika | Baner   | NULL | NULL   |  NULL | NULL  |     NULL |
+| 1002 | Sameer  | Baner   | NULL | NULL   |  NULL | NULL  |     NULL |
+| NULL | NULL    | NULL    | NULL | NULL   |  NULL | .net  |       10 |
++------+---------+---------+------+--------+-------+-------+----------+
+8 rows in set (0.00 sec)
+
+mysql> select s.sid,s.sname,s.address,sm.sid,sm.course,sm.marks,c.cname,c.duration
+    -> from student s left join stud_marks sm on s.sid=sm.sid right join
+    -> coursedata c on sm.course=c.cname;
++------+--------+---------+------+--------+-------+-------+----------+
+| sid  | sname  | address | sid  | course | marks | cname | duration |
++------+--------+---------+------+--------+-------+-------+----------+
+| NULL | NULL   | NULL    | NULL | NULL   |  NULL | .net  |       10 |
+|    2 | Rajan  | Baner   |    2 | c++    |    95 | c++   |        5 |
+|    1 | Revati | Baner   |    1 | java   |    99 | java  |       10 |
+|    2 | Rajan  | Baner   |    2 | java   |    95 | java  |       10 |
++------+--------+---------+------+--------+-------+-------+----------+
+4 rows in set (0.00 sec)
+
+mysql>

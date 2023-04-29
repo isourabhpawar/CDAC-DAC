@@ -1,0 +1,223 @@
+13. db.restaurent.find({cuisine:{$ne:'American'},'grades.grade':'A',"borough":{$ne:'Brooklyn'}}).sort({cuisine:-1}).pretty();
+
+22.
+db.restaurent.find({grades:{$elemMatch:{grade:'A'
+score:11,
+date:ISODate("2014-08-11T00:00:00Z")}}})
+
+
+to insert many record
+db.emp.insertMany([{no:1,name:'Kishori'},
+{no:2,name:'Rajan'},{no:3,name:'Revati'}])
+
+To delete the record
+db.<collection>.deleteOne({}) ----> to delete one record which satisfies 
+                the condition
+db.<collection>.deleteMany({})---->delete all records which satisfies 
+                the given condition
+db.<collection>.remove({})--->delete all records which satisfies 
+                the given condition
+
+example
+1. to delete all documents which do not have status key
+ db.inventory.deleteMany({status:{$exists:false}}).pretty();
+
+-----to update data
+It will update only first matching documet
+1. db.<collection>.updateOne({condition},{action})
+
+It will update all matching documet
+
+2. db.<collection>.updateMany({condition},{action})
+
+It is combination of both
+3. db.<collection>.update({condition},{action},
+                          {multi:true,upsert:true})
+
+
+actions can be any one of the following
+1. insert a key,value pair or overwrite the value 
+of the key----$set
+2. delete a key value pair---$unset
+3. to increament or decrement the value of a key---$inc
+4. to multiply or divide the value of a key---$mul
+5. to change the value with max value ----$max
+6. to change the value to min value ----$min
+7. to rename the key--------$rename
+8. to assign todays data to some field-----$currentDate
+
+array
+1. to add values in the array ----$push
+        $each, $position
+2. to delete the value from the begining or 
+from the end---$pop
+3. to delete by  value---> $pull
+5. to modify first matched value----> $
+6. to modify all matched value ----> $[<elem>],arrayFilters
+7. to modify all values------>$[]
+
+examples
+1. to increase rating by 2, of all movies with name starts 
+with k
+db.movie.update({name:/^k/},{$inc:{rating:2}},{multi:true})
+db.movie.updateMany({name:/^k/},{$inc:{rating:2}})
+
+2. to increase the price by 2%
+db.movie.update({},{$mul:{price:1.02}},{multi:true})
+db.movie.update({price:{$nin:[null],$exists:true}},
+{$mul:{price:1.02}},{multi:true});
+
+3. to change rating to 8, for movie 3 idiots 
+db.movie.update({name:'3 idiots'},{$set:{rating:8}},{multi:true})
+
+4. to increase price by 10, ticket_num by 30
+and also change rating to 7 for all 
+movies with name starts with p
+db.movie.update({name:/^p/},
+{
+$inc:{price:10,ticket_no:30},
+$set:{rating:7},
+$currentDate:{lastmodified:true}
+},
+{multi:true});
+
+5. delete lastmodified key from movie pathan
+db.movie.update({name:'pathan'},
+{$unset:{lastmodified:""}})
+
+6. update rating of movie pathan to 3 
+if the current rating is >3
+db.movie.update({name:'pathan'},
+{$min:{rating:3}})
+
+7. to change the key name lastmodified to lastchange 
+for movie paa
+db.movie.update({name:'paa'}
+{$rename:{"lastmodified":"lastchange"}})
+
+using arrays
+1. to add a new actor xxx in the array actor
+db.movie.update({name:'paa'},{$push:{actor:'xxx'}})
+
+2. to add actors yyy,zzz into movie paa
+
+db.movie.update({name:'paa'},
+{$push:{actor:{$each:['yyy','zzz']}}})
+
+3. to add actors kkk into movie paa at position 3
+
+db.movie.update({name:'paa'},
+{$push:{actor:{$each:['kkk'],$position:3}}})
+
+2. to add actors yyy,zzz into movie paa at position 1 st index
+
+db.movie.update({name:'paa'},
+{$push:{actor:{$each:['yyy','zzz'],$position:1}}})
+
+3. to delete the last actor for movie paa
+$pop will delete the value from the end of actor array
+if we assign 1 to actor, if we use -1 then it will delete 
+the value from the begining
+ 
+db.movie.update({name:'paa'},{$pop:{actor:1}})
+
+4. to delete the actor from the first position 
+from actor array, for movie paa 
+db.movie.update({name:'paa'},{$pop:{actor:-1}})
+
+5. delete actor yyy from movie paa
+db.movie.update({name:'paa'},{$pull:{actor:'yyy'}})
+
+6. to delete all actors zzz,xxx for movie paa
+db.movie.update({name:'paa'},
+{$pull:{actor:{$in:['xxx','yyy','zzz']}}})
+
+> db.student.update({name:/^R/,marks:{$gt:60}},
+{$inc:{'marks.$':3}},
+{multi:true}]});
+
+{name:'Reavti',marks:[50,67,68]}
+{name:'Rajan',marks:[65,67,45]}
+{name:'Sonal',marks:[65,67,45]}
+
+
+7. it will update all the marks > 60 for all 
+document with name statrs with R
+
+db.student.update({name:/^R/},
+{$inc:{'marks.$[elem]':3}},
+{multi:true,arrayFilters:[{elem:{$gt:60}}]});
+
+
+{name:'Reavti',marks:[50,67,68]}
+{name:'Rajan',marks:[65,67,45]}
+{name:'Sonal',marks:[65,67,45]}
+
+{mname:'pathan',price:[100,200,500]}
+{mname:'paa',price:[150,210,300]}
+{mname:'kahani',price:[120,250,500]}
+
+
+to update first  price > 200, decrease by 5, for all movies
+with name starts with p
+db.movie.update({mname:/^p/,price:{$gt:200}},
+{$inc:{'price.$':-5}},
+{multi:true})
+
+
+to update all prices > 200, decrease by 5, for all movies
+with name starts with p
+
+db.movie.update({mname:/^p/},{$inc:{'price.$[myfilter]':-5}},
+{multi:true,arrayFilters:[{myfilter:{$gt:200}}]})
+
+to update all prices of all movies by 20
+
+db.movie.update({},{$inc:{'price.$[]':20}},{multi:true})
+
+
+to create index
+db.<collection>.createIndex()
+db.<collection>.ensureIndex() ----- it is deprecated
+
+to delete index
+db.<collection>.dropIndex(<name>)
+
+db.movie.getIndexes() ---- to find the list of indexes
+
+indexes
+https://www.mongodb.com/docs/manual/indexes/
+
+
+{empno:111,ename:”Deepali Vaidya”,sal:40000.00,
+dept:{deptno:12,dname:,”Hr”,dloc:”Mumbai},
+Desg:”Analyst”,mgr:{name:”Satish”,num:222},
+project:[{name:”Project-1”,Hrs:4},{name:”project- 2”,Hrs:4}],
+skillset:[‘perl’,’python’,’java’],
+hobbies:[‘reading’,’biking’]}
+27.	Change hrs to 6 for project-1 for all employees 
+if they are working on the project-1 for < 6 hrs. 
+otherwise keep the existing value.
+
+db.employee.update({'project.name':'project-1'},
+{$max:{'project.$.hrs':6}},{multi:true})
+
+ 
+26.	Add 2 new projects at the end of array for all employees whose skillset 
+contains Perl or python  
+ db.employee.update({skillset:{$in:['perl','python']}},
+ {$push:{project:{$each:[{name:'project-3',hrs:2},
+ {name:'project-4',hrs:5}]}}},{multi:true})
+
+Q15. 
+
+db.employee.update(
+{project:{$elemeMatch:{name:'project-1',hrs:4}}},
+{$set:{desg:'sr.manager'}},{multi:true})
+
+
+
+
+
+
+

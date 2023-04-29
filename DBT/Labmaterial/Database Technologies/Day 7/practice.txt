@@ -1,0 +1,674 @@
+Enter password: *******
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 8
+Server version: 8.0.22 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> use dacmarch23
+Database changed
+mysql> create table manager(
+    -> mgrid int primary key,
+    -> mname varchar(20) not null,
+    -> mobile char(15)
+    -> )
+    -> ;
+Query OK, 0 rows affected (0.05 sec)
+
+mysql>  Create table customer(
+    -> Custid int primary key,
+    -> Cname varchar(20) not null,
+    -> Address varchar(20),
+    -> Mgrid int,
+    -> Constraint fk_mgr foreign key (mgrid) references manager(mgrid)
+    -> On delete set null
+    -> On update cascade
+    -> )
+    -> ;
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> Create table account(
+    -> Acid int primary key,
+    -> Custid int,
+    -> Type varchar(20),
+    -> Balance double(9,2),
+    -> Constraint fk_custid foreign key (custid) references customer (custid)
+    -> On delete set null
+    -> On update cascade
+    -> );
+Query OK, 0 rows affected, 1 warning (0.03 sec)
+
+mysql> insert into manager values(100,'tanaya',0100020);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into manager values(101,'ram',0102020);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into manager values(103,'raj',0103030);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into customer values(200,'raju','pune',100);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into customer values(202,'rama','mumbai',101);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into customer values(203,'karan','nashik',101);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into customer values(204,'kirti','nashik',100);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into account values(1000,200,'saving',2000);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into account values(1001,200,'dmat',2050);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into account values(1002,201,'dmat',3000);
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`dacmarch23`.`account`, CONSTRAINT `fk_custid` FOREIGN KEY (`Custid`) REFERENCES `customer` (`Custid`) ON DELETE SET NULL ON UPDATE CASCADE)
+mysql> insert into account values(1002,202,'dmat',3000);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into account values(1003,202,'current',4000);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select *
+    -> from manager;
++-------+--------+--------+
+| mgrid | mname  | mobile |
++-------+--------+--------+
+|   100 | tanaya | 100020 |
+|   101 | ram    | 102020 |
+|   103 | raj    | 103030 |
++-------+--------+--------+
+3 rows in set (0.00 sec)
+
+mysql> select * from customer;
++--------+-------+---------+-------+
+| Custid | Cname | Address | Mgrid |
++--------+-------+---------+-------+
+|    200 | raju  | pune    |   100 |
+|    202 | rama  | mumbai  |   101 |
+|    203 | karan | nashik  |   101 |
+|    204 | kirti | nashik  |   100 |
++--------+-------+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> select * from account;
++------+--------+---------+---------+
+| Acid | Custid | Type    | Balance |
++------+--------+---------+---------+
+| 1000 |    200 | saving  | 2000.00 |
+| 1001 |    200 | dmat    | 2050.00 |
+| 1002 |    202 | dmat    | 3000.00 |
+| 1003 |    202 | current | 4000.00 |
++------+--------+---------+---------+
+4 rows in set (0.00 sec)
+
+mysql> select c.custid,c.cname, a.acid, a.balance, m.mgrid,m.mname
+    -> from customer c , account a ,manager m
+    -> where c.custid=a.custid and c.mgrid=m.mgrid
+    -> and m.mname='tanaya';
++--------+-------+------+---------+-------+--------+
+| custid | cname | acid | balance | mgrid | mname  |
++--------+-------+------+---------+-------+--------+
+|    200 | raju  | 1000 | 2000.00 |   100 | tanaya |
+|    200 | raju  | 1001 | 2050.00 |   100 | tanaya |
++--------+-------+------+---------+-------+--------+
+2 rows in set (0.01 sec)
+
+mysql> select c.custid,c.cname, a.acid, a.balance, m.mgrid,m.mname
+    -> from customer c , account a ,manager m
+    -> where c.custid=a.custid and c.mgrid=m.mgrid;
++--------+-------+------+---------+-------+--------+
+| custid | cname | acid | balance | mgrid | mname  |
++--------+-------+------+---------+-------+--------+
+|    200 | raju  | 1000 | 2000.00 |   100 | tanaya |
+|    200 | raju  | 1001 | 2050.00 |   100 | tanaya |
+|    202 | rama  | 1002 | 3000.00 |   101 | ram    |
+|    202 | rama  | 1003 | 4000.00 |   101 | ram    |
++--------+-------+------+---------+-------+--------+
+4 rows in set (0.00 sec)
+
+mysql>  select *
+    ->   from customer c  right join manager m
+    ->   on c.mgrid=m.mgrid ;
++--------+-------+---------+-------+-------+--------+--------+
+| Custid | Cname | Address | Mgrid | mgrid | mname  | mobile |
++--------+-------+---------+-------+-------+--------+--------+
+|    200 | raju  | pune    |   100 |   100 | tanaya | 100020 |
+|    204 | kirti | nashik  |   100 |   100 | tanaya | 100020 |
+|    202 | rama  | mumbai  |   101 |   101 | ram    | 102020 |
+|    203 | karan | nashik  |   101 |   101 | ram    | 102020 |
+|   NULL | NULL  | NULL    |  NULL |   103 | raj    | 103030 |
++--------+-------+---------+-------+-------+--------+--------+
+5 rows in set (0.00 sec)
+
+mysql>  select *
+    ->   from customer c left join account a
+    ->   on c.custid=a.custid;
++--------+-------+---------+-------+------+--------+---------+---------+
+| Custid | Cname | Address | Mgrid | Acid | Custid | Type    | Balance |
++--------+-------+---------+-------+------+--------+---------+---------+
+|    200 | raju  | pune    |   100 | 1000 |    200 | saving  | 2000.00 |
+|    200 | raju  | pune    |   100 | 1001 |    200 | dmat    | 2050.00 |
+|    202 | rama  | mumbai  |   101 | 1002 |    202 | dmat    | 3000.00 |
+|    202 | rama  | mumbai  |   101 | 1003 |    202 | current | 4000.00 |
+|    203 | karan | nashik  |   101 | NULL |   NULL | NULL    |    NULL |
+|    204 | kirti | nashik  |   100 | NULL |   NULL | NULL    |    NULL |
++--------+-------+---------+-------+------+--------+---------+---------+
+6 rows in set (0.00 sec)
+
+mysql> select c.custid,c.cname,a.acid,a.balance,m.mgrid,m.mname
+    ->  from customer c left join account a
+    -> on c.custid=a.custid
+    ->
+    -> left join manager m on c.mgrid=m.mgrid;
++--------+-------+------+---------+-------+--------+
+| custid | cname | acid | balance | mgrid | mname  |
++--------+-------+------+---------+-------+--------+
+|    200 | raju  | 1000 | 2000.00 |   100 | tanaya |
+|    200 | raju  | 1001 | 2050.00 |   100 | tanaya |
+|    202 | rama  | 1002 | 3000.00 |   101 | ram    |
+|    202 | rama  | 1003 | 4000.00 |   101 | ram    |
+|    203 | karan | NULL |    NULL |   101 | ram    |
+|    204 | kirti | NULL |    NULL |   100 | tanaya |
++--------+-------+------+---------+-------+--------+
+6 rows in set (0.00 sec)
+
+mysql>  select c.custid,c.cname,a.acid,a.balance,m.mgrid,m.mname
+    ->  from customer c left join account a
+    -> on c.custid=a.custid
+    ->
+    -> left join manager m on c.mgrid=m.mgrid
+    -> union
+    -> select c.custid,c.cname ,null,null, m.mgrid,m.mname
+    -> from manager m left join customer c
+    -> on m.mgrid =c.mgrid ;
++--------+-------+------+---------+-------+--------+
+| custid | cname | acid | balance | mgrid | mname  |
++--------+-------+------+---------+-------+--------+
+|    200 | raju  | 1000 | 2000.00 |   100 | tanaya |
+|    200 | raju  | 1001 | 2050.00 |   100 | tanaya |
+|    202 | rama  | 1002 | 3000.00 |   101 | ram    |
+|    202 | rama  | 1003 | 4000.00 |   101 | ram    |
+|    203 | karan | NULL |    NULL |   101 | ram    |
+|    204 | kirti | NULL |    NULL |   100 | tanaya |
+|    200 | raju  | NULL |    NULL |   100 | tanaya |
+|    202 | rama  | NULL |    NULL |   101 | ram    |
+|   NULL | NULL  | NULL |    NULL |   103 | raj    |
++--------+-------+------+---------+-------+--------+
+9 rows in set (0.00 sec)
+
+mysql>  select c.custid,c.cname,a.acid,a.balance,m.mgrid,m.mname
+    ->  from customer c left join account a
+    -> on c.custid=a.custid
+    ->
+    -> left join manager m on c.mgrid=m.mgrid
+    -> union
+    -> select c.custid,c.cname ,null,null, m.mgrid,m.mname
+    -> from manager m left join customer c
+    -> on m.mgrid =c.mgrid
+    -> where c.custid is null;
++--------+-------+------+---------+-------+--------+
+| custid | cname | acid | balance | mgrid | mname  |
++--------+-------+------+---------+-------+--------+
+|    200 | raju  | 1000 | 2000.00 |   100 | tanaya |
+|    200 | raju  | 1001 | 2050.00 |   100 | tanaya |
+|    202 | rama  | 1002 | 3000.00 |   101 | ram    |
+|    202 | rama  | 1003 | 4000.00 |   101 | ram    |
+|    203 | karan | NULL |    NULL |   101 | ram    |
+|    204 | kirti | NULL |    NULL |   100 | tanaya |
+|   NULL | NULL  | NULL |    NULL |   103 | raj    |
++--------+-------+------+---------+-------+--------+
+7 rows in set (0.00 sec)
+
+mysql>  update customer
+    ->  set address='kolhapur'
+    ->  where custid in
+    ->  (select custid
+    ->  from (select * from customer) c
+    ->  where c.address='mumbai');
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select *  from dept;
++--------+------------+----------+
+| DEPTNO | DNAME      | LOC      |
++--------+------------+----------+
+|     10 | ACCOUNTING | NEW YORK |
+|     20 | RESEARCH   | DALLAS   |
+|     30 | SALES      | CHICAGO  |
+|     40 | OPERATIONS | BOSTON   |
++--------+------------+----------+
+4 rows in set (0.01 sec)
+
+mysql> insert into dept values(50,'HR','pune')
+    -> ;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into dept values(60,'admin','pune')
+    -> ;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> update dept
+    ->  set loc='Pune'
+    ->  where deptno in (select deptno
+    ->  from emp
+    ->  where ename in ('SMITH','BLAKE'));
+Query OK, 2 rows affected (0.01 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+mysql> select *
+    -> from emp e,dept d
+    -> where e.deptno is null;
++-------+--------+------+------+----------+---------+------+--------+--------+------------+----------+
+| EMPNO | ENAME  | JOB  | MGR  | HIREDATE | SAL     | COMM | DEPTNO | DEPTNO | DNAME      | LOC      |
++-------+--------+------+------+----------+---------+------+--------+--------+------------+----------+
+|   103 | Tanaya | NULL | NULL | NULL     | 7555.00 | NULL |   NULL |     10 | ACCOUNTING | NEW YORK |
+|   103 | Tanaya | NULL | NULL | NULL     | 7555.00 | NULL |   NULL |     20 | RESEARCH   | Pune     |
+|   103 | Tanaya | NULL | NULL | NULL     | 7555.00 | NULL |   NULL |     30 | SALES      | Pune     |
+|   103 | Tanaya | NULL | NULL | NULL     | 7555.00 | NULL |   NULL |     40 | OPERATIONS | BOSTON   |
+|   103 | Tanaya | NULL | NULL | NULL     | 7555.00 | NULL |   NULL |     50 | HR         | pune     |
+|   103 | Tanaya | NULL | NULL | NULL     | 7555.00 | NULL |   NULL |     60 | admin      | pune     |
++-------+--------+------+------+----------+---------+------+--------+--------+------------+----------+
+6 rows in set (0.00 sec)
+
+mysql> select *
+    -> from emp e,dept d
+    -> where e.deptno is null or e.deptno=d.deptno;
++-------+------------+-----------+------+------------+---------+---------+--------+--------+------------+----------+
+| EMPNO | ENAME      | JOB       | MGR  | HIREDATE   | SAL     | COMM    | DEPTNO | DEPTNO | DNAME      | LOC      |
++-------+------------+-----------+------+------------+---------+---------+--------+--------+------------+----------+
+|  7369 | SMITH      | CLERK     | 7902 | 1980-12-17 |  800.00 |    NULL |     20 |     20 | RESEARCH   | Pune     |
+|  7499 | ALLENXXXXX | SALESMAN  | 7698 | 1981-02-20 | 1600.00 |  300.00 |     30 |     30 | SALES      | Pune     |
+|  7521 | WARD       | SALESMAN  | 7698 | 1981-02-22 | 1250.00 |  500.00 |     30 |     30 | SALES      | Pune     |
+|  7566 | JONES      | MANAGER   | 7839 | 1981-04-02 | 2975.00 |    NULL |     20 |     20 | RESEARCH   | Pune     |
+|  7654 | MARTIN     | SALESMAN  | 7698 | 1981-09-28 | 1250.00 | 1400.00 |     30 |     30 | SALES      | Pune     |
+|  7698 | BLAKE      | MANAGER   | 7839 | 1981-05-01 | 2850.00 |    NULL |     30 |     30 | SALES      | Pune     |
+|  7782 | CLARK      | MANAGER   | 7839 | 1981-06-09 | 2450.00 |    NULL |     10 |     10 | ACCOUNTING | NEW YORK |
+|  7788 | SCOTT      | ANALYST   | 7566 | 1982-12-09 | 3000.00 |    NULL |     20 |     20 | RESEARCH   | Pune     |
+|  7839 | KING       | PRESIDENT | NULL | 1981-11-17 | 5000.00 |    NULL |     10 |     10 | ACCOUNTING | NEW YORK |
+|  7844 | TURNER     | SALESMAN  | 7698 | 1981-09-08 | 1500.00 |    0.00 |     30 |     30 | SALES      | Pune     |
+|  7876 | ADAMS      | CLERK     | 7788 | 1983-01-12 | 1100.00 |    NULL |     20 |     20 | RESEARCH   | Pune     |
+|  7900 | JAMES      | CLERK     | 7698 | 1981-12-03 |  950.00 |    NULL |     30 |     30 | SALES      | Pune     |
+|  7902 | FORD       | ANALYST   | 7566 | 1981-12-03 | 3000.00 |    NULL |     20 |     20 | RESEARCH   | Pune     |
+|  7934 | MILLER     | CLERK     | 7782 | 1982-01-23 | 1300.00 |    NULL |     10 |     10 | ACCOUNTING | NEW YORK |
+|   101 | Ashutosh   | CLERK     | 7902 | 2000-10-11 | 3456.00 |  345.00 |     10 |     10 | ACCOUNTING | NEW YORK |
+|   102 | Mugdha     | CLERK     | 7902 | 2000-10-11 | 3456.00 |  345.00 |     10 |     10 | ACCOUNTING | NEW YORK |
+|   103 | Tanaya     | NULL      | NULL | NULL       | 7555.00 |    NULL |   NULL |     10 | ACCOUNTING | NEW YORK |
+|   103 | Tanaya     | NULL      | NULL | NULL       | 7555.00 |    NULL |   NULL |     20 | RESEARCH   | Pune     |
+|   103 | Tanaya     | NULL      | NULL | NULL       | 7555.00 |    NULL |   NULL |     30 | SALES      | Pune     |
+|   103 | Tanaya     | NULL      | NULL | NULL       | 7555.00 |    NULL |   NULL |     40 | OPERATIONS | BOSTON   |
+|   103 | Tanaya     | NULL      | NULL | NULL       | 7555.00 |    NULL |   NULL |     50 | HR         | pune     |
+|   103 | Tanaya     | NULL      | NULL | NULL       | 7555.00 |    NULL |   NULL |     60 | admin      | pune     |
++-------+------------+-----------+------+------------+---------+---------+--------+--------+------------+----------+
+22 rows in set (0.00 sec)
+
+mysql> show tables
+    -> ;
++----------------------+
+| Tables_in_dacmarch23 |
++----------------------+
+| account              |
+| bonus                |
+| category             |
+| coursedata           |
+| customer             |
+| dept                 |
+| dummy                |
+| emp                  |
+| emphistory           |
+| emphistory1          |
+| manager              |
+| mydept_dbda          |
+| mytable              |
+| mytable3             |
+| mytable_dac          |
+| product              |
+| room                 |
+| salgrade             |
+| stud_marks           |
+| student              |
++----------------------+
+20 rows in set (0.02 sec)
+
+mysql> use test;
+Database changed
+mysql> show tables
+    -> ;
++----------------------+
+| Tables_in_test       |
++----------------------+
+| account_2            |
+| addr44               |
+| addr55               |
+| addr66               |
+| address              |
+| address77            |
+| addressmany          |
+| addressmany1         |
+| addresstab1          |
+| addresstab1_usertab1 |
+| allemp               |
+| bonus                |
+| booking              |
+| category             |
+| category1            |
+| contable             |
+| conttab22            |
+| course               |
+| course_back          |
+| course_backup        |
+| course_faculty       |
+| customer             |
+| customer_2           |
+| custtab1             |
+| custtab11            |
+| department           |
+| dept                 |
+| dept_info            |
+| dummy                |
+| emp                  |
+| emp_india            |
+| emp_japan            |
+| emp_us               |
+| empheirarchy22       |
+| emphirarchy11        |
+| employee_history     |
+| emptab1              |
+| emptab11             |
+| event                |
+| faculty              |
+| hibernate_sequence   |
+| mgr10                |
+| mychild_3            |
+| myemployee           |
+| mypro22              |
+| myprod11             |
+| myprodtab            |
+| myprodtab22          |
+| myprodtab33          |
+| myprodtab44          |
+| myproduct            |
+| myproduct_table      |
+| myproducttable       |
+| mystud               |
+| mytab_3              |
+| mytab_51             |
+| mytext               |
+| myuser               |
+| myuser12             |
+| nonperishableprod    |
+| orderitem            |
+| perishableprod       |
+| persontab            |
+| pertab11             |
+| produ_cat            |
+| product              |
+| product77            |
+| product_2            |
+| product_analysis     |
+| product_data         |
+| quetions             |
+| salariedemployee     |
+| salgrade             |
+| saltab22             |
+| saltable             |
+| student              |
+| student_2            |
+| student_3            |
+| studentiacsd         |
+| testdata             |
+| testmytab            |
+| user                 |
+| user11               |
+| user22               |
+| user33               |
+| user44               |
+| user55               |
+| user66               |
+| user77               |
+| useraddr77           |
+| useraddress          |
+| userentity           |
+| usermany             |
+| usermany1            |
+| usertab              |
+| usertab1             |
+| worker               |
++----------------------+
+97 rows in set (0.00 sec)
+
+mysql> select * from emp_us;
++------+---------+----------+
+| id   | name    | location |
++------+---------+----------+
+|  100 | Rajan   | India    |
+|  101 | Rajat   | US       |
+|  103 | Shivesh | India    |
++------+---------+----------+
+3 rows in set (0.01 sec)
+
+mysql> select * from emp_india;
++------+---------+----------+
+| id   | name    | location |
++------+---------+----------+
+|  103 | Shivesh | India    |
+|  104 | Shivali | India    |
++------+---------+----------+
+2 rows in set (0.00 sec)
+
+mysql> select * from emp_japan;
++------+---------+----------+
+| id   | name    | location |
++------+---------+----------+
+|  103 | Shivesh | India    |
+|  104 | Ashish  | Japan    |
++------+---------+----------+
+2 rows in set (0.00 sec)
+
+mysql> select *
+    -> from emp_us
+    -> union
+    -> select *
+    -> from emp_india
+    -> union
+    -> select *
+    -> from emp_japan;
++------+---------+----------+
+| id   | name    | location |
++------+---------+----------+
+|  100 | Rajan   | India    |
+|  101 | Rajat   | US       |
+|  103 | Shivesh | India    |
+|  104 | Shivali | India    |
+|  104 | Ashish  | Japan    |
++------+---------+----------+
+5 rows in set (0.00 sec)
+
+mysql> select empid,ename
+    -> from emp
+    -> where sal>2000
+    -> union
+    -> select empid, ename
+    -> from emp
+    -> where deptno=10;
+ERROR 1054 (42S22): Unknown column 'empid' in 'field list'
+mysql> select empno,ename
+    -> from emp
+    -> where sal>2000
+    -> union
+    -> select empid, ename
+    -> from emp
+    -> where deptno=10;
+ERROR 1054 (42S22): Unknown column 'empid' in 'field list'
+mysql> select empno,ename
+    -> from emp
+    -> where sal>2000
+    -> union
+    -> select empno, ename
+    -> from emp
+    -> where deptno=10;
++-------+--------+
+| empno | ename  |
++-------+--------+
+|  7566 | JONES  |
+|  7698 | BLAKE  |
+|  7782 | CLARK  |
+|  7788 | SCOTT  |
+|  7839 | KING   |
+|  7902 | FORD   |
+|   123 | Rajan  |
+|  1211 | xxxx   |
+|  1212 | xxxx   |
+|  7934 | MILLER |
++-------+--------+
+10 rows in set (0.00 sec)
+
+mysql> set autocommit=0;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from dept;
++--------+------------+----------+
+| DEPTNO | DNAME      | LOC      |
++--------+------------+----------+
+|     10 | ACCOUNTING | NEW YORK |
+|     20 | RESEARCH   | DALLAS   |
+|     30 | SALES      | CHICAGO  |
+|     40 | OPERATIONS | BOSTON   |
+|     34 | admin      | Mumbai   |
+|    100 | test       | xxxxx    |
++--------+------------+----------+
+6 rows in set (0.00 sec)
+
+mysql> insert into dept values(1,'xxx','yyy');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into dept values(2,'aaa','yyy');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from dept;
++--------+------------+----------+
+| DEPTNO | DNAME      | LOC      |
++--------+------------+----------+
+|     10 | ACCOUNTING | NEW YORK |
+|     20 | RESEARCH   | DALLAS   |
+|     30 | SALES      | CHICAGO  |
+|     40 | OPERATIONS | BOSTON   |
+|     34 | admin      | Mumbai   |
+|    100 | test       | xxxxx    |
+|      1 | xxx        | yyy      |
+|      2 | aaa        | yyy      |
++--------+------------+----------+
+8 rows in set (0.00 sec)
+
+mysql> delete from dept where deptno=10;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from dept;
++--------+------------+---------+
+| DEPTNO | DNAME      | LOC     |
++--------+------------+---------+
+|     20 | RESEARCH   | DALLAS  |
+|     30 | SALES      | CHICAGO |
+|     40 | OPERATIONS | BOSTON  |
+|     34 | admin      | Mumbai  |
+|    100 | test       | xxxxx   |
+|      1 | xxx        | yyy     |
+|      2 | aaa        | yyy     |
++--------+------------+---------+
+7 rows in set (0.00 sec)
+
+mysql> roollback;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'roollback' at line 1
+mysql> rollback;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from dept;
++--------+------------+----------+
+| DEPTNO | DNAME      | LOC      |
++--------+------------+----------+
+|     10 | ACCOUNTING | NEW YORK |
+|     20 | RESEARCH   | DALLAS   |
+|     30 | SALES      | CHICAGO  |
+|     40 | OPERATIONS | BOSTON   |
+|     34 | admin      | Mumbai   |
+|    100 | test       | xxxxx    |
++--------+------------+----------+
+6 rows in set (0.00 sec)
+
+mysql> insert into dept values(1,'xxx','yyy');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into dept values(2,'aaa','yyy');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> commit;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> delete from dept where deptno=10;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> rollback;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from dept;
++--------+------------+----------+
+| DEPTNO | DNAME      | LOC      |
++--------+------------+----------+
+|     10 | ACCOUNTING | NEW YORK |
+|     20 | RESEARCH   | DALLAS   |
+|     30 | SALES      | CHICAGO  |
+|     40 | OPERATIONS | BOSTON   |
+|     34 | admin      | Mumbai   |
+|    100 | test       | xxxxx    |
+|      1 | xxx        | yyy      |
+|      2 | aaa        | yyy      |
++--------+------------+----------+
+8 rows in set (0.00 sec)
+
+mysql> insert into dept values(3,'ssss','yyy');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into dept values(4,'pppp','yyy');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> savepoint A
+    -> ;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> insert into dept values(5,'pppp1','yyy');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into dept values(51,'pppp1','yyy');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> rollback to A
+    -> ;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> SHOW ENGINES;
++--------------------+---------+----------------------------------------------------------------+--------------+------+------------+
+| Engine             | Support | Comment                                                        | Transactions | XA   | Savepoints |
++--------------------+---------+----------------------------------------------------------------+--------------+------+------------+
+| MEMORY             | YES     | Hash based, stored in memory, useful for temporary tables      | NO           | NO   | NO         |
+| MRG_MYISAM         | YES     | Collection of identical MyISAM tables                          | NO           | NO   | NO         |
+| CSV                | YES     | CSV storage engine                                             | NO           | NO   | NO         |
+| FEDERATED          | NO      | Federated MySQL storage engine                                 | NULL         | NULL | NULL       |
+| PERFORMANCE_SCHEMA | YES     | Performance Schema                                             | NO           | NO   | NO         |
+| MyISAM             | YES     | MyISAM storage engine                                          | NO           | NO   | NO         |
+| InnoDB             | DEFAULT | Supports transactions, row-level locking, and foreign keys     | YES          | YES  | YES        |
+| BLACKHOLE          | YES     | /dev/null storage engine (anything you write to it disappears) | NO           | NO   | NO         |
+| ARCHIVE            | YES     | Archive storage engine                                         | NO           | NO   | NO         |
++--------------------+---------+----------------------------------------------------------------+--------------+------+------------+
+9 rows in set (0.00 sec)
+
+mysql>

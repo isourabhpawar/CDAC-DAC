@@ -1,0 +1,130 @@
+1.	Display cusid, name, acid, balance, manager id for all customers
+Sol:
+Select c.custid,c.cname,a.acid,a.balance,c.mgrid
+From customer c, account a 
+where c.custid=a.custid
+;
+
+
+
+2.	Display cusid, name, acid, balance, manager details for all customers who stays in nashik
+
+Sol:
+    select c.custid,c.cname,a.acid,a.balance,m.mgrid,m.mname
+From customer c inner join account a on c.custid=a.custid
+ Inner join manager m on m.mgrid=c.mgrid ,
+Where c.address = 'nashik';
+
+3.	Display custid, name, acid, balance, manager details for all customers whose relation manager is tanaya
+
+Sol: 
+select c.custid,c.cname, a.acid, a.balance, m.mgrid,m.mname
+from customer c , account a ,manager m
+where c.custid=a.custid and c.mgrid=m.mgrid
+and m.mname='tanaya';
+
+ 
+
+
+4.	Display cusid, name, acid, balance for all customers whose relation
+ manager name starts with r.
+ 
+ sol:
+ select c.custid,c.cname,a.acid,a.balance,
+ from customer c,account a
+ where c.custid=a.custid and c.mgrid in 
+ (select mgrid from manager m where m.mname like 'r%');
+
+
+ 
+5.	Display all customer details and account details who has demat account
+ sol:
+     select *
+	 from customer c inner join account a 
+	 on c.custid=a.custid 
+	 where a.type='demat';
+
+6.	Display all manager details and customer details of all customers who has saving account
+sol:
+
+select *
+from manager m inner join customer c 
+on c.mgrid=m.mgrid where c.custid in
+ (select a.custid from account a where a.type='saving');
+
+
+7.	Display all account details and customer details whose balance > 3000 and customer stays in pune
+ select *
+ from account a ,customer c 
+ where a.custid=c.custid and a.balance> 3000 and c.address='pune';
+ 
+ 
+
+
+
+8.	Display all customer details , manager details also display all managers who is not relation manager of any customer
+  sol:
+  
+  select *
+  from customer c  right join manager m 
+  on c.mgrid=m.mgrid ;
+
+9.	Display all customer details , account details also display all customers who has not opened any account
+sol:
+
+  select *
+  from customer c left join account a 
+  on c.custid=a.custid;
+
+10.	Display all customer details , account details and manager details, also display all customers who has not opened any account, and also display all managers who is not relation manager for any customer
+ sol"\:
+ 
+ select c.custid,c.cname,a.acid,a.balance,m.mgrid,m.mname 
+ from customer c left join account a
+on c.custid=a.custid
+
+left join manager m on c.mgrid=m.mgrid
+union
+select c.custid,c.cname ,null,null, m.mgrid,m.mname
+from manager m left join customer c
+on m.mgrid =c.mgrid 
+where c.custid is null;
+
+11.	To find all managers who is not relation manager for any customer.
+  select *
+  from manager m
+  where not exists (select *
+                     from customer c
+					 where c.mgrid=m.mgrid)
+12. update customer address to Kolhapur who stays in mumbai
+ update customer
+ set address='kolhapur'
+ where custid in 
+ (select custid 
+ from (select * from customer) c 
+ where c.address='mumbai');
+ 
+ 
+ --------------------------
+ 13. change location of all departments to Pune in 
+ which SMith or blake is working
+ select deptno
+ from emp
+ where ename in ('SMITH','BLAKE')
+ 
+ 
+ update dept
+ set loc='Pune'
+ where deptno in (select deptno
+ from emp
+ where ename in ('SMITH','BLAKE'))
+ 
+ 14. to change salary of smith to millers salary
+ update emp
+ set sal=(select sal from (select * from emp) e  where e.ename='MILLER')
+ where ename='SMITH';
+ 
+ 
+
+
+

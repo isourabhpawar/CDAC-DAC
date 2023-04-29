@@ -1,0 +1,1161 @@
+Enter password: *******
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 13
+Server version: 8.0.22 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> use dacmarch23;
+Database changed
+mysql> create procedure test()
+    -> ^C
+mysql> delimiter //
+mysql> create procedure display_emp()
+    -> begin
+    ->   declare vempno,vmgr,vdeptno int;
+    ->   select 'test';
+    -> end//
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> delimiter ;
+mysql> desc emp;
++----------+--------------+------+-----+---------+-------+
+| Field    | Type         | Null | Key | Default | Extra |
++----------+--------------+------+-----+---------+-------+
+| EMPNO    | int          | NO   |     | NULL    |       |
+| ENAME    | varchar(10)  | YES  |     | NULL    |       |
+| JOB      | varchar(9)   | YES  |     | NULL    |       |
+| MGR      | int          | YES  |     | NULL    |       |
+| HIREDATE | date         | YES  |     | NULL    |       |
+| SAL      | decimal(7,2) | YES  |     | NULL    |       |
+| COMM     | decimal(7,2) | YES  |     | NULL    |       |
+| DEPTNO   | int          | YES  | MUL | NULL    |       |
++----------+--------------+------+-----+---------+-------+
+8 rows in set (0.02 sec)
+
+mysql> delimiter //
+mysql> create procedure display_emp()
+    -> begin
+    ->   declare finished int default 0;
+    ->   declare vempno,vmgr,vdeptno int;
+    ->   declare vename,vjob varchar(20);
+    ->   declare vhiredate date;
+    ->   declare vsal,vcomm double(9,2);
+    ->   declare emp_cur cursor for select * from emp;
+    ->   declare continue handler for NOT FOUND set finished=1;
+    ->
+    ->   open emp_cur;
+    ->   l1:loop
+    ->      fetch emp_cur into vempno,vename,vjob,vmgr,vhiredate,vsal,vcomm,vdeptno;
+    ->      if finished=1 then
+    ->         leave l1;
+    ->  end if;
+    ->      select vempno,vename,vjob,vsal,vcomm;
+    ->    end loop;
+    ->    close emp_cur;
+    -> end//
+ERROR 1304 (42000): PROCEDURE display_emp already exists
+mysql> delimiter ;
+mysql> delimiter //
+mysql> create procedure display_emp_cur()
+    -> begin
+    ->   declare finished int default 0;
+    ->   declare vempno,vmgr,vdeptno int;
+    ->   declare vename,vjob varchar(20);
+    ->   declare vhiredate date;
+    ->   declare vsal,vcomm double(9,2);
+    ->   declare emp_cur cursor for select * from emp;
+    ->   declare continue handler for NOT FOUND set finished=1;
+    ->
+    ->   open emp_cur;
+    ->   l1:loop
+    ->      fetch emp_cur into vempno,vename,vjob,vmgr,vhiredate,vsal,vcomm,vdeptno;
+    ->      if finished=1 then
+    ->         leave l1;
+    ->  end if;
+    ->      select vempno,vename,vjob,vsal,vcomm;
+    ->    end loop;
+    ->    close emp_cur;
+    -> end//
+Query OK, 0 rows affected, 1 warning (0.01 sec)
+
+mysql> delimiter ;
+mysql> call display_emp_cur();
++--------+--------+-------+--------+-------+
+| vempno | vename | vjob  | vsal   | vcomm |
++--------+--------+-------+--------+-------+
+|   7369 | SMITH  | CLERK | 800.00 |  NULL |
++--------+--------+-------+--------+-------+
+1 row in set (0.00 sec)
+
++--------+------------+----------+---------+--------+
+| vempno | vename     | vjob     | vsal    | vcomm  |
++--------+------------+----------+---------+--------+
+|   7499 | ALLENXXXXX | SALESMAN | 1600.00 | 300.00 |
++--------+------------+----------+---------+--------+
+1 row in set (0.01 sec)
+
++--------+--------+----------+---------+--------+
+| vempno | vename | vjob     | vsal    | vcomm  |
++--------+--------+----------+---------+--------+
+|   7521 | WARD   | SALESMAN | 1250.00 | 500.00 |
++--------+--------+----------+---------+--------+
+1 row in set (0.01 sec)
+
++--------+--------+---------+---------+-------+
+| vempno | vename | vjob    | vsal    | vcomm |
++--------+--------+---------+---------+-------+
+|   7566 | JONES  | MANAGER | 2975.00 |  NULL |
++--------+--------+---------+---------+-------+
+1 row in set (0.03 sec)
+
++--------+--------+----------+---------+---------+
+| vempno | vename | vjob     | vsal    | vcomm   |
++--------+--------+----------+---------+---------+
+|   7654 | MARTIN | SALESMAN | 1250.00 | 1400.00 |
++--------+--------+----------+---------+---------+
+1 row in set (0.04 sec)
+
++--------+--------+---------+---------+-------+
+| vempno | vename | vjob    | vsal    | vcomm |
++--------+--------+---------+---------+-------+
+|   7698 | BLAKE  | MANAGER | 2850.00 |  NULL |
++--------+--------+---------+---------+-------+
+1 row in set (0.05 sec)
+
++--------+--------+---------+---------+-------+
+| vempno | vename | vjob    | vsal    | vcomm |
++--------+--------+---------+---------+-------+
+|   7782 | CLARK  | MANAGER | 2450.00 |  NULL |
++--------+--------+---------+---------+-------+
+1 row in set (0.09 sec)
+
++--------+--------+---------+---------+-------+
+| vempno | vename | vjob    | vsal    | vcomm |
++--------+--------+---------+---------+-------+
+|   7788 | SCOTT  | ANALYST | 3000.00 |  NULL |
++--------+--------+---------+---------+-------+
+1 row in set (0.15 sec)
+
++--------+--------+-----------+---------+-------+
+| vempno | vename | vjob      | vsal    | vcomm |
++--------+--------+-----------+---------+-------+
+|   7839 | KING   | PRESIDENT | 5000.00 |  NULL |
++--------+--------+-----------+---------+-------+
+1 row in set (0.17 sec)
+
++--------+--------+----------+---------+-------+
+| vempno | vename | vjob     | vsal    | vcomm |
++--------+--------+----------+---------+-------+
+|   7844 | TURNER | SALESMAN | 1500.00 |  0.00 |
++--------+--------+----------+---------+-------+
+1 row in set (0.18 sec)
+
++--------+--------+-------+---------+-------+
+| vempno | vename | vjob  | vsal    | vcomm |
++--------+--------+-------+---------+-------+
+|   7876 | ADAMS  | CLERK | 1100.00 |  NULL |
++--------+--------+-------+---------+-------+
+1 row in set (0.19 sec)
+
++--------+--------+-------+--------+-------+
+| vempno | vename | vjob  | vsal   | vcomm |
++--------+--------+-------+--------+-------+
+|   7900 | JAMES  | CLERK | 950.00 |  NULL |
++--------+--------+-------+--------+-------+
+1 row in set (0.19 sec)
+
++--------+--------+---------+---------+-------+
+| vempno | vename | vjob    | vsal    | vcomm |
++--------+--------+---------+---------+-------+
+|   7902 | FORD   | ANALYST | 3000.00 |  NULL |
++--------+--------+---------+---------+-------+
+1 row in set (0.20 sec)
+
++--------+--------+-------+---------+-------+
+| vempno | vename | vjob  | vsal    | vcomm |
++--------+--------+-------+---------+-------+
+|   7934 | MILLER | CLERK | 1300.00 |  NULL |
++--------+--------+-------+---------+-------+
+1 row in set (0.21 sec)
+
++--------+----------+-------+---------+--------+
+| vempno | vename   | vjob  | vsal    | vcomm  |
++--------+----------+-------+---------+--------+
+|    101 | Ashutosh | CLERK | 3456.00 | 345.00 |
++--------+----------+-------+---------+--------+
+1 row in set (0.23 sec)
+
++--------+--------+-------+---------+--------+
+| vempno | vename | vjob  | vsal    | vcomm  |
++--------+--------+-------+---------+--------+
+|    102 | Mugdha | CLERK | 3456.00 | 345.00 |
++--------+--------+-------+---------+--------+
+1 row in set (0.24 sec)
+
++--------+--------+------+---------+-------+
+| vempno | vename | vjob | vsal    | vcomm |
++--------+--------+------+---------+-------+
+|    103 | Tanaya | NULL | 7555.00 |  NULL |
++--------+--------+------+---------+-------+
+1 row in set (0.26 sec)
+
++--------+--------+-------+----------+--------+
+| vempno | vename | vjob  | vsal     | vcomm  |
++--------+--------+-------+----------+--------+
+|    123 | ddddd  | CLERK | 34566.00 | 456.00 |
++--------+--------+-------+----------+--------+
+1 row in set (0.27 sec)
+
++--------+--------+-------+----------+--------+
+| vempno | vename | vjob  | vsal     | vcomm  |
++--------+--------+-------+----------+--------+
+|    124 | pppp   | CLERK | 34566.00 | 456.00 |
++--------+--------+-------+----------+--------+
+1 row in set (0.29 sec)
+
+Query OK, 0 rows affected (0.29 sec)
+
+mysql> delimiter //
+mysql> create procedure update_emp_sal(out pmcnt  int,out pacnt  int,out pccnt  int,out pocnt  int)
+    -> begin
+    ->   declare finished int default 0;
+    ->   declare vempno,vmgr,vdeptno int;
+    ->   declare vename,vjob varchar(20);
+    ->   declare vhiredate date;
+    ->   declare vsal,vcomm,vupd_sal double(9,2);
+    ->   declare emp_cur cursor for select * from emp;
+    ->   declare continue handler for NOT FOUND set finished=1;
+    ->   set pmcnt=0;
+    ->   set pacnt=0;
+    ->   set pccnt=0;
+    ->   set pocnt=0;
+    ->   open emp_cur;
+    ->   l1:loop
+    ->      fetch emp_cur into vempno,vename,vjob,vmgr,vhiredate,vsal,vcomm,vdeptno;
+    ->      if finished=1 then
+    ->         leave l1;
+    ->  end if;
+    ->  if vjob='manager' then
+    ->     set vupd_sal=1.1*vsal;
+    ->     update emp
+    ->     set sal=1.1*sal
+    ->    where empno=vempno;
+    ->    set pmcnt=pmcnt+1;
+    ->  elseif vjob='analyst' then
+    ->     set vupd_sal=1.2*vsal;
+    ->     update emp
+    ->     set sal=1.2*sal
+    ->    where empno=vempno;
+    ->    set pacnt=pacnt+1;
+    ->  elseif vjob='clerk' then
+    ->     set vupd_sal=1.25*vsal;
+    ->     update emp
+    ->     set sal=1.25*sal
+    ->    where empno=vempno;
+    ->    set pccnt=pccnt+1;
+    ->  else
+    ->     set vupd_sal=1.08*vsal;
+    ->     update emp
+    ->     set sal=1.08*sal
+    ->    where empno=vempno;
+    ->    set pocnt=pocnt+1;
+    -> end if;
+    -> select vempno,vename,vjob,vsal,vcomm,vupd_sal;
+    ->    end loop;
+    ->    select pmcnt,pacnt,pccnt,pocnt;
+    ->    close emp_cur;
+    -> end//
+Query OK, 0 rows affected, 1 warning (0.01 sec)
+
+mysql> delimiter ;
+mysql> call update_emp_sal(@mcnt,@acnt,@ccnt,@ocnt);
++--------+--------+-------+--------+-------+----------+
+| vempno | vename | vjob  | vsal   | vcomm | vupd_sal |
++--------+--------+-------+--------+-------+----------+
+|   7369 | SMITH  | CLERK | 800.00 |  NULL |  1000.00 |
++--------+--------+-------+--------+-------+----------+
+1 row in set (0.01 sec)
+
++--------+------------+----------+---------+--------+----------+
+| vempno | vename     | vjob     | vsal    | vcomm  | vupd_sal |
++--------+------------+----------+---------+--------+----------+
+|   7499 | ALLENXXXXX | SALESMAN | 1600.00 | 300.00 |  1728.00 |
++--------+------------+----------+---------+--------+----------+
+1 row in set (0.01 sec)
+
++--------+--------+----------+---------+--------+----------+
+| vempno | vename | vjob     | vsal    | vcomm  | vupd_sal |
++--------+--------+----------+---------+--------+----------+
+|   7521 | WARD   | SALESMAN | 1250.00 | 500.00 |  1350.00 |
++--------+--------+----------+---------+--------+----------+
+1 row in set (0.03 sec)
+
++--------+--------+---------+---------+-------+----------+
+| vempno | vename | vjob    | vsal    | vcomm | vupd_sal |
++--------+--------+---------+---------+-------+----------+
+|   7566 | JONES  | MANAGER | 2975.00 |  NULL |  3272.50 |
++--------+--------+---------+---------+-------+----------+
+1 row in set (0.04 sec)
+
++--------+--------+----------+---------+---------+----------+
+| vempno | vename | vjob     | vsal    | vcomm   | vupd_sal |
++--------+--------+----------+---------+---------+----------+
+|   7654 | MARTIN | SALESMAN | 1250.00 | 1400.00 |  1350.00 |
++--------+--------+----------+---------+---------+----------+
+1 row in set (0.06 sec)
+
++--------+--------+---------+---------+-------+----------+
+| vempno | vename | vjob    | vsal    | vcomm | vupd_sal |
++--------+--------+---------+---------+-------+----------+
+|   7698 | BLAKE  | MANAGER | 2850.00 |  NULL |  3135.00 |
++--------+--------+---------+---------+-------+----------+
+1 row in set (0.07 sec)
+
++--------+--------+---------+---------+-------+----------+
+| vempno | vename | vjob    | vsal    | vcomm | vupd_sal |
++--------+--------+---------+---------+-------+----------+
+|   7782 | CLARK  | MANAGER | 2450.00 |  NULL |  2695.00 |
++--------+--------+---------+---------+-------+----------+
+1 row in set (0.09 sec)
+
++--------+--------+---------+---------+-------+----------+
+| vempno | vename | vjob    | vsal    | vcomm | vupd_sal |
++--------+--------+---------+---------+-------+----------+
+|   7788 | SCOTT  | ANALYST | 3000.00 |  NULL |  3600.00 |
++--------+--------+---------+---------+-------+----------+
+1 row in set (0.16 sec)
+
++--------+--------+-----------+---------+-------+----------+
+| vempno | vename | vjob      | vsal    | vcomm | vupd_sal |
++--------+--------+-----------+---------+-------+----------+
+|   7839 | KING   | PRESIDENT | 5000.00 |  NULL |  5400.00 |
++--------+--------+-----------+---------+-------+----------+
+1 row in set (0.18 sec)
+
++--------+--------+----------+---------+-------+----------+
+| vempno | vename | vjob     | vsal    | vcomm | vupd_sal |
++--------+--------+----------+---------+-------+----------+
+|   7844 | TURNER | SALESMAN | 1500.00 |  0.00 |  1620.00 |
++--------+--------+----------+---------+-------+----------+
+1 row in set (0.24 sec)
+
++--------+--------+-------+---------+-------+----------+
+| vempno | vename | vjob  | vsal    | vcomm | vupd_sal |
++--------+--------+-------+---------+-------+----------+
+|   7876 | ADAMS  | CLERK | 1100.00 |  NULL |  1375.00 |
++--------+--------+-------+---------+-------+----------+
+1 row in set (0.25 sec)
+
++--------+--------+-------+--------+-------+----------+
+| vempno | vename | vjob  | vsal   | vcomm | vupd_sal |
++--------+--------+-------+--------+-------+----------+
+|   7900 | JAMES  | CLERK | 950.00 |  NULL |  1187.50 |
++--------+--------+-------+--------+-------+----------+
+1 row in set (0.26 sec)
+
++--------+--------+---------+---------+-------+----------+
+| vempno | vename | vjob    | vsal    | vcomm | vupd_sal |
++--------+--------+---------+---------+-------+----------+
+|   7902 | FORD   | ANALYST | 3000.00 |  NULL |  3600.00 |
++--------+--------+---------+---------+-------+----------+
+1 row in set (0.29 sec)
+
++--------+--------+-------+---------+-------+----------+
+| vempno | vename | vjob  | vsal    | vcomm | vupd_sal |
++--------+--------+-------+---------+-------+----------+
+|   7934 | MILLER | CLERK | 1300.00 |  NULL |  1625.00 |
++--------+--------+-------+---------+-------+----------+
+1 row in set (0.31 sec)
+
++--------+----------+-------+---------+--------+----------+
+| vempno | vename   | vjob  | vsal    | vcomm  | vupd_sal |
++--------+----------+-------+---------+--------+----------+
+|    101 | Ashutosh | CLERK | 3456.00 | 345.00 |  4320.00 |
++--------+----------+-------+---------+--------+----------+
+1 row in set (0.32 sec)
+
++--------+--------+-------+---------+--------+----------+
+| vempno | vename | vjob  | vsal    | vcomm  | vupd_sal |
++--------+--------+-------+---------+--------+----------+
+|    102 | Mugdha | CLERK | 3456.00 | 345.00 |  4320.00 |
++--------+--------+-------+---------+--------+----------+
+1 row in set (0.34 sec)
+
++--------+--------+------+---------+-------+----------+
+| vempno | vename | vjob | vsal    | vcomm | vupd_sal |
++--------+--------+------+---------+-------+----------+
+|    103 | Tanaya | NULL | 7555.00 |  NULL |  8159.40 |
++--------+--------+------+---------+-------+----------+
+1 row in set (0.34 sec)
+
++--------+--------+-------+----------+--------+----------+
+| vempno | vename | vjob  | vsal     | vcomm  | vupd_sal |
++--------+--------+-------+----------+--------+----------+
+|    123 | ddddd  | CLERK | 34566.00 | 456.00 | 43207.50 |
++--------+--------+-------+----------+--------+----------+
+1 row in set (0.37 sec)
+
++--------+--------+-------+----------+--------+----------+
+| vempno | vename | vjob  | vsal     | vcomm  | vupd_sal |
++--------+--------+-------+----------+--------+----------+
+|    124 | pppp   | CLERK | 34566.00 | 456.00 | 43207.50 |
++--------+--------+-------+----------+--------+----------+
+1 row in set (0.38 sec)
+
++-------+-------+-------+-------+
+| pmcnt | pacnt | pccnt | pocnt |
++-------+-------+-------+-------+
+|     3 |     2 |     8 |     6 |
++-------+-------+-------+-------+
+1 row in set (0.39 sec)
+
+Query OK, 0 rows affected (0.40 sec)
+
+mysql> select count(*)
+    -> from emp
+    -> where job='manager';
++----------+
+| count(*) |
++----------+
+|        3 |
++----------+
+1 row in set (0.00 sec)
+
+mysql> select count(*)
+    -> from emp
+    -> where job not in ('manager','clerk','analyst');
++----------+
+| count(*) |
++----------+
+|        5 |
++----------+
+1 row in set (0.00 sec)
+
+mysql> select count(*)
+    -> from emp
+    -> where job='clerk'
+    -> ;
++----------+
+| count(*) |
++----------+
+|        8 |
++----------+
+1 row in set (0.00 sec)
+
+mysql> select count(*)
+    -> from emp
+    -> where job ='analyst';
++----------+
+| count(*) |
++----------+
+|        2 |
++----------+
+1 row in set (0.00 sec)
+
+mysql> select * from emp;
++-------+------------+-----------+------+------------+----------+---------+--------+
+| EMPNO | ENAME      | JOB       | MGR  | HIREDATE   | SAL      | COMM    | DEPTNO |
++-------+------------+-----------+------+------------+----------+---------+--------+
+|  7369 | SMITH      | CLERK     | 7902 | 1980-12-17 |  1000.00 |    NULL |     20 |
+|  7499 | ALLENXXXXX | SALESMAN  | 7698 | 1981-02-20 |  1728.00 |  300.00 |     30 |
+|  7521 | WARD       | SALESMAN  | 7698 | 1981-02-22 |  1350.00 |  500.00 |     30 |
+|  7566 | JONES      | MANAGER   | 7839 | 1981-04-02 |  3272.50 |    NULL |     20 |
+|  7654 | MARTIN     | SALESMAN  | 7698 | 1981-09-28 |  1350.00 | 1400.00 |     30 |
+|  7698 | BLAKE      | MANAGER   | 7839 | 1981-05-01 |  3135.00 |    NULL |     30 |
+|  7782 | CLARK      | MANAGER   | 7839 | 1981-06-09 |  2695.00 |    NULL |     10 |
+|  7788 | SCOTT      | ANALYST   | 7566 | 1982-12-09 |  3600.00 |    NULL |     20 |
+|  7839 | KING       | PRESIDENT | NULL | 1981-11-17 |  5400.00 |    NULL |     10 |
+|  7844 | TURNER     | SALESMAN  | 7698 | 1981-09-08 |  1620.00 |    0.00 |     30 |
+|  7876 | ADAMS      | CLERK     | 7788 | 1983-01-12 |  1375.00 |    NULL |     20 |
+|  7900 | JAMES      | CLERK     | 7698 | 1981-12-03 |  1187.50 |    NULL |     30 |
+|  7902 | FORD       | ANALYST   | 7566 | 1981-12-03 |  3600.00 |    NULL |     20 |
+|  7934 | MILLER     | CLERK     | 7782 | 1982-01-23 |  1625.00 |    NULL |     10 |
+|   101 | Ashutosh   | CLERK     | 7902 | 2000-10-11 |  4320.00 |  345.00 |     10 |
+|   102 | Mugdha     | CLERK     | 7902 | 2000-10-11 |  4320.00 |  345.00 |     10 |
+|   103 | Tanaya     | NULL      | NULL | NULL       |  8159.40 |    NULL |   NULL |
+|   123 | ddddd      | CLERK     | 7782 | 2022-11-11 | 43207.50 |  456.00 |     10 |
+|   124 | pppp       | CLERK     | 7782 | 2022-11-11 | 43207.50 |  456.00 |     20 |
++-------+------------+-----------+------+------------+----------+---------+--------+
+19 rows in set (0.00 sec)
+
+mysql> select * from emp
+    -> where job not in ('manager','clerk','analyst') or job is null;
++-------+------------+-----------+------+------------+---------+---------+--------+
+| EMPNO | ENAME      | JOB       | MGR  | HIREDATE   | SAL     | COMM    | DEPTNO |
++-------+------------+-----------+------+------------+---------+---------+--------+
+|  7499 | ALLENXXXXX | SALESMAN  | 7698 | 1981-02-20 | 1728.00 |  300.00 |     30 |
+|  7521 | WARD       | SALESMAN  | 7698 | 1981-02-22 | 1350.00 |  500.00 |     30 |
+|  7654 | MARTIN     | SALESMAN  | 7698 | 1981-09-28 | 1350.00 | 1400.00 |     30 |
+|  7839 | KING       | PRESIDENT | NULL | 1981-11-17 | 5400.00 |    NULL |     10 |
+|  7844 | TURNER     | SALESMAN  | 7698 | 1981-09-08 | 1620.00 |    0.00 |     30 |
+|   103 | Tanaya     | NULL      | NULL | NULL       | 8159.40 |    NULL |   NULL |
++-------+------------+-----------+------+------------+---------+---------+--------+
+6 rows in set (0.00 sec)
+
+mysql> select count(*)
+    -> from emp
+    -> where job not in ('manager','clerk','analyst') or job is null;
++----------+
+| count(*) |
++----------+
+|        6 |
++----------+
+1 row in set (0.00 sec)
+
+mysql> select * from emp;
++-------+------------+-----------+------+------------+----------+---------+--------+
+| EMPNO | ENAME      | JOB       | MGR  | HIREDATE   | SAL      | COMM    | DEPTNO |
++-------+------------+-----------+------+------------+----------+---------+--------+
+|  7369 | SMITH      | CLERK     | 7902 | 1980-12-17 |  1000.00 |    NULL |     20 |
+|  7499 | ALLENXXXXX | SALESMAN  | 7698 | 1981-02-20 |  1728.00 |  300.00 |     30 |
+|  7521 | WARD       | SALESMAN  | 7698 | 1981-02-22 |  1350.00 |  500.00 |     30 |
+|  7566 | JONES      | MANAGER   | 7839 | 1981-04-02 |  3272.50 |    NULL |     20 |
+|  7654 | MARTIN     | SALESMAN  | 7698 | 1981-09-28 |  1350.00 | 1400.00 |     30 |
+|  7698 | BLAKE      | MANAGER   | 7839 | 1981-05-01 |  3135.00 |    NULL |     30 |
+|  7782 | CLARK      | MANAGER   | 7839 | 1981-06-09 |  2695.00 |    NULL |     10 |
+|  7788 | SCOTT      | ANALYST   | 7566 | 1982-12-09 |  3600.00 |    NULL |     20 |
+|  7839 | KING       | PRESIDENT | NULL | 1981-11-17 |  5400.00 |    NULL |     10 |
+|  7844 | TURNER     | SALESMAN  | 7698 | 1981-09-08 |  1620.00 |    0.00 |     30 |
+|  7876 | ADAMS      | CLERK     | 7788 | 1983-01-12 |  1375.00 |    NULL |     20 |
+|  7900 | JAMES      | CLERK     | 7698 | 1981-12-03 |  1187.50 |    NULL |     30 |
+|  7902 | FORD       | ANALYST   | 7566 | 1981-12-03 |  3600.00 |    NULL |     20 |
+|  7934 | MILLER     | CLERK     | 7782 | 1982-01-23 |  1625.00 |    NULL |     10 |
+|   101 | Ashutosh   | CLERK     | 7902 | 2000-10-11 |  4320.00 |  345.00 |     10 |
+|   102 | Mugdha     | CLERK     | 7902 | 2000-10-11 |  4320.00 |  345.00 |     10 |
+|   103 | Tanaya     | NULL      | NULL | NULL       |  8159.40 |    NULL |   NULL |
+|   123 | ddddd      | CLERK     | 7782 | 2022-11-11 | 43207.50 |  456.00 |     10 |
+|   124 | pppp       | CLERK     | 7782 | 2022-11-11 | 43207.50 |  456.00 |     20 |
++-------+------------+-----------+------+------------+----------+---------+--------+
+19 rows in set (0.00 sec)
+
+mysql> desc product;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| pid   | int         | NO   | PRI | NULL    |       |
+| pname | varchar(20) | NO   | UNI | NULL    |       |
+| qty   | int         | YES  |     | 10      |       |
+| price | double(9,2) | YES  |     | NULL    |       |
+| catid | int         | YES  | MUL | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> desc category;'
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| cid   | int         | NO   | PRI | NULL    |       |
+| cname | varchar(20) | NO   |     | NULL    |       |
+| cdesc | varchar(20) | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+3 rows in set (0.01 sec)
+
+    '> ^C
+mysql> select @pmcnt m;
++------------+
+| m          |
++------------+
+| 0x         |
++------------+
+1 row in set (0.00 sec)
+
+mysql> select *
+    -> from emp,dept,salgrade
+    -> where emp.deptno=dept.deptno;
++-------+------------+-----------+------+------------+----------+---------+--------+--------+------------+----------+-------+-------+-------+
+| EMPNO | ENAME      | JOB       | MGR  | HIREDATE   | SAL      | COMM    | DEPTNO | DEPTNO | DNAME      | LOC      | GRADE | LOSAL | HISAL |
++-------+------------+-----------+------+------------+----------+---------+--------+--------+------------+----------+-------+-------+-------+
+|  7369 | SMITH      | CLERK     | 7902 | 1980-12-17 |  1000.00 |    NULL |     20 |     20 | RESEARCH   | Pune     |     1 |   700 |  1200 |
+|  7369 | SMITH      | CLERK     | 7902 | 1980-12-17 |  1000.00 |    NULL |     20 |     20 | RESEARCH   | Pune     |     2 |  1201 |  1400 |
+|  7369 | SMITH      | CLERK     | 7902 | 1980-12-17 |  1000.00 |    NULL |     20 |     20 | RESEARCH   | Pune     |     3 |  1401 |  2000 |
+|  7369 | SMITH      | CLERK     | 7902 | 1980-12-17 |  1000.00 |    NULL |     20 |     20 | RESEARCH   | Pune     |     4 |  2001 |  3000 |
+|  7369 | SMITH      | CLERK     | 7902 | 1980-12-17 |  1000.00 |    NULL |     20 |     20 | RESEARCH   | Pune     |     5 |  3001 |  9999 |
+|  7499 | ALLENXXXXX | SALESMAN  | 7698 | 1981-02-20 |  1728.00 |  300.00 |     30 |     30 | SALES      | Pune     |     1 |   700 |  1200 |
+|  7499 | ALLENXXXXX | SALESMAN  | 7698 | 1981-02-20 |  1728.00 |  300.00 |     30 |     30 | SALES      | Pune     |     2 |  1201 |  1400 |
+|  7499 | ALLENXXXXX | SALESMAN  | 7698 | 1981-02-20 |  1728.00 |  300.00 |     30 |     30 | SALES      | Pune     |     3 |  1401 |  2000 |
+|  7499 | ALLENXXXXX | SALESMAN  | 7698 | 1981-02-20 |  1728.00 |  300.00 |     30 |     30 | SALES      | Pune     |     4 |  2001 |  3000 |
+|  7499 | ALLENXXXXX | SALESMAN  | 7698 | 1981-02-20 |  1728.00 |  300.00 |     30 |     30 | SALES      | Pune     |     5 |  3001 |  9999 |
+|  7521 | WARD       | SALESMAN  | 7698 | 1981-02-22 |  1350.00 |  500.00 |     30 |     30 | SALES      | Pune     |     1 |   700 |  1200 |
+|  7521 | WARD       | SALESMAN  | 7698 | 1981-02-22 |  1350.00 |  500.00 |     30 |     30 | SALES      | Pune     |     2 |  1201 |  1400 |
+|  7521 | WARD       | SALESMAN  | 7698 | 1981-02-22 |  1350.00 |  500.00 |     30 |     30 | SALES      | Pune     |     3 |  1401 |  2000 |
+|  7521 | WARD       | SALESMAN  | 7698 | 1981-02-22 |  1350.00 |  500.00 |     30 |     30 | SALES      | Pune     |     4 |  2001 |  3000 |
+|  7521 | WARD       | SALESMAN  | 7698 | 1981-02-22 |  1350.00 |  500.00 |     30 |     30 | SALES      | Pune     |     5 |  3001 |  9999 |
+|  7566 | JONES      | MANAGER   | 7839 | 1981-04-02 |  3272.50 |    NULL |     20 |     20 | RESEARCH   | Pune     |     1 |   700 |  1200 |
+|  7566 | JONES      | MANAGER   | 7839 | 1981-04-02 |  3272.50 |    NULL |     20 |     20 | RESEARCH   | Pune     |     2 |  1201 |  1400 |
+|  7566 | JONES      | MANAGER   | 7839 | 1981-04-02 |  3272.50 |    NULL |     20 |     20 | RESEARCH   | Pune     |     3 |  1401 |  2000 |
+|  7566 | JONES      | MANAGER   | 7839 | 1981-04-02 |  3272.50 |    NULL |     20 |     20 | RESEARCH   | Pune     |     4 |  2001 |  3000 |
+|  7566 | JONES      | MANAGER   | 7839 | 1981-04-02 |  3272.50 |    NULL |     20 |     20 | RESEARCH   | Pune     |     5 |  3001 |  9999 |
+|  7654 | MARTIN     | SALESMAN  | 7698 | 1981-09-28 |  1350.00 | 1400.00 |     30 |     30 | SALES      | Pune     |     1 |   700 |  1200 |
+|  7654 | MARTIN     | SALESMAN  | 7698 | 1981-09-28 |  1350.00 | 1400.00 |     30 |     30 | SALES      | Pune     |     2 |  1201 |  1400 |
+|  7654 | MARTIN     | SALESMAN  | 7698 | 1981-09-28 |  1350.00 | 1400.00 |     30 |     30 | SALES      | Pune     |     3 |  1401 |  2000 |
+|  7654 | MARTIN     | SALESMAN  | 7698 | 1981-09-28 |  1350.00 | 1400.00 |     30 |     30 | SALES      | Pune     |     4 |  2001 |  3000 |
+|  7654 | MARTIN     | SALESMAN  | 7698 | 1981-09-28 |  1350.00 | 1400.00 |     30 |     30 | SALES      | Pune     |     5 |  3001 |  9999 |
+|  7698 | BLAKE      | MANAGER   | 7839 | 1981-05-01 |  3135.00 |    NULL |     30 |     30 | SALES      | Pune     |     1 |   700 |  1200 |
+|  7698 | BLAKE      | MANAGER   | 7839 | 1981-05-01 |  3135.00 |    NULL |     30 |     30 | SALES      | Pune     |     2 |  1201 |  1400 |
+|  7698 | BLAKE      | MANAGER   | 7839 | 1981-05-01 |  3135.00 |    NULL |     30 |     30 | SALES      | Pune     |     3 |  1401 |  2000 |
+|  7698 | BLAKE      | MANAGER   | 7839 | 1981-05-01 |  3135.00 |    NULL |     30 |     30 | SALES      | Pune     |     4 |  2001 |  3000 |
+|  7698 | BLAKE      | MANAGER   | 7839 | 1981-05-01 |  3135.00 |    NULL |     30 |     30 | SALES      | Pune     |     5 |  3001 |  9999 |
+|  7782 | CLARK      | MANAGER   | 7839 | 1981-06-09 |  2695.00 |    NULL |     10 |     10 | ACCOUNTING | NEW YORK |     1 |   700 |  1200 |
+|  7782 | CLARK      | MANAGER   | 7839 | 1981-06-09 |  2695.00 |    NULL |     10 |     10 | ACCOUNTING | NEW YORK |     2 |  1201 |  1400 |
+|  7782 | CLARK      | MANAGER   | 7839 | 1981-06-09 |  2695.00 |    NULL |     10 |     10 | ACCOUNTING | NEW YORK |     3 |  1401 |  2000 |
+|  7782 | CLARK      | MANAGER   | 7839 | 1981-06-09 |  2695.00 |    NULL |     10 |     10 | ACCOUNTING | NEW YORK |     4 |  2001 |  3000 |
+|  7782 | CLARK      | MANAGER   | 7839 | 1981-06-09 |  2695.00 |    NULL |     10 |     10 | ACCOUNTING | NEW YORK |     5 |  3001 |  9999 |
+|  7788 | SCOTT      | ANALYST   | 7566 | 1982-12-09 |  3600.00 |    NULL |     20 |     20 | RESEARCH   | Pune     |     1 |   700 |  1200 |
+|  7788 | SCOTT      | ANALYST   | 7566 | 1982-12-09 |  3600.00 |    NULL |     20 |     20 | RESEARCH   | Pune     |     2 |  1201 |  1400 |
+|  7788 | SCOTT      | ANALYST   | 7566 | 1982-12-09 |  3600.00 |    NULL |     20 |     20 | RESEARCH   | Pune     |     3 |  1401 |  2000 |
+|  7788 | SCOTT      | ANALYST   | 7566 | 1982-12-09 |  3600.00 |    NULL |     20 |     20 | RESEARCH   | Pune     |     4 |  2001 |  3000 |
+|  7788 | SCOTT      | ANALYST   | 7566 | 1982-12-09 |  3600.00 |    NULL |     20 |     20 | RESEARCH   | Pune     |     5 |  3001 |  9999 |
+|  7839 | KING       | PRESIDENT | NULL | 1981-11-17 |  5400.00 |    NULL |     10 |     10 | ACCOUNTING | NEW YORK |     1 |   700 |  1200 |
+|  7839 | KING       | PRESIDENT | NULL | 1981-11-17 |  5400.00 |    NULL |     10 |     10 | ACCOUNTING | NEW YORK |     2 |  1201 |  1400 |
+|  7839 | KING       | PRESIDENT | NULL | 1981-11-17 |  5400.00 |    NULL |     10 |     10 | ACCOUNTING | NEW YORK |     3 |  1401 |  2000 |
+|  7839 | KING       | PRESIDENT | NULL | 1981-11-17 |  5400.00 |    NULL |     10 |     10 | ACCOUNTING | NEW YORK |     4 |  2001 |  3000 |
+|  7839 | KING       | PRESIDENT | NULL | 1981-11-17 |  5400.00 |    NULL |     10 |     10 | ACCOUNTING | NEW YORK |     5 |  3001 |  9999 |
+|  7844 | TURNER     | SALESMAN  | 7698 | 1981-09-08 |  1620.00 |    0.00 |     30 |     30 | SALES      | Pune     |     1 |   700 |  1200 |
+|  7844 | TURNER     | SALESMAN  | 7698 | 1981-09-08 |  1620.00 |    0.00 |     30 |     30 | SALES      | Pune     |     2 |  1201 |  1400 |
+|  7844 | TURNER     | SALESMAN  | 7698 | 1981-09-08 |  1620.00 |    0.00 |     30 |     30 | SALES      | Pune     |     3 |  1401 |  2000 |
+|  7844 | TURNER     | SALESMAN  | 7698 | 1981-09-08 |  1620.00 |    0.00 |     30 |     30 | SALES      | Pune     |     4 |  2001 |  3000 |
+|  7844 | TURNER     | SALESMAN  | 7698 | 1981-09-08 |  1620.00 |    0.00 |     30 |     30 | SALES      | Pune     |     5 |  3001 |  9999 |
+|  7876 | ADAMS      | CLERK     | 7788 | 1983-01-12 |  1375.00 |    NULL |     20 |     20 | RESEARCH   | Pune     |     1 |   700 |  1200 |
+|  7876 | ADAMS      | CLERK     | 7788 | 1983-01-12 |  1375.00 |    NULL |     20 |     20 | RESEARCH   | Pune     |     2 |  1201 |  1400 |
+|  7876 | ADAMS      | CLERK     | 7788 | 1983-01-12 |  1375.00 |    NULL |     20 |     20 | RESEARCH   | Pune     |     3 |  1401 |  2000 |
+|  7876 | ADAMS      | CLERK     | 7788 | 1983-01-12 |  1375.00 |    NULL |     20 |     20 | RESEARCH   | Pune     |     4 |  2001 |  3000 |
+|  7876 | ADAMS      | CLERK     | 7788 | 1983-01-12 |  1375.00 |    NULL |     20 |     20 | RESEARCH   | Pune     |     5 |  3001 |  9999 |
+|  7900 | JAMES      | CLERK     | 7698 | 1981-12-03 |  1187.50 |    NULL |     30 |     30 | SALES      | Pune     |     1 |   700 |  1200 |
+|  7900 | JAMES      | CLERK     | 7698 | 1981-12-03 |  1187.50 |    NULL |     30 |     30 | SALES      | Pune     |     2 |  1201 |  1400 |
+|  7900 | JAMES      | CLERK     | 7698 | 1981-12-03 |  1187.50 |    NULL |     30 |     30 | SALES      | Pune     |     3 |  1401 |  2000 |
+|  7900 | JAMES      | CLERK     | 7698 | 1981-12-03 |  1187.50 |    NULL |     30 |     30 | SALES      | Pune     |     4 |  2001 |  3000 |
+|  7900 | JAMES      | CLERK     | 7698 | 1981-12-03 |  1187.50 |    NULL |     30 |     30 | SALES      | Pune     |     5 |  3001 |  9999 |
+|  7902 | FORD       | ANALYST   | 7566 | 1981-12-03 |  3600.00 |    NULL |     20 |     20 | RESEARCH   | Pune     |     1 |   700 |  1200 |
+|  7902 | FORD       | ANALYST   | 7566 | 1981-12-03 |  3600.00 |    NULL |     20 |     20 | RESEARCH   | Pune     |     2 |  1201 |  1400 |
+|  7902 | FORD       | ANALYST   | 7566 | 1981-12-03 |  3600.00 |    NULL |     20 |     20 | RESEARCH   | Pune     |     3 |  1401 |  2000 |
+|  7902 | FORD       | ANALYST   | 7566 | 1981-12-03 |  3600.00 |    NULL |     20 |     20 | RESEARCH   | Pune     |     4 |  2001 |  3000 |
+|  7902 | FORD       | ANALYST   | 7566 | 1981-12-03 |  3600.00 |    NULL |     20 |     20 | RESEARCH   | Pune     |     5 |  3001 |  9999 |
+|  7934 | MILLER     | CLERK     | 7782 | 1982-01-23 |  1625.00 |    NULL |     10 |     10 | ACCOUNTING | NEW YORK |     1 |   700 |  1200 |
+|  7934 | MILLER     | CLERK     | 7782 | 1982-01-23 |  1625.00 |    NULL |     10 |     10 | ACCOUNTING | NEW YORK |     2 |  1201 |  1400 |
+|  7934 | MILLER     | CLERK     | 7782 | 1982-01-23 |  1625.00 |    NULL |     10 |     10 | ACCOUNTING | NEW YORK |     3 |  1401 |  2000 |
+|  7934 | MILLER     | CLERK     | 7782 | 1982-01-23 |  1625.00 |    NULL |     10 |     10 | ACCOUNTING | NEW YORK |     4 |  2001 |  3000 |
+|  7934 | MILLER     | CLERK     | 7782 | 1982-01-23 |  1625.00 |    NULL |     10 |     10 | ACCOUNTING | NEW YORK |     5 |  3001 |  9999 |
+|   101 | Ashutosh   | CLERK     | 7902 | 2000-10-11 |  4320.00 |  345.00 |     10 |     10 | ACCOUNTING | NEW YORK |     1 |   700 |  1200 |
+|   101 | Ashutosh   | CLERK     | 7902 | 2000-10-11 |  4320.00 |  345.00 |     10 |     10 | ACCOUNTING | NEW YORK |     2 |  1201 |  1400 |
+|   101 | Ashutosh   | CLERK     | 7902 | 2000-10-11 |  4320.00 |  345.00 |     10 |     10 | ACCOUNTING | NEW YORK |     3 |  1401 |  2000 |
+|   101 | Ashutosh   | CLERK     | 7902 | 2000-10-11 |  4320.00 |  345.00 |     10 |     10 | ACCOUNTING | NEW YORK |     4 |  2001 |  3000 |
+|   101 | Ashutosh   | CLERK     | 7902 | 2000-10-11 |  4320.00 |  345.00 |     10 |     10 | ACCOUNTING | NEW YORK |     5 |  3001 |  9999 |
+|   102 | Mugdha     | CLERK     | 7902 | 2000-10-11 |  4320.00 |  345.00 |     10 |     10 | ACCOUNTING | NEW YORK |     1 |   700 |  1200 |
+|   102 | Mugdha     | CLERK     | 7902 | 2000-10-11 |  4320.00 |  345.00 |     10 |     10 | ACCOUNTING | NEW YORK |     2 |  1201 |  1400 |
+|   102 | Mugdha     | CLERK     | 7902 | 2000-10-11 |  4320.00 |  345.00 |     10 |     10 | ACCOUNTING | NEW YORK |     3 |  1401 |  2000 |
+|   102 | Mugdha     | CLERK     | 7902 | 2000-10-11 |  4320.00 |  345.00 |     10 |     10 | ACCOUNTING | NEW YORK |     4 |  2001 |  3000 |
+|   102 | Mugdha     | CLERK     | 7902 | 2000-10-11 |  4320.00 |  345.00 |     10 |     10 | ACCOUNTING | NEW YORK |     5 |  3001 |  9999 |
+|   123 | ddddd      | CLERK     | 7782 | 2022-11-11 | 43207.50 |  456.00 |     10 |     10 | ACCOUNTING | NEW YORK |     1 |   700 |  1200 |
+|   123 | ddddd      | CLERK     | 7782 | 2022-11-11 | 43207.50 |  456.00 |     10 |     10 | ACCOUNTING | NEW YORK |     2 |  1201 |  1400 |
+|   123 | ddddd      | CLERK     | 7782 | 2022-11-11 | 43207.50 |  456.00 |     10 |     10 | ACCOUNTING | NEW YORK |     3 |  1401 |  2000 |
+|   123 | ddddd      | CLERK     | 7782 | 2022-11-11 | 43207.50 |  456.00 |     10 |     10 | ACCOUNTING | NEW YORK |     4 |  2001 |  3000 |
+|   123 | ddddd      | CLERK     | 7782 | 2022-11-11 | 43207.50 |  456.00 |     10 |     10 | ACCOUNTING | NEW YORK |     5 |  3001 |  9999 |
+|   124 | pppp       | CLERK     | 7782 | 2022-11-11 | 43207.50 |  456.00 |     20 |     20 | RESEARCH   | Pune     |     1 |   700 |  1200 |
+|   124 | pppp       | CLERK     | 7782 | 2022-11-11 | 43207.50 |  456.00 |     20 |     20 | RESEARCH   | Pune     |     2 |  1201 |  1400 |
+|   124 | pppp       | CLERK     | 7782 | 2022-11-11 | 43207.50 |  456.00 |     20 |     20 | RESEARCH   | Pune     |     3 |  1401 |  2000 |
+|   124 | pppp       | CLERK     | 7782 | 2022-11-11 | 43207.50 |  456.00 |     20 |     20 | RESEARCH   | Pune     |     4 |  2001 |  3000 |
+|   124 | pppp       | CLERK     | 7782 | 2022-11-11 | 43207.50 |  456.00 |     20 |     20 | RESEARCH   | Pune     |     5 |  3001 |  9999 |
++-------+------------+-----------+------+------------+----------+---------+--------+--------+------------+----------+-------+-------+-------+
+90 rows in set (0.01 sec)
+
+mysql> select * from category;
++-----+------------+-----------+
+| cid | cname      | cdesc     |
++-----+------------+-----------+
+| 200 | cold drink | cool cool |
++-----+------------+-----------+
+1 row in set (0.01 sec)
+
+mysql> delimiter //
+mysql> create procedure changeprice()
+    -> begin
+    ->    declare finished int default 0;
+    ->    declare vpid,vcid,vchipscatid,vdrinkcatid,vqty int;
+    ->    declare vprice double(9,2);
+    ->    declare vname varchar(20);
+    ->    declare prod_cur cursor for select * from product;
+    ->    declare continue handler for NOT FOUND set finished=1;
+    ->
+    ->    open prod_cur;
+    ->    select cid into vchipscatid
+    ->    from category
+    ->    where cname='chips';
+    ->
+    ->    select cid into vdrinkcatid
+    ->    from category
+    ->    where cname='cold drink';
+    ->    l1:loop
+    ->       fetch prod_cur into vpid,vname,vqty,vprice,vcid;
+    ->   if finished=1 then
+    ->      leave l1;
+    ->   end if;
+    ->   if vcid = vchipscatid then
+    ->       update product
+    ->   set price=1.1*price
+    ->   where pid=vpid;
+    ->   elseif vcid = vdrinkcatid then
+    ->       update product
+    ->   set price=1.2*price
+    ->   where pid=vpid;
+    ->   else
+    ->       update product
+    ->   set price=1.08*price
+    ->   where pid=vpid;
+    ->   end if;
+    ->
+    ->    end loop;
+    -> end//
+Query OK, 0 rows affected, 1 warning (0.02 sec)
+
+mysql> call changeprice();
+    -> //
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from product;
+    -> //
++-----+-----------+------+--------+-------+
+| pid | pname     | qty  | price  | catid |
++-----+-----------+------+--------+-------+
+|  10 | lays      |   23 |  40.00 |  NULL |
+|  12 | nachos    |   23 | 140.00 |  NULL |
+|  13 | coca cola |   10 |   NULL |  NULL |
+|  14 | pepsi     |   23 |  40.00 |   200 |
+|  15 | miranda   |   23 | 140.00 |   200 |
++-----+-----------+------+--------+-------+
+5 rows in set (0.00 sec)
+
+mysql> select * from category;
+    -> //
++-----+------------+-----------+
+| cid | cname      | cdesc     |
++-----+------------+-----------+
+| 200 | cold drink | cool cool |
++-----+------------+-----------+
+1 row in set (0.00 sec)
+
+mysql> insert into category values(100,'chips','crispy');
+    -> //
+Query OK, 1 row affected (0.00 sec)
+
+mysql> update product
+    -> set catid=100
+    -> where catid is null;
+    -> //
+Query OK, 3 rows affected (0.01 sec)
+Rows matched: 3  Changed: 3  Warnings: 0
+
+mysql> select * from product;
+    -> //
++-----+-----------+------+--------+-------+
+| pid | pname     | qty  | price  | catid |
++-----+-----------+------+--------+-------+
+|  10 | lays      |   23 |  40.00 |   100 |
+|  12 | nachos    |   23 | 140.00 |   100 |
+|  13 | coca cola |   10 |   NULL |   100 |
+|  14 | pepsi     |   23 |  40.00 |   200 |
+|  15 | miranda   |   23 | 140.00 |   200 |
++-----+-----------+------+--------+-------+
+5 rows in set (0.00 sec)
+
+mysql> select * from category;
+    -> //
++-----+------------+-----------+
+| cid | cname      | cdesc     |
++-----+------------+-----------+
+| 100 | chips      | crispy    |
+| 200 | cold drink | cool cool |
++-----+------------+-----------+
+2 rows in set (0.00 sec)
+
+mysql> call changeprice();
+    -> //
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> select * from product;
+    -> //
++-----+-----------+------+--------+-------+
+| pid | pname     | qty  | price  | catid |
++-----+-----------+------+--------+-------+
+|  10 | lays      |   23 |  44.00 |   100 |
+|  12 | nachos    |   23 | 154.00 |   100 |
+|  13 | coca cola |   10 |   NULL |   100 |
+|  14 | pepsi     |   23 |  48.00 |   200 |
+|  15 | miranda   |   23 | 168.00 |   200 |
++-----+-----------+------+--------+-------+
+5 rows in set (0.00 sec)
+
+mysql> delimiter //
+mysql> create procedure generate_email()
+    -> begin
+    ->    declare str varchar(1000) default '';
+    ->    declare vemail,vename,vjob varchar(50);
+    ->    declare finished int default 0;
+    ->    declare emp_cur cursor for select ename,job from emp;
+    ->    declare continue handler for NOT found set finished=1;
+    ->
+    ->    open emp_cur;
+    ->    l1:loop
+    ->       fetch emp_cur into vename,vjob;
+    ->   if finished=1 then
+    ->      leave l1;
+    ->   end if;
+    ->   set vemail=concat(substr(vename,1,3),'.',substr(vjob,1,3),'@mycompany.com')
+    ->   set str=concat(str,vemail,',');
+    ->
+    ->    end loop;
+    ->    close emp_cur;
+    ->    select str;
+    ->
+    -> end//
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'set str=concat(str,vemail,',');
+
+   end loop;
+   close emp_cur;
+   select str;' at line 16
+mysql> delimiter ;
+mysql> delimiter //
+mysql> create procedure generate_email()
+    -> begin
+    ->    declare str varchar(1000) default '';
+    ->    declare vemail,vename,vjob varchar(50);
+    ->    declare finished int default 0;
+    ->    declare emp_cur cursor for select ename,job from emp;
+    ->    declare continue handler for NOT found set finished=1;
+    ->
+    ->    open emp_cur;
+    ->    l1:loop
+    ->       fetch emp_cur into vename,vjob;
+    ->   if finished=1 then
+    ->      leave l1;
+    ->   end if;
+    ->   set vemail=concat(substr(vename,1,3),'.',substr(vjob,1,3),'@mycompany.com');
+    ->   set str=concat(str,vemail,',');
+    ->
+    ->    end loop;
+    ->    close emp_cur;
+    ->    select str;
+    ->
+    -> end//
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> delimiter ;
+mysql> call generate_email();
++------+
+| str  |
++------+
+| NULL |
++------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+
+mysql> drop procedure generate_email;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> delimiter //
+mysql> create procedure generate_email()
+    -> begin
+    ->    declare str varchar(1000) default '';
+    ->    declare vemail,vename,vjob varchar(50);
+    ->    declare finished int default 0;
+    ->    declare emp_cur cursor for select ename,job from emp;
+    ->    declare continue handler for NOT found set finished=1;
+    ->
+    ->    open emp_cur;
+    ->    l1:loop
+    ->       fetch emp_cur into vename,vjob;
+    ->   if finished=1 then
+    ->      leave l1;
+    ->   end if;
+    ->   if vjob is not null then
+    ->   set vemail=concat(substr(vename,1,3),'.',substr(vjob,1,3),'@mycompany.com');
+    ->   set str=concat(str,vemail,',');
+    ->   end if;
+    ->
+    ->    end loop;
+    ->    close emp_cur;
+    ->    select str;
+    ->
+    -> end//
+Query OK, 0 rows affected (0.01 sec)
+
+
+mysql> call generate_email();
++--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| str                                                                                                                                                                                                                                                                                                                                                                                                          |
++--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| SMI.CLE@mycompany.com,ALL.SAL@mycompany.com,WAR.SAL@mycompany.com,JON.MAN@mycompany.com,MAR.SAL@mycompany.com,BLA.MAN@mycompany.com,CLA.MAN@mycompany.com,SCO.ANA@mycompany.com,KIN.PRE@mycompany.com,TUR.SAL@mycompany.com,ADA.CLE@mycompany.com,JAM.CLE@mycompany.com,FOR.ANA@mycompany.com,MIL.CLE@mycompany.com,Ash.CLE@mycompany.com,Mug.CLE@mycompany.com,ddd.CLE@mycompany.com,ppp.CLE@mycompany.com, |
++--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> SET GLOBAL log_bin_trust_function_creators = 1;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> Delimiter //
+mysql> Create function get_email(name varchar(20),jb varchar(20)) returns varchar(50)
+    -> Begin
+    ->      Declare email varchar(50)
+    ->      Set email=concat((substr(name,1,3),'.',substr(jb,1,3),'@mycompany.com');
+    ->      Return email;
+    -> End//
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Set email=concat((substr(name,1,3),'.',substr(jb,1,3),'@mycompany.com');
+     Re' at line 4
+mysql> Delimiter ;
+mysql> Delimiter //
+mysql> Create function get_email(name varchar(20),jb varchar(20)) returns varchar(50)
+    -> Begin
+    ->      Declare email varchar(50);
+    ->      Set email=concat(substr(name,1,3),'.',substr(jb,1,3),'@mycompany.com');
+    ->      Return email;
+    -> End//
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> Delimiter ;
+mysql> select empno,ename,job,get_email(ename,job) email
+    -> from emp;
++-------+------------+-----------+-----------------------+
+| empno | ename      | job       | email                 |
++-------+------------+-----------+-----------------------+
+|  7369 | SMITH      | CLERK     | SMI.CLE@mycompany.com |
+|  7499 | ALLENXXXXX | SALESMAN  | ALL.SAL@mycompany.com |
+|  7521 | WARD       | SALESMAN  | WAR.SAL@mycompany.com |
+|  7566 | JONES      | MANAGER   | JON.MAN@mycompany.com |
+|  7654 | MARTIN     | SALESMAN  | MAR.SAL@mycompany.com |
+|  7698 | BLAKE      | MANAGER   | BLA.MAN@mycompany.com |
+|  7782 | CLARK      | MANAGER   | CLA.MAN@mycompany.com |
+|  7788 | SCOTT      | ANALYST   | SCO.ANA@mycompany.com |
+|  7839 | KING       | PRESIDENT | KIN.PRE@mycompany.com |
+|  7844 | TURNER     | SALESMAN  | TUR.SAL@mycompany.com |
+|  7876 | ADAMS      | CLERK     | ADA.CLE@mycompany.com |
+|  7900 | JAMES      | CLERK     | JAM.CLE@mycompany.com |
+|  7902 | FORD       | ANALYST   | FOR.ANA@mycompany.com |
+|  7934 | MILLER     | CLERK     | MIL.CLE@mycompany.com |
+|   101 | Ashutosh   | CLERK     | Ash.CLE@mycompany.com |
+|   102 | Mugdha     | CLERK     | Mug.CLE@mycompany.com |
+|   103 | Tanaya     | NULL      | NULL                  |
+|   123 | ddddd      | CLERK     | ddd.CLE@mycompany.com |
+|   124 | pppp       | CLERK     | ppp.CLE@mycompany.com |
++-------+------------+-----------+-----------------------+
+19 rows in set (0.00 sec)
+
+mysql> drop procedure generate_email;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> delimiter //
+mysql> create procedure generate_email()
+    -> begin
+    ->    declare str varchar(1000) default '';
+    ->    declare vemail,vename,vjob varchar(50);
+    ->    declare finished int default 0;
+    ->    declare emp_cur cursor for select ename,job from emp;
+    ->    declare continue handler for NOT found set finished=1;
+    ->
+    ->    open emp_cur;
+    ->    l1:loop
+    ->       fetch emp_cur into vename,vjob;
+    ->   if finished=1 then
+    ->      leave l1;
+    ->   end if;
+    ->   if vjob is not null then
+    ->   set vemail=get_email(vename,vjob);
+    ->   set str=concat(str,vemail,',');
+    ->   end if;
+    ->
+    ->    end loop;
+    ->    close emp_cur;
+    ->    select str;
+    ->
+    -> end//
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> delimiter ;
+mysql> call generate_email();
++--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| str                                                                                                                                                                                                                                                                                                                                                                                                          |
++--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| SMI.CLE@mycompany.com,ALL.SAL@mycompany.com,WAR.SAL@mycompany.com,JON.MAN@mycompany.com,MAR.SAL@mycompany.com,BLA.MAN@mycompany.com,CLA.MAN@mycompany.com,SCO.ANA@mycompany.com,KIN.PRE@mycompany.com,TUR.SAL@mycompany.com,ADA.CLE@mycompany.com,JAM.CLE@mycompany.com,FOR.ANA@mycompany.com,MIL.CLE@mycompany.com,Ash.CLE@mycompany.com,Mug.CLE@mycompany.com,ddd.CLE@mycompany.com,ppp.CLE@mycompany.com, |
++--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> select empno,ename,hiredate,floor(datediff(curdate(),hiredate)/365)
+    -> from emp;
++-------+------------+------------+-----------------------------------------+
+| empno | ename      | hiredate   | floor(datediff(curdate(),hiredate)/365) |
++-------+------------+------------+-----------------------------------------+
+|  7369 | SMITH      | 1980-12-17 |                                      42 |
+|  7499 | ALLENXXXXX | 1981-02-20 |                                      42 |
+|  7521 | WARD       | 1981-02-22 |                                      42 |
+|  7566 | JONES      | 1981-04-02 |                                      42 |
+|  7654 | MARTIN     | 1981-09-28 |                                      41 |
+|  7698 | BLAKE      | 1981-05-01 |                                      41 |
+|  7782 | CLARK      | 1981-06-09 |                                      41 |
+|  7788 | SCOTT      | 1982-12-09 |                                      40 |
+|  7839 | KING       | 1981-11-17 |                                      41 |
+|  7844 | TURNER     | 1981-09-08 |                                      41 |
+|  7876 | ADAMS      | 1983-01-12 |                                      40 |
+|  7900 | JAMES      | 1981-12-03 |                                      41 |
+|  7902 | FORD       | 1981-12-03 |                                      41 |
+|  7934 | MILLER     | 1982-01-23 |                                      41 |
+|   101 | Ashutosh   | 2000-10-11 |                                      22 |
+|   102 | Mugdha     | 2000-10-11 |                                      22 |
+|   103 | Tanaya     | NULL       |                                    NULL |
+|   123 | ddddd      | 2022-11-11 |                                       0 |
+|   124 | pppp       | 2022-11-11 |                                       0 |
++-------+------------+------------+-----------------------------------------+
+19 rows in set (0.00 sec)
+
+mysql> delimiter //
+mysql> create function get_exp(hdate date) returns int
+    -> begin
+    ->    declare exp int;
+    ->    set exp=floor(datediff(curdate(),hdate)/365);
+    ->    return exp;
+    -> end//
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> select empno,ename,hiredate,get_exp(hiredate)
+    -> from emp;
+    -> //
++-------+------------+------------+-------------------+
+| empno | ename      | hiredate   | get_exp(hiredate) |
++-------+------------+------------+-------------------+
+|  7369 | SMITH      | 1980-12-17 |                42 |
+|  7499 | ALLENXXXXX | 1981-02-20 |                42 |
+|  7521 | WARD       | 1981-02-22 |                42 |
+|  7566 | JONES      | 1981-04-02 |                42 |
+|  7654 | MARTIN     | 1981-09-28 |                41 |
+|  7698 | BLAKE      | 1981-05-01 |                41 |
+|  7782 | CLARK      | 1981-06-09 |                41 |
+|  7788 | SCOTT      | 1982-12-09 |                40 |
+|  7839 | KING       | 1981-11-17 |                41 |
+|  7844 | TURNER     | 1981-09-08 |                41 |
+|  7876 | ADAMS      | 1983-01-12 |                40 |
+|  7900 | JAMES      | 1981-12-03 |                41 |
+|  7902 | FORD       | 1981-12-03 |                41 |
+|  7934 | MILLER     | 1982-01-23 |                41 |
+|   101 | Ashutosh   | 2000-10-11 |                22 |
+|   102 | Mugdha     | 2000-10-11 |                22 |
+|   103 | Tanaya     | NULL       |              NULL |
+|   123 | ddddd      | 2022-11-11 |                 0 |
+|   124 | pppp       | 2022-11-11 |                 0 |
++-------+------------+------------+-------------------+
+19 rows in set (0.00 sec)
+
+mysql> Delimiter //
+mysql> Create function get_discount(pr double(9,2), qty int) returns double(9,2)
+    -> Begin
+    ->     Declare dis_price double(9,2) default 0;
+    ->      If qty<20 then
+    ->           Set dis_price=0.9*pr;
+    ->      Elseif qty<30 then
+    ->          Set dis_price=0.8*pr;
+    ->      Else
+    ->          Set dis_price=0.7*pr;
+    ->     End if;
+    ->     Return dis_price;
+    ->
+    -> End//
+Query OK, 0 rows affected, 3 warnings (0.01 sec)
+
+mysql> select pid,pname,qty,price,get_discount(price,qty)
+    -> from product;
+    -> //
++-----+-----------+------+--------+-------------------------+
+| pid | pname     | qty  | price  | get_discount(price,qty) |
++-----+-----------+------+--------+-------------------------+
+|  10 | lays      |   23 |  44.00 |                   35.20 |
+|  12 | nachos    |   23 | 154.00 |                  123.20 |
+|  13 | coca cola |   10 |   NULL |                    NULL |
+|  14 | pepsi     |   23 |  48.00 |                   38.40 |
+|  15 | miranda   |   23 | 168.00 |                  134.40 |
++-----+-----------+------+--------+-------------------------+
+5 rows in set (0.00 sec)
+
+mysql> select pid,pname,qty,price,get_discount(price,qty)
+    -> from product
+    -> where get_discount(price,qty)>35;
+    -> //
++-----+---------+------+--------+-------------------------+
+| pid | pname   | qty  | price  | get_discount(price,qty) |
++-----+---------+------+--------+-------------------------+
+|  10 | lays    |   23 |  44.00 |                   35.20 |
+|  12 | nachos  |   23 | 154.00 |                  123.20 |
+|  14 | pepsi   |   23 |  48.00 |                   38.40 |
+|  15 | miranda |   23 | 168.00 |                  134.40 |
++-----+---------+------+--------+-------------------------+
+4 rows in set (0.00 sec)
+
+mysql> select pid,pname,qty,price,get_discount(price,qty)
+    -> from product
+    -> where get_discount(price,qty)>36;
+    -> //
++-----+---------+------+--------+-------------------------+
+| pid | pname   | qty  | price  | get_discount(price,qty) |
++-----+---------+------+--------+-------------------------+
+|  12 | nachos  |   23 | 154.00 |                  123.20 |
+|  14 | pepsi   |   23 |  48.00 |                   38.40 |
+|  15 | miranda |   23 | 168.00 |                  134.40 |
++-----+---------+------+--------+-------------------------+
+3 rows in set (0.00 sec)
+
+mysql> Create table empsecurity(
+    -> Empno int,
+    -> Ename varchar(20),
+    -> Action varchar(20),
+    -> Oldsal double(9,2),
+    -> Newsal double(9,2),
+    -> Uname varchar(20),
+    -> Act_date date);
+    -> //
+Query OK, 0 rows affected, 2 warnings (0.06 sec)
+
+mysql> Create trigger emp_update before update on emp
+    -> For each row
+    -> Begin
+    ->      Insert into empsecurity values(OLD.empno,OLD.ename,’update’,OLD.sal,NEW.sal,user(),curdate())
+    -> End//
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '?update?,OLD.sal,NEW.sal,user(),curdate())
+End' at line 4
+mysql> delimiter //
+mysql> Create trigger emp_update before update on emp
+    -> For each row
+    -> Begin
+    ->      Insert into empsecurity values(OLD.empno,OLD.ename,'update',OLD.sal,NEW.sal,user(),curdate());
+    -> End//
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> delimiter ;
+mysql> update emp
+    -> set sal=sal*1.1
+    -> where sal<2000;
+Query OK, 8 rows affected (0.01 sec)
+Rows matched: 8  Changed: 8  Warnings: 0
+
+mysql> select * from empsecurity;
++-------+------------+--------+---------+---------+----------------+------------+
+| Empno | Ename      | Action | Oldsal  | Newsal  | Uname          | Act_date   |
++-------+------------+--------+---------+---------+----------------+------------+
+|  7369 | SMITH      | update | 1000.00 | 1100.00 | root@localhost | 2023-04-11 |
+|  7499 | ALLENXXXXX | update | 1728.00 | 1900.80 | root@localhost | 2023-04-11 |
+|  7521 | WARD       | update | 1350.00 | 1485.00 | root@localhost | 2023-04-11 |
+|  7654 | MARTIN     | update | 1350.00 | 1485.00 | root@localhost | 2023-04-11 |
+|  7844 | TURNER     | update | 1620.00 | 1782.00 | root@localhost | 2023-04-11 |
+|  7876 | ADAMS      | update | 1375.00 | 1512.50 | root@localhost | 2023-04-11 |
+|  7900 | JAMES      | update | 1187.50 | 1306.25 | root@localhost | 2023-04-11 |
+|  7934 | MILLER     | update | 1625.00 | 1787.50 | root@localhost | 2023-04-11 |
++-------+------------+--------+---------+---------+----------------+------------+
+8 rows in set (0.00 sec)
+
+mysql>

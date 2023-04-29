@@ -1,0 +1,656 @@
+Enter password: *******
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 8
+Server version: 8.0.22 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> create index idx_dept
+    -> on dept(dname);
+ERROR 1046 (3D000): No database selected
+mysql> use DACmarch23;
+Database changed
+mysql> create index idx_dept
+    -> on dept(dname);
+Query OK, 0 rows affected (0.07 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> show indexes on dept;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'on dept' at line 1
+mysql> show indexes from dept;
++-------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
+| Table | Non_unique | Key_name | Seq_in_index | Column_name | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment | Visible | Expression |
++-------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
+| dept  |          0 | PRIMARY  |            1 | DEPTNO      | A         |           6 |     NULL |   NULL |      | BTREE      |         |               | YES     | NULL       |
+| dept  |          1 | idx_dept |            1 | DNAME       | A         |           6 |     NULL |   NULL | YES  | BTREE      |         |               | YES     | NULL       |
++-------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
+2 rows in set (0.03 sec)
+
+mysql> explain select *
+    -> from dept
+    -> where dname='SALES';
++----+-------------+-------+------------+------+---------------+----------+---------+-------+------+----------+-------+
+| id | select_type | table | partitions | type | possible_keys | key      | key_len | ref   | rows | filtered | Extra |
++----+-------------+-------+------------+------+---------------+----------+---------+-------+------+----------+-------+
+|  1 | SIMPLE      | dept  | NULL       | ref  | idx_dept      | idx_dept | 59      | const |    1 |   100.00 | NULL  |
++----+-------------+-------+------------+------+---------------+----------+---------+-------+------+----------+-------+
+1 row in set, 1 warning (0.01 sec)
+
+mysql> explain select *
+    -> from dept
+    -> where deptno between (10,40);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 3
+mysql> explain select *
+    -> from dept
+    -> where deptno between 10 and 40;
++----+-------------+-------+------------+-------+---------------+---------+---------+------+------+----------+-------------+
+| id | select_type | table | partitions | type  | possible_keys | key     | key_len | ref  | rows | filtered | Extra       |
++----+-------------+-------+------------+-------+---------------+---------+---------+------+------+----------+-------------+
+|  1 | SIMPLE      | dept  | NULL       | range | PRIMARY       | PRIMARY | 4       | NULL |    4 |   100.00 | Using where |
++----+-------------+-------+------------+-------+---------------+---------+---------+------+------+----------+-------------+
+1 row in set, 1 warning (0.01 sec)
+
+mysql> Create view mgr10
+    -> As
+    -> Select *
+    -> From emp
+    -> Where deptno=10;
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> select * from mgr10;
++-------+----------+-----------+------+------------+---------+--------+--------+
+| EMPNO | ENAME    | JOB       | MGR  | HIREDATE   | SAL     | COMM   | DEPTNO |
++-------+----------+-----------+------+------------+---------+--------+--------+
+|  7782 | CLARK    | MANAGER   | 7839 | 1981-06-09 | 2450.00 |   NULL |     10 |
+|  7839 | KING     | PRESIDENT | NULL | 1981-11-17 | 5000.00 |   NULL |     10 |
+|  7934 | MILLER   | CLERK     | 7782 | 1982-01-23 | 1300.00 |   NULL |     10 |
+|   101 | Ashutosh | CLERK     | 7902 | 2000-10-11 | 3456.00 | 345.00 |     10 |
+|   102 | Mugdha   | CLERK     | 7902 | 2000-10-11 | 3456.00 | 345.00 |     10 |
++-------+----------+-----------+------+------------+---------+--------+--------+
+5 rows in set (0.01 sec)
+
+mysql> insert into mgr10 values(123,'ddddd','CLERK',7782,'2022-11-11',34566,456,10);
+Query OK, 1 row affected (0.02 sec)
+
+mysql> select * from mgr10;
++-------+----------+-----------+------+------------+----------+--------+--------+
+| EMPNO | ENAME    | JOB       | MGR  | HIREDATE   | SAL      | COMM   | DEPTNO |
++-------+----------+-----------+------+------------+----------+--------+--------+
+|  7782 | CLARK    | MANAGER   | 7839 | 1981-06-09 |  2450.00 |   NULL |     10 |
+|  7839 | KING     | PRESIDENT | NULL | 1981-11-17 |  5000.00 |   NULL |     10 |
+|  7934 | MILLER   | CLERK     | 7782 | 1982-01-23 |  1300.00 |   NULL |     10 |
+|   101 | Ashutosh | CLERK     | 7902 | 2000-10-11 |  3456.00 | 345.00 |     10 |
+|   102 | Mugdha   | CLERK     | 7902 | 2000-10-11 |  3456.00 | 345.00 |     10 |
+|   123 | ddddd    | CLERK     | 7782 | 2022-11-11 | 34566.00 | 456.00 |     10 |
++-------+----------+-----------+------+------------+----------+--------+--------+
+6 rows in set (0.00 sec)
+
+mysql> select * from emp;
++-------+------------+-----------+------+------------+----------+---------+--------+
+| EMPNO | ENAME      | JOB       | MGR  | HIREDATE   | SAL      | COMM    | DEPTNO |
++-------+------------+-----------+------+------------+----------+---------+--------+
+|  7369 | SMITH      | CLERK     | 7902 | 1980-12-17 |   800.00 |    NULL |     20 |
+|  7499 | ALLENXXXXX | SALESMAN  | 7698 | 1981-02-20 |  1600.00 |  300.00 |     30 |
+|  7521 | WARD       | SALESMAN  | 7698 | 1981-02-22 |  1250.00 |  500.00 |     30 |
+|  7566 | JONES      | MANAGER   | 7839 | 1981-04-02 |  2975.00 |    NULL |     20 |
+|  7654 | MARTIN     | SALESMAN  | 7698 | 1981-09-28 |  1250.00 | 1400.00 |     30 |
+|  7698 | BLAKE      | MANAGER   | 7839 | 1981-05-01 |  2850.00 |    NULL |     30 |
+|  7782 | CLARK      | MANAGER   | 7839 | 1981-06-09 |  2450.00 |    NULL |     10 |
+|  7788 | SCOTT      | ANALYST   | 7566 | 1982-12-09 |  3000.00 |    NULL |     20 |
+|  7839 | KING       | PRESIDENT | NULL | 1981-11-17 |  5000.00 |    NULL |     10 |
+|  7844 | TURNER     | SALESMAN  | 7698 | 1981-09-08 |  1500.00 |    0.00 |     30 |
+|  7876 | ADAMS      | CLERK     | 7788 | 1983-01-12 |  1100.00 |    NULL |     20 |
+|  7900 | JAMES      | CLERK     | 7698 | 1981-12-03 |   950.00 |    NULL |     30 |
+|  7902 | FORD       | ANALYST   | 7566 | 1981-12-03 |  3000.00 |    NULL |     20 |
+|  7934 | MILLER     | CLERK     | 7782 | 1982-01-23 |  1300.00 |    NULL |     10 |
+|   101 | Ashutosh   | CLERK     | 7902 | 2000-10-11 |  3456.00 |  345.00 |     10 |
+|   102 | Mugdha     | CLERK     | 7902 | 2000-10-11 |  3456.00 |  345.00 |     10 |
+|   103 | Tanaya     | NULL      | NULL | NULL       |  7555.00 |    NULL |   NULL |
+|   123 | ddddd      | CLERK     | 7782 | 2022-11-11 | 34566.00 |  456.00 |     10 |
++-------+------------+-----------+------+------------+----------+---------+--------+
+18 rows in set (0.00 sec)
+
+mysql> insert into mgr10 values(124,'pppp','CLERK',7782,'2022-11-11',34566,456,20);
+Query OK, 1 row affected (0.02 sec)
+
+mysql> select * from mgr10;
++-------+----------+-----------+------+------------+----------+--------+--------+
+| EMPNO | ENAME    | JOB       | MGR  | HIREDATE   | SAL      | COMM   | DEPTNO |
++-------+----------+-----------+------+------------+----------+--------+--------+
+|  7782 | CLARK    | MANAGER   | 7839 | 1981-06-09 |  2450.00 |   NULL |     10 |
+|  7839 | KING     | PRESIDENT | NULL | 1981-11-17 |  5000.00 |   NULL |     10 |
+|  7934 | MILLER   | CLERK     | 7782 | 1982-01-23 |  1300.00 |   NULL |     10 |
+|   101 | Ashutosh | CLERK     | 7902 | 2000-10-11 |  3456.00 | 345.00 |     10 |
+|   102 | Mugdha   | CLERK     | 7902 | 2000-10-11 |  3456.00 | 345.00 |     10 |
+|   123 | ddddd    | CLERK     | 7782 | 2022-11-11 | 34566.00 | 456.00 |     10 |
++-------+----------+-----------+------+------------+----------+--------+--------+
+6 rows in set (0.00 sec)
+
+mysql> select * from emp;
++-------+------------+-----------+------+------------+----------+---------+--------+
+| EMPNO | ENAME      | JOB       | MGR  | HIREDATE   | SAL      | COMM    | DEPTNO |
++-------+------------+-----------+------+------------+----------+---------+--------+
+|  7369 | SMITH      | CLERK     | 7902 | 1980-12-17 |   800.00 |    NULL |     20 |
+|  7499 | ALLENXXXXX | SALESMAN  | 7698 | 1981-02-20 |  1600.00 |  300.00 |     30 |
+|  7521 | WARD       | SALESMAN  | 7698 | 1981-02-22 |  1250.00 |  500.00 |     30 |
+|  7566 | JONES      | MANAGER   | 7839 | 1981-04-02 |  2975.00 |    NULL |     20 |
+|  7654 | MARTIN     | SALESMAN  | 7698 | 1981-09-28 |  1250.00 | 1400.00 |     30 |
+|  7698 | BLAKE      | MANAGER   | 7839 | 1981-05-01 |  2850.00 |    NULL |     30 |
+|  7782 | CLARK      | MANAGER   | 7839 | 1981-06-09 |  2450.00 |    NULL |     10 |
+|  7788 | SCOTT      | ANALYST   | 7566 | 1982-12-09 |  3000.00 |    NULL |     20 |
+|  7839 | KING       | PRESIDENT | NULL | 1981-11-17 |  5000.00 |    NULL |     10 |
+|  7844 | TURNER     | SALESMAN  | 7698 | 1981-09-08 |  1500.00 |    0.00 |     30 |
+|  7876 | ADAMS      | CLERK     | 7788 | 1983-01-12 |  1100.00 |    NULL |     20 |
+|  7900 | JAMES      | CLERK     | 7698 | 1981-12-03 |   950.00 |    NULL |     30 |
+|  7902 | FORD       | ANALYST   | 7566 | 1981-12-03 |  3000.00 |    NULL |     20 |
+|  7934 | MILLER     | CLERK     | 7782 | 1982-01-23 |  1300.00 |    NULL |     10 |
+|   101 | Ashutosh   | CLERK     | 7902 | 2000-10-11 |  3456.00 |  345.00 |     10 |
+|   102 | Mugdha     | CLERK     | 7902 | 2000-10-11 |  3456.00 |  345.00 |     10 |
+|   103 | Tanaya     | NULL      | NULL | NULL       |  7555.00 |    NULL |   NULL |
+|   123 | ddddd      | CLERK     | 7782 | 2022-11-11 | 34566.00 |  456.00 |     10 |
+|   124 | pppp       | CLERK     | 7782 | 2022-11-11 | 34566.00 |  456.00 |     20 |
++-------+------------+-----------+------+------------+----------+---------+--------+
+19 rows in set (0.00 sec)
+
+mysql> drop view mgr10;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> Create view mgr10
+    -> As
+    -> Select *
+    -> From emp
+    -> Where deptno=10
+    -> with check option;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> insert into mgr10 values(125,'ssssss','CLERK',7782,'2022-11-11',34566,456,10);
+Query OK, 1 row affected (0.02 sec)
+
+mysql> insert into mgr10 values(126.','CLERK',7782,'2022-11-11',34566,456,20);
+    '>
+    '> ^C
+mysql> insert into mgr10 values(126,'gggggg','CLERK',7782,'2022-11-11',34566,456,20);
+ERROR 1369 (HY000): CHECK OPTION failed 'dacmarch23.mgr10'
+mysql> delete from mgr10 where empno=125;
+Query OK, 1 row affected (0.02 sec)
+
+mysql> create view mydept1
+    -> as
+    -> select *
+    -> from dept
+    -> whe^C
+mysql> create view mydept1
+    -> as
+    -> select dname,loc
+    -> from dept
+    -> ;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> select * from mydept1;
++------------+----------+
+| dname      | loc      |
++------------+----------+
+| ACCOUNTING | NEW YORK |
+| RESEARCH   | Pune     |
+| SALES      | Pune     |
+| OPERATIONS | BOSTON   |
+| HR         | pune     |
+| admin      | pune     |
++------------+----------+
+6 rows in set (0.01 sec)
+
+mysql> insert into mydept1 values('vvvv','dddd');
+ERROR 1423 (HY000): Field of view 'dacmarch23.mydept1' underlying table doesn't have a default value
+mysql> select *
+    -> from emp
+    -> ^C
+mysql> select *
+    -> from emp e,dept d
+    -> where e.deptno=d.deptno;
++-------+------------+-----------+------+------------+----------+---------+--------+--------+------------+----------+
+| EMPNO | ENAME      | JOB       | MGR  | HIREDATE   | SAL      | COMM    | DEPTNO | DEPTNO | DNAME      | LOC      |
++-------+------------+-----------+------+------------+----------+---------+--------+--------+------------+----------+
+|  7782 | CLARK      | MANAGER   | 7839 | 1981-06-09 |  2450.00 |    NULL |     10 |     10 | ACCOUNTING | NEW YORK |
+|  7839 | KING       | PRESIDENT | NULL | 1981-11-17 |  5000.00 |    NULL |     10 |     10 | ACCOUNTING | NEW YORK |
+|  7934 | MILLER     | CLERK     | 7782 | 1982-01-23 |  1300.00 |    NULL |     10 |     10 | ACCOUNTING | NEW YORK |
+|   101 | Ashutosh   | CLERK     | 7902 | 2000-10-11 |  3456.00 |  345.00 |     10 |     10 | ACCOUNTING | NEW YORK |
+|   102 | Mugdha     | CLERK     | 7902 | 2000-10-11 |  3456.00 |  345.00 |     10 |     10 | ACCOUNTING | NEW YORK |
+|   123 | ddddd      | CLERK     | 7782 | 2022-11-11 | 34566.00 |  456.00 |     10 |     10 | ACCOUNTING | NEW YORK |
+|  7369 | SMITH      | CLERK     | 7902 | 1980-12-17 |   800.00 |    NULL |     20 |     20 | RESEARCH   | Pune     |
+|  7566 | JONES      | MANAGER   | 7839 | 1981-04-02 |  2975.00 |    NULL |     20 |     20 | RESEARCH   | Pune     |
+|  7788 | SCOTT      | ANALYST   | 7566 | 1982-12-09 |  3000.00 |    NULL |     20 |     20 | RESEARCH   | Pune     |
+|  7876 | ADAMS      | CLERK     | 7788 | 1983-01-12 |  1100.00 |    NULL |     20 |     20 | RESEARCH   | Pune     |
+|  7902 | FORD       | ANALYST   | 7566 | 1981-12-03 |  3000.00 |    NULL |     20 |     20 | RESEARCH   | Pune     |
+|   124 | pppp       | CLERK     | 7782 | 2022-11-11 | 34566.00 |  456.00 |     20 |     20 | RESEARCH   | Pune     |
+|  7499 | ALLENXXXXX | SALESMAN  | 7698 | 1981-02-20 |  1600.00 |  300.00 |     30 |     30 | SALES      | Pune     |
+|  7521 | WARD       | SALESMAN  | 7698 | 1981-02-22 |  1250.00 |  500.00 |     30 |     30 | SALES      | Pune     |
+|  7654 | MARTIN     | SALESMAN  | 7698 | 1981-09-28 |  1250.00 | 1400.00 |     30 |     30 | SALES      | Pune     |
+|  7698 | BLAKE      | MANAGER   | 7839 | 1981-05-01 |  2850.00 |    NULL |     30 |     30 | SALES      | Pune     |
+|  7844 | TURNER     | SALESMAN  | 7698 | 1981-09-08 |  1500.00 |    0.00 |     30 |     30 | SALES      | Pune     |
+|  7900 | JAMES      | CLERK     | 7698 | 1981-12-03 |   950.00 |    NULL |     30 |     30 | SALES      | Pune     |
++-------+------------+-----------+------+------------+----------+---------+--------+--------+------------+----------+
+18 rows in set (0.00 sec)
+
+mysql> select *
+    -> from emp e,dept d
+    -> where e.deptno=d.deptno;
++-------+------------+-----------+------+------------+----------+---------+--------+--------+------------+----------+
+| EMPNO | ENAME      | JOB       | MGR  | HIREDATE   | SAL      | COMM    | DEPTNO | DEPTNO | DNAME      | LOC      |
++-------+------------+-----------+------+------------+----------+---------+--------+--------+------------+----------+
+|  7782 | CLARK      | MANAGER   | 7839 | 1981-06-09 |  2450.00 |    NULL |     10 |     10 | ACCOUNTING | NEW YORK |
+|  7839 | KING       | PRESIDENT | NULL | 1981-11-17 |  5000.00 |    NULL |     10 |     10 | ACCOUNTING | NEW YORK |
+|  7934 | MILLER     | CLERK     | 7782 | 1982-01-23 |  1300.00 |    NULL |     10 |     10 | ACCOUNTING | NEW YORK |
+|   101 | Ashutosh   | CLERK     | 7902 | 2000-10-11 |  3456.00 |  345.00 |     10 |     10 | ACCOUNTING | NEW YORK |
+|   102 | Mugdha     | CLERK     | 7902 | 2000-10-11 |  3456.00 |  345.00 |     10 |     10 | ACCOUNTING | NEW YORK |
+|   123 | ddddd      | CLERK     | 7782 | 2022-11-11 | 34566.00 |  456.00 |     10 |     10 | ACCOUNTING | NEW YORK |
+|  7369 | SMITH      | CLERK     | 7902 | 1980-12-17 |   800.00 |    NULL |     20 |     20 | RESEARCH   | Pune     |
+|  7566 | JONES      | MANAGER   | 7839 | 1981-04-02 |  2975.00 |    NULL |     20 |     20 | RESEARCH   | Pune     |
+|  7788 | SCOTT      | ANALYST   | 7566 | 1982-12-09 |  3000.00 |    NULL |     20 |     20 | RESEARCH   | Pune     |
+|  7876 | ADAMS      | CLERK     | 7788 | 1983-01-12 |  1100.00 |    NULL |     20 |     20 | RESEARCH   | Pune     |
+|  7902 | FORD       | ANALYST   | 7566 | 1981-12-03 |  3000.00 |    NULL |     20 |     20 | RESEARCH   | Pune     |
+|   124 | pppp       | CLERK     | 7782 | 2022-11-11 | 34566.00 |  456.00 |     20 |     20 | RESEARCH   | Pune     |
+|  7499 | ALLENXXXXX | SALESMAN  | 7698 | 1981-02-20 |  1600.00 |  300.00 |     30 |     30 | SALES      | Pune     |
+|  7521 | WARD       | SALESMAN  | 7698 | 1981-02-22 |  1250.00 |  500.00 |     30 |     30 | SALES      | Pune     |
+|  7654 | MARTIN     | SALESMAN  | 7698 | 1981-09-28 |  1250.00 | 1400.00 |     30 |     30 | SALES      | Pune     |
+|  7698 | BLAKE      | MANAGER   | 7839 | 1981-05-01 |  2850.00 |    NULL |     30 |     30 | SALES      | Pune     |
+|  7844 | TURNER     | SALESMAN  | 7698 | 1981-09-08 |  1500.00 |    0.00 |     30 |     30 | SALES      | Pune     |
+|  7900 | JAMES      | CLERK     | 7698 | 1981-12-03 |   950.00 |    NULL |     30 |     30 | SALES      | Pune     |
++-------+------------+-----------+------+------------+----------+---------+--------+--------+------------+----------+
+18 rows in set (0.00 sec)
+
+mysql> create view empdept
+    -> as
+    -> select *
+    -> from emp e ,dept d
+    -> where e.deptno=d.deptno;
+ERROR 1060 (42S21): Duplicate column name 'DEPTNO'
+mysql> create view empdept
+    -> as
+    -> select empno,ename.e.deptno,dname
+    -> from emp e ,dept d
+    -> where e.deptno=d.deptno;^C
+mysql> create view empdept
+    -> as
+    -> select empno,ename,e.deptno,dname
+    -> from emp e ,dept d
+    -> where e.deptno=d.deptno;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> select * from empdept;
++-------+------------+--------+------------+
+| empno | ename      | deptno | dname      |
++-------+------------+--------+------------+
+|  7782 | CLARK      |     10 | ACCOUNTING |
+|  7839 | KING       |     10 | ACCOUNTING |
+|  7934 | MILLER     |     10 | ACCOUNTING |
+|   101 | Ashutosh   |     10 | ACCOUNTING |
+|   102 | Mugdha     |     10 | ACCOUNTING |
+|   123 | ddddd      |     10 | ACCOUNTING |
+|  7369 | SMITH      |     20 | RESEARCH   |
+|  7566 | JONES      |     20 | RESEARCH   |
+|  7788 | SCOTT      |     20 | RESEARCH   |
+|  7876 | ADAMS      |     20 | RESEARCH   |
+|  7902 | FORD       |     20 | RESEARCH   |
+|   124 | pppp       |     20 | RESEARCH   |
+|  7499 | ALLENXXXXX |     30 | SALES      |
+|  7521 | WARD       |     30 | SALES      |
+|  7654 | MARTIN     |     30 | SALES      |
+|  7698 | BLAKE      |     30 | SALES      |
+|  7844 | TURNER     |     30 | SALES      |
+|  7900 | JAMES      |     30 | SALES      |
++-------+------------+--------+------------+
+18 rows in set (0.00 sec)
+
+mysql> create view empaggregate
+    -> as
+    -> select deptno,count(*),sum(sal),min(sal),max(sal)
+    -> from emp
+    -> group by deptno;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> select * from empaggregate;
++--------+----------+----------+----------+----------+
+| deptno | count(*) | sum(sal) | min(sal) | max(sal) |
++--------+----------+----------+----------+----------+
+|   NULL |        1 |  7555.00 |  7555.00 |  7555.00 |
+|     10 |        6 | 50228.00 |  1300.00 | 34566.00 |
+|     20 |        6 | 45441.00 |   800.00 | 34566.00 |
+|     30 |        6 |  9400.00 |   950.00 |  2850.00 |
++--------+----------+----------+----------+----------+
+4 rows in set (0.00 sec)
+
+mysql> create view as all_emp
+    -> as
+    -> select* from emp_us
+    -> union
+    -> select * from emp_india
+    -> union
+    -> select * from emp_japan;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'as all_emp
+as
+select* from emp_us
+union
+select * from emp_india
+union
+select * f' at line 1
+mysql> create view as all_emp
+    -> as
+    -> select * from emp_us
+    -> union
+    -> select * from emp_india
+    -> union
+    -> select * from emp_japan;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'as all_emp
+as
+select * from emp_us
+union
+select * from emp_india
+union
+select * ' at line 1
+mysql> create view all_emp
+    -> as
+    -> select * from emp_us
+    -> union
+    -> select * from emp_india
+    -> union
+    -> select * from emp_japan;
+ERROR 1146 (42S02): Table 'dacmarch23.emp_us' doesn't exist
+mysql> use test;
+Database changed
+mysql> create view all_emp
+    -> as
+    -> select * from emp_us
+    -> union
+    -> select * from emp_india
+    -> union
+    -> select * from emp_japan;
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> Delimiter //
+mysql> Create procedure getcnt_by_dept(pdno int,out cnt int)
+    -> Begin
+    -> Select count(*) into cnt from emp where deptno= pdno;
+    -> End//
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> Delimiter ;
+mysql> call  getcnt_by_dept(10,@c);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select @c;
++------+
+| @c   |
++------+
+|    5 |
++------+
+1 row in set (0.00 sec)
+
+mysql> select count(*) from emp where deptno=10;
++----------+
+| count(*) |
++----------+
+|        5 |
++----------+
+1 row in set (0.00 sec)
+
+mysql> delimiter //
+mysql> create procedure get_cnt_min(dno int,out cnt int,out minsal double(9,2)
+    -> begin
+    -> ^C
+mysql> delimiter //
+mysql> create procedure get_cnt_min(dno int,out cnt int,out minsal double(9,2))
+    ->     begin
+    -> select count(*) ,min(sal) into cnt,minsal
+    -> from emp
+    -> where deptno=dno
+    -> end//
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'end' at line 6
+mysql> dlimiter ;
+    -> ^C
+mysql> delimiter //
+mysql> create procedure get_cnt_min(dno int,out cnt int,out minsal double(9,2))
+    ->     begin
+    -> select count(*) ,min(sal) into cnt,minsal
+    -> from emp
+    -> where deptno=dno;
+    -> end//
+Query OK, 0 rows affected, 1 warning (0.01 sec)
+
+mysql> delimiter ;
+mysql> call get_cnt_min(10,@c,@m)
+    -> ;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select @c,@m;
++------+------+
+| @c   | @m   |
++------+------+
+|    5 | 1300 |
++------+------+
+1 row in set (0.00 sec)
+
+mysql> delimiter //
+mysql> create procedure inccnt(inout cnt int)
+    -> begin
+    -> set cnt =cnt+10;
+    -> end//
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> delimiter ;
+mysql> set c=5
+    -> ;
+ERROR 1193 (HY000): Unknown system variable 'c'
+mysql> set @c=5
+    -> ;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> call inccnt(@c);
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select @c;
++------+
+| @c   |
++------+
+|   15 |
++------+
+1 row in set (0.00 sec)
+
+mysql> delimiter //
+mysql> create procedure disp_data(dno int,s double(5,2))
+    -> begin
+    ->     select *
+    ->    from emp
+    ->   where deptno=dno and sal>s;
+    -> end//
+Query OK, 0 rows affected, 1 warning (0.01 sec)
+
+mysql> delimiter ;
+mysql> call disp_data(10,2000);
+ERROR 1264 (22003): Out of range value for column 's' at row 1
+mysql> create procedure disp_data(dno int,s double(9,2))
+    -> begin
+    ->     select *
+    ->    from emp
+    ->   where deptno=dno and sal>s;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 5
+mysql> drop procedure disp_data;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> create procedure disp_data(dno int,s double(9,2))
+    -> create procedure disp_data(dno int,s double(9,2))^C
+mysql>
+mysql>
+mysql> delimiter //
+mysql> delimiter //
+mysql> create procedure disp_data(dno int,s double(9,2))
+    -> begin
+    ->     select *
+    ->    from emp
+    ->   where deptno=dno and sal>s;
+    -> end//
+Query OK, 0 rows affected, 1 warning (0.01 sec)
+
+mysql> delimiter ;
+mysql> call disp_data(10,2000);
++-------+-------+-----------+------+------------+----------+---------+--------+
+| EMPNO | ENAME | JOB       | MGR  | HIREDATE   | SAL      | COMM    | DEPTNO |
++-------+-------+-----------+------+------------+----------+---------+--------+
+|  7782 | CLARK | MANAGER   | 7839 | 1981-06-09 |  2450.00 |    NULL |     10 |
+|  7839 | KING  | PRESIDENT | NULL | 1981-11-17 |  5000.00 |    NULL |     10 |
+|   123 | Rajan | Designer  | 7902 | 2017-01-01 | 34567.00 | 3456.00 |     10 |
+|  1211 | xxxx  | mmm       | 7902 | 2018-02-02 |  3456.00 |  456.00 |     10 |
++-------+-------+-----------+------+------------+----------+---------+--------+
+4 rows in set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> Delimiter //
+mysql> Create procedure get_remark(peno int,out remark varchar(20))
+    -> Begin
+    -> Declare vcomm int default 0;
+    -> Select comm into vcomm
+    -> From emp
+    -> Where empno=peno;
+    -> If vcomm is null or vcomm=0 then
+    ->       Set remark=’need improvement’;
+    -> Elseif vcomm<300 then
+    ->      Set remark=’ok’;
+    -> Elseif vcomm>=300 and vcomm<500 then
+    ->      Set remark=’good’;
+    -> Else
+    ->      Set remark=’excellent’;
+    -> End if;
+    -> Select remark
+    -> End//
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '?need improvement?;
+Elseif vcomm<300 then
+     Set remark=?ok?;
+Elseif vcomm>=3' at line 8
+mysql> Delimiter //
+mysql> Create procedure get_remark(peno int,out remark varchar(20))
+    -> Begin
+    -> Declare vcomm int default 0;
+    -> Select comm into vcomm
+    -> From emp
+    -> Where empno=peno;
+    -> If vcomm is null or vcomm=0 then
+    ->       Set remark='need improvement';
+    -> Elseif vcomm<300 then
+    ->      Set remark='ok';
+    -> Elseif vcomm>=300 and vcomm<500 then
+    ->      Set remark='good';
+    -> Else
+    ->      Set remark='excellent';
+    -> End if;
+    -> Select remark
+    -> End//
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 17
+mysql> Begin
+    -> Declare vcomm int default 0;
+    -> Select comm into vcomm
+    -> From emp
+    -> Where empno=peno;
+    -> If vcomm is null or vcomm=0 then
+    ->       Set remark='need improvement';
+    -> Elseif vcomm<300 then
+    ->      Set remark='ok';
+    -> Elseif vcomm>=300 and vcomm<500 then
+    ->      Set remark='good';
+    -> Else
+    ->      Set remark='excellent';
+    -> End if;
+    -> Select remark;
+    -> End//
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Declare vcomm int default 0;
+Select comm into vcomm
+From emp
+Where empno=peno;
+I' at line 2
+mysql> Delimiter //
+mysql> Create procedure get_remark(peno int,out remark varchar(20))
+    -> Begin
+    -> Declare vcomm int;
+    -> Select comm into vcomm
+    -> From emp
+    -> Where empno=peno;
+    -> If vcomm is null or vcomm=0 then
+    ->       Set remark='need improvement';
+    -> Elseif vcomm<300 then
+    ->      Set remark='ok';
+    -> Elseif vcomm>=300 and vcomm<500 then
+    ->      Set remark='good';
+    -> Else
+    ->      Set remark='excellent';
+    -> End if;
+    -> Select remark;
+    -> End//
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> call get_remark(7902)//
+ERROR 1318 (42000): Incorrect number of arguments for PROCEDURE test.get_remark; expected 2, got 1
+mysql> call get_remark(7902,@r)//
++------------------+
+| remark           |
++------------------+
+| need improvement |
++------------------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select @r;
+    -> //
++------------------+
+| @r               |
++------------------+
+| need improvement |
++------------------+
+1 row in set (0.00 sec)
+
+mysql> Delimiter //
+mysql> Create procedure get_sal(pempno int,out psc double(9,2),out remark varchar(20))
+    -> Begin
+    -> Select sal+ifnull(comm,0) into psc
+    -> From emp where empno=pempno;
+    -> If psc <1000 then
+    ->    Set remark='less';
+    -> Elseif psc>=1000 and psc<2000 then
+    ->   Set remark='ok';
+    -> Elseif psc>=2000 and psc<3000 then
+    -> Set remark='good';
+    -> Else
+    ->     Set remark='better';
+    -> End if;
+    -> Select psc,remark;
+    ->
+    -> End//
+Query OK, 0 rows affected, 1 warning (0.01 sec)
+
+mysql> call get_sal(7902,@ns,@r);
+    -> //
++---------+--------+
+| psc     | remark |
++---------+--------+
+| 3000.00 | better |
++---------+--------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select @ns,@r;
+    -> //
++------+--------+
+| @ns  | @r     |
++------+--------+
+| 3000 | better |
++------+--------+
+1 row in set (0.00 sec)
+
+mysql> delimiter ;
+mysql>

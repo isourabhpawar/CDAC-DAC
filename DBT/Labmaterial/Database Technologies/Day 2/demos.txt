@@ -1,0 +1,123 @@
+To find all employees with name starts with M
+select *
+   from emp
+   where ename like 'M%'
+
+To find all employees with name ends with N
+select *
+   from emp
+   where ename like '%N'
+
+To find all employees with name starts with A and ends with N 
+or name starts with M and ends with R
+
+select *
+from emp
+where ename like 'A%N' or ename like 'M%R';
+
+To find all employees with name has L at 3 rd position
+select *
+from emp
+where ename like '__L%'
+
+
+To find all employees with name has either L at 3 rd position or h at 3 rd position
+select *
+from emp
+where ename like '__l%' or ename like '__h%'
+
+To find all employees with name starts with A and ends with either N or E
+
+or it starts with J and ends with E
+
+select *
+from emp
+where ename like 'A%N' or ename like 'A%E' or ename like 'J%E'
+
+
+To find all employees with name starts with A and L at third position ends with N 
+or starts with M and ends with R or starts with J and N at 3 rd position
+select *
+from emp
+where ename like 'A_L%N' or ename like 'M%R' or ename like 'J_N%'
+
+
+REGEXP---> instead of Like we can use REGEXP
+
+To find all employees with name has L at 3 rd position
+In mysql
+select *
+from emp
+where ename REGEXP '^..L'
+
+select *
+from emp
+where  REGEXP_LIKE (ename,'^..L')
+
+To find all employees with name has either L at 3 rd position or h at 3 rd position
+select *
+from emp
+where ename like '__l%' or ename like '__h%'
+
+select *
+from emp
+where ename REGEXP  '^..[lh]'
+
+
+To find all employees with name starts with A and ends with either N or E
+or it starts with J and ends with E
+
+select *
+from emp
+where ename like 'A%N' or ename like 'A%E' or ename like 'J%E'
+
+
+select *
+from emp
+where ename REGEXP '^A.*[NE]$|^J.*E$' 
+
+
+To find all employees with name starts with A and L at third position ends with N 
+or starts with M and ends with R or starts with J and N at 3 rd position
+select *
+from emp
+where ename like 'A_L%N' or ename like 'M%R' or ename like 'J_N%'
+
+
+select *
+from emp
+where ename REGEXP '^A.L.*N$ |^M.*R$|^J.N'
+
+
+To find experience of every employee.
+
+ select empno,hiredate,floor(datediff(curdate(),hiredate)/365) experience
+    from emp;
+
+to find email id
+select empno,ename,job,Concat(Substr(ename,1,3),".", Substr(job,1,3),"@mycompany.com") email
+from emp;
+
+
+to display date in dd/mm/yy format
+ select empno,ename,date_format(hiredate,'%d/%m/%y')
+    -> from emp;
+
+
+to find all employees who joined 41 years back
+select *
+from emp
+where hiredate < date_sub(curdate(),interval 41 year)
+
+to find all employees who joined in month june.
+select *
+    -> from emp
+    -> where month(hiredate)=06;
+
+to find all employees who joined in month june and in 1981.
+select *
+   from emp
+   where month(hiredate)=06 and year(hiredate)=1981;
+
+
+ 

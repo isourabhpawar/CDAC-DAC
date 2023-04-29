@@ -1,0 +1,79 @@
+Create table category(
+cid int primary key ,
+cname varchar(20) not null,
+cdesc varchar(20) 
+);
+
+
+Create table product(
+pid int primary key,
+pname varchar(20) not null unique,
+qty int check(qty >0) default 10,
+price double(9,2) check(price>0),
+catid int,
+foreign key fk_cid(catid) references category(cid)
+);
+
+
+insert into category values(1,'chips','very crispy');
+
+insert into category values(2,'cold drink','cool cool');
+
+insert into category(cid,cname) values(3,'snacks');
+
+insert into product values(10,'lays',23,40.00,1);
+
+insert into product values(11,'kurkure',23,40.00,100);
+
+insert into product values(12,'nachos',23,140.00,1);
+insert into product(pid,pname) values(13,'coca cola');
+
+insert into product values(14,'pepsi',23,40.00,2);
+
+insert into product values(15,'miranda',23,140.00,2);
+
+===============
+
+create table stud_marks(
+sid int,
+course varchar(20),
+marks int,
+primary key(sid,course))
+
+insert into stud_marks values(1,'java',99)
+
+====================
+Create table product(
+pid int primary key,
+pname varchar(20) not null unique,
+qty int check(qty >0) default 10,
+price double(9,2) check(price>0),
+catid int,
+foreign key fk_cid(catid) references category(cid)
+on delete set null
+on update cascade
+);
+
+=========
+Create table student(
+Sid int primary key auto_increment,
+Sname varchar(20),
+Address varchar(20));
+
+
+insert into student(sname,address) values('Rajan','Baner')
+insert into student values(default,'Revati','Baner')
+
+insert into coursedata values('java',10);
+insert into coursedata values('c++',5);
+insert into coursedata values('.net',10);
+
+
+
+
+
+
+
+
+
+

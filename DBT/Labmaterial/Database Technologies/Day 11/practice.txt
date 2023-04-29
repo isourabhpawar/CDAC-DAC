@@ -1,0 +1,577 @@
+Enter password: *******
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 14
+Server version: 8.0.22 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> Delimiter //
+mysql> Create trigger insertemp after insert on emp
+    -> For each row
+    -> Begin
+    ->     Insert into empsecurity values(NEW.empno,NEW.ename,’insert’,null,NEW.sal,user(),curdate())
+    -> End//
+ERROR 1046 (3D000): No database selected
+mysql> Delimiter ;
+mysql> use dacmarch23;
+Database changed
+mysql> Delimiter //
+mysql> Create trigger insertemp after insert on emp
+    -> For each row
+    -> Begin
+    ->     Insert into empsecurity values(NEW.empno,NEW.ename,’insert’,null,NEW.sal,user(),curdate())
+    -> End//
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '?insert?,null,NEW.sal,user(),curdate())
+End' at line 4
+mysql> Delimiter ;
+mysql> Delimiter //
+mysql> Create trigger insertemp after insert on emp
+    -> For each row
+    -> Begin
+    ->     Insert into empsecurity values(NEW.empno,NEW.ename,'insert',null,NEW.sal,user(),curdate());
+    -> End//
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> Delimiter ;
+mysql> select * from empsecurity;
++-------+------------+--------+---------+---------+----------------+------------+
+| Empno | Ename      | Action | Oldsal  | Newsal  | Uname          | Act_date   |
++-------+------------+--------+---------+---------+----------------+------------+
+|  7369 | SMITH      | update | 1000.00 | 1100.00 | root@localhost | 2023-04-11 |
+|  7499 | ALLENXXXXX | update | 1728.00 | 1900.80 | root@localhost | 2023-04-11 |
+|  7521 | WARD       | update | 1350.00 | 1485.00 | root@localhost | 2023-04-11 |
+|  7654 | MARTIN     | update | 1350.00 | 1485.00 | root@localhost | 2023-04-11 |
+|  7844 | TURNER     | update | 1620.00 | 1782.00 | root@localhost | 2023-04-11 |
+|  7876 | ADAMS      | update | 1375.00 | 1512.50 | root@localhost | 2023-04-11 |
+|  7900 | JAMES      | update | 1187.50 | 1306.25 | root@localhost | 2023-04-11 |
+|  7934 | MILLER     | update | 1625.00 | 1787.50 | root@localhost | 2023-04-11 |
++-------+------------+--------+---------+---------+----------------+------------+
+8 rows in set (0.00 sec)
+
+mysql> desc
+    -> emp;
++----------+--------------+------+-----+---------+-------+
+| Field    | Type         | Null | Key | Default | Extra |
++----------+--------------+------+-----+---------+-------+
+| EMPNO    | int          | NO   |     | NULL    |       |
+| ENAME    | varchar(10)  | YES  |     | NULL    |       |
+| JOB      | varchar(9)   | YES  |     | NULL    |       |
+| MGR      | int          | YES  |     | NULL    |       |
+| HIREDATE | date         | YES  |     | NULL    |       |
+| SAL      | decimal(7,2) | YES  |     | NULL    |       |
+| COMM     | decimal(7,2) | YES  |     | NULL    |       |
+| DEPTNO   | int          | YES  | MUL | NULL    |       |
++----------+--------------+------+-----+---------+-------+
+8 rows in set (0.01 sec)
+
+mysql> insert into emp values(234,'ccc','fff',7902,'2000-11-11',3456,456,30);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from empsecurity;
++-------+------------+--------+---------+---------+----------------+------------+
+| Empno | Ename      | Action | Oldsal  | Newsal  | Uname          | Act_date   |
++-------+------------+--------+---------+---------+----------------+------------+
+|  7369 | SMITH      | update | 1000.00 | 1100.00 | root@localhost | 2023-04-11 |
+|  7499 | ALLENXXXXX | update | 1728.00 | 1900.80 | root@localhost | 2023-04-11 |
+|  7521 | WARD       | update | 1350.00 | 1485.00 | root@localhost | 2023-04-11 |
+|  7654 | MARTIN     | update | 1350.00 | 1485.00 | root@localhost | 2023-04-11 |
+|  7844 | TURNER     | update | 1620.00 | 1782.00 | root@localhost | 2023-04-11 |
+|  7876 | ADAMS      | update | 1375.00 | 1512.50 | root@localhost | 2023-04-11 |
+|  7900 | JAMES      | update | 1187.50 | 1306.25 | root@localhost | 2023-04-11 |
+|  7934 | MILLER     | update | 1625.00 | 1787.50 | root@localhost | 2023-04-11 |
+|   234 | ccc        | insert |    NULL | 3456.00 | root@localhost | 2023-04-12 |
++-------+------------+--------+---------+---------+----------------+------------+
+9 rows in set (0.00 sec)
+
+mysql> Create table discounts(
+    -> Pid int
+    ->            Disc_percent int)
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Disc_percent int)' at line 3
+mysql> Create table discounts(
+    -> Pid int,
+    -> Disc_percent int);
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> Create table product_dis(
+    ->       Pid int,
+    -> Pname varchar(20),
+    -> Price double(9,2),
+    -> Discounted_amt double(9,2))
+    -> ;
+Query OK, 0 rows affected, 2 warnings (0.04 sec)
+
+mysql> insert into discounts values(1,7);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into discounts values(2,3);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into product_dis(pid,pname,price) values(1,'chair',1000,null);
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+mysql> insert into product_dis(pid,pname,price) values(1,'chair',1000);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into product_dis(pid,pname,price) values(2,'table',2000);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from discounts;
++------+--------------+
+| Pid  | Disc_percent |
++------+--------------+
+|    1 |            7 |
+|    2 |            3 |
++------+--------------+
+2 rows in set (0.00 sec)
+
+mysql> select * from product_dis;
++------+-------+---------+----------------+
+| Pid  | Pname | Price   | Discounted_amt |
++------+-------+---------+----------------+
+|    1 | chair | 1000.00 |           NULL |
+|    2 | table | 2000.00 |           NULL |
++------+-------+---------+----------------+
+2 rows in set (0.00 sec)
+
+mysql> delimiter //
+mysql> Create trigger update_discount after update on discounts
+    -> For each row
+    -> Begin
+    -> Update product_dis
+    -> Set Discounted_amt=price-price*(NEW. Disc_percent  /100)
+    -> Where pid=NEW.pid;
+    ->
+    -> End //
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> update discounts
+    -> set  Disc_percent=5
+    -> where pid=1;
+    -> //
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from discounts;
+    -> //
++------+--------------+
+| Pid  | Disc_percent |
++------+--------------+
+|    1 |            5 |
+|    2 |            3 |
++------+--------------+
+2 rows in set (0.00 sec)
+
+mysql> select * from product_dis//
++------+-------+---------+----------------+
+| Pid  | Pname | Price   | Discounted_amt |
++------+-------+---------+----------------+
+|    1 | chair | 1000.00 |         950.00 |
+|    2 | table | 2000.00 |           NULL |
++------+-------+---------+----------------+
+2 rows in set (0.00 sec)
+
+mysql> update discounts
+    -> set Disc_percent=Disc_percent+1;
+    -> //
+Query OK, 2 rows affected (0.01 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+mysql> select * from product_dis//
++------+-------+---------+----------------+
+| Pid  | Pname | Price   | Discounted_amt |
++------+-------+---------+----------------+
+|    1 | chair | 1000.00 |         940.00 |
+|    2 | table | 2000.00 |        1920.00 |
++------+-------+---------+----------------+
+2 rows in set (0.00 sec)
+
+mysql> select * from dept;
+    -> //
++--------+------------+----------+
+| DEPTNO | DNAME      | LOC      |
++--------+------------+----------+
+|      1 | ccc        | NULL     |
+|     10 | ACCOUNTING | NEW YORK |
+|     20 | RESEARCH   | Pune     |
+|     30 | SALES      | Pune     |
+|     33 | ccc        | NULL     |
+|     40 | OPERATIONS | BOSTON   |
+|     50 | HR         | pune     |
+|     60 | admin      | pune     |
++--------+------------+----------+
+8 rows in set (0.00 sec)
+
+mysql> delimiter ;
+mysql> insert into dept values(60,'ccc','pune');
+ERROR 1062 (23000): Duplicate entry '60' for key 'dept.PRIMARY'
+mysql> Delimiter //
+mysql> Create procedure insertdept(in pdno int,in pdnm varchar(20),in ploc varchar(20))
+    -> Begin
+    ->     Declare exit handler for SQLEXCEPTION select 'error occurred';
+    ->     Insert into dept values(pdno,pdnm,ploc);
+    ->    Select * from dept;
+    -> End//
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> Delimiter ;
+mysql> call insertdept(234,'xxx','pune');
++--------+------------+----------+
+| DEPTNO | DNAME      | LOC      |
++--------+------------+----------+
+|      1 | ccc        | NULL     |
+|     10 | ACCOUNTING | NEW YORK |
+|     20 | RESEARCH   | Pune     |
+|     30 | SALES      | Pune     |
+|     33 | ccc        | NULL     |
+|     40 | OPERATIONS | BOSTON   |
+|     50 | HR         | pune     |
+|     60 | admin      | pune     |
+|    234 | xxx        | pune     |
++--------+------------+----------+
+9 rows in set (0.01 sec)
+
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> call insertdept(234,'xxx','pune');
++----------------+
+| error occurred |
++----------------+
+| error occurred |
++----------------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> drop procedure insertdept;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> Delimiter //
+mysql> Create procedure insertdept(in pdno int,in pdnm varchar(20),in ploc varchar(20))
+    -> Begin
+    ->     Declare continue handler for SQLEXCEPTION select 'error occurred';
+    ->     Insert into dept values(pdno,pdnm,ploc);
+    ->    Select * from dept;
+    -> End//
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> Delimiter ;
+mysql> call insertdept(234,'xxx','pune');
++----------------+
+| error occurred |
++----------------+
+| error occurred |
++----------------+
+1 row in set (0.00 sec)
+
++--------+------------+----------+
+| DEPTNO | DNAME      | LOC      |
++--------+------------+----------+
+|      1 | ccc        | NULL     |
+|     10 | ACCOUNTING | NEW YORK |
+|     20 | RESEARCH   | Pune     |
+|     30 | SALES      | Pune     |
+|     33 | ccc        | NULL     |
+|     40 | OPERATIONS | BOSTON   |
+|     50 | HR         | pune     |
+|     60 | admin      | pune     |
+|    234 | xxx        | pune     |
++--------+------------+----------+
+9 rows in set (0.00 sec)
+
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> desc product;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| pid   | int         | NO   | PRI | NULL    |       |
+| pname | varchar(20) | NO   | UNI | NULL    |       |
+| qty   | int         | YES  |     | 10      |       |
+| price | double(9,2) | YES  |     | NULL    |       |
+| catid | int         | YES  | MUL | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+5 rows in set (0.01 sec)
+
+mysql> select * from product;
++-----+-----------+------+--------+-------+
+| pid | pname     | qty  | price  | catid |
++-----+-----------+------+--------+-------+
+|  10 | lays      |   23 |  44.00 |   100 |
+|  12 | nachos    |   23 | 154.00 |   100 |
+|  13 | coca cola |   10 |   NULL |   100 |
+|  14 | pepsi     |   23 |  48.00 |   200 |
+|  15 | miranda   |   23 | 168.00 |   200 |
++-----+-----------+------+--------+-------+
+5 rows in set (0.00 sec)
+
+mysql> select * from category;
++-----+------------+-----------+
+| cid | cname      | cdesc     |
++-----+------------+-----------+
+| 100 | chips      | crispy    |
+| 200 | cold drink | cool cool |
++-----+------------+-----------+
+2 rows in set (0.00 sec)
+
+mysql> update product
+    -> set catid=300
+    -> where pid=13;
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`dacmarch23`.`product`, CONSTRAINT `product_ibfk_1` FOREIGN KEY (`catid`) REFERENCES `category` (`cid`) ON DELETE SET NULL ON UPDATE CASCADE)
+mysql> update product
+    -> set price=-234
+    -> where pid=13;
+ERROR 3819 (HY000): Check constraint 'product_chk_2' is violated.
+mysql> insert into product values(14,'icecream',34,567,200);
+ERROR 1062 (23000): Duplicate entry '14' for key 'product.PRIMARY'
+mysql> insert into product values(141,'icecream',-34,567,200);
+ERROR 3819 (HY000): Check constraint 'product_chk_1' is violated.
+mysql> insert into product values(141,'icecream',34,-567,200);
+ERROR 3819 (HY000): Check constraint 'product_chk_2' is violated.
+mysql> insert into product values(141,'icecream',34,-567,10);
+ERROR 3819 (HY000): Check constraint 'product_chk_2' is violated.
+mysql> insert into product values(141,'icecream',34,567,10);
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`dacmarch23`.`product`, CONSTRAINT `product_ibfk_1` FOREIGN KEY (`catid`) REFERENCES `category` (`cid`) ON DELETE SET NULL ON UPDATE CASCADE)
+mysql> delimiter //
+mysql> Create procedure insertproduct(in ppid int, pnm varchar(20), pqty int,price double(9,2),pcid int)
+    -> Begin
+    ->      Declare continue handler for 1062 select 'duplicate key';
+    ->      Declare continue handler for SQLEXCEPTION select 'error occurred';
+    ->      Insert into product values(ppid,pnm,pqty,price,pcid);
+    ->       Select * from product
+    -> End//
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 7
+mysql> Create procedure insertproduct(in ppid int, pnm varchar(20), pqty int,pprice double(9,2),pcid int)
+    -> Begin
+    ->      Declare continue handler for 1062 select 'duplicate key';
+    ->      Declare continue handler for SQLEXCEPTION select 'error occurred';
+    ->      Insert into product values(ppid,pnm,pqty,pprice,pcid);
+    ->       Select * from product;
+    -> End//
+Query OK, 0 rows affected, 1 warning (0.01 sec)
+
+mysql> delimiter ;
+mysql> call insertproduct(14,'xxx',45,567,100);
++---------------+
+| duplicate key |
++---------------+
+| duplicate key |
++---------------+
+1 row in set (0.00 sec)
+
++-----+-----------+------+--------+-------+
+| pid | pname     | qty  | price  | catid |
++-----+-----------+------+--------+-------+
+|  10 | lays      |   23 |  44.00 |   100 |
+|  12 | nachos    |   23 | 154.00 |   100 |
+|  13 | coca cola |   10 |   NULL |   100 |
+|  14 | pepsi     |   23 |  48.00 |   200 |
+|  15 | miranda   |   23 | 168.00 |   200 |
++-----+-----------+------+--------+-------+
+5 rows in set (0.00 sec)
+
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> call insertproduct(16,'xxx',-45,567,100);
++----------------+
+| error occurred |
++----------------+
+| error occurred |
++----------------+
+1 row in set (0.00 sec)
+
++-----+-----------+------+--------+-------+
+| pid | pname     | qty  | price  | catid |
++-----+-----------+------+--------+-------+
+|  10 | lays      |   23 |  44.00 |   100 |
+|  12 | nachos    |   23 | 154.00 |   100 |
+|  13 | coca cola |   10 |   NULL |   100 |
+|  14 | pepsi     |   23 |  48.00 |   200 |
+|  15 | miranda   |   23 | 168.00 |   200 |
++-----+-----------+------+--------+-------+
+5 rows in set (0.00 sec)
+
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> call insertproduct(16,'xxx',45,-567,100);
++----------------+
+| error occurred |
++----------------+
+| error occurred |
++----------------+
+1 row in set (0.00 sec)
+
++-----+-----------+------+--------+-------+
+| pid | pname     | qty  | price  | catid |
++-----+-----------+------+--------+-------+
+|  10 | lays      |   23 |  44.00 |   100 |
+|  12 | nachos    |   23 | 154.00 |   100 |
+|  13 | coca cola |   10 |   NULL |   100 |
+|  14 | pepsi     |   23 |  48.00 |   200 |
+|  15 | miranda   |   23 | 168.00 |   200 |
++-----+-----------+------+--------+-------+
+5 rows in set (0.00 sec)
+
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> call insertproduct(16,'xxx',45,567,10);
++----------------+
+| error occurred |
++----------------+
+| error occurred |
++----------------+
+1 row in set (0.00 sec)
+
++-----+-----------+------+--------+-------+
+| pid | pname     | qty  | price  | catid |
++-----+-----------+------+--------+-------+
+|  10 | lays      |   23 |  44.00 |   100 |
+|  12 | nachos    |   23 | 154.00 |   100 |
+|  13 | coca cola |   10 |   NULL |   100 |
+|  14 | pepsi     |   23 |  48.00 |   200 |
+|  15 | miranda   |   23 | 168.00 |   200 |
++-----+-----------+------+--------+-------+
+5 rows in set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> drop procedure insertproduct;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> Create procedure insertproduct(in ppid int, pnm varchar(20), pqty int,pprice double(9,2),pcid int)
+    -> Begin
+    ->      Declare continue handler for 1062 select 'duplicate key';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 3
+mysql>  Declare exit handler for 3819 select 'value should be > 0';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Declare exit handler for 3819 select 'value should be > 0'' at line 1
+mysql>      Declare continue handler for SQLEXCEPTION select 'error occurred';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Declare continue handler for SQLEXCEPTION select 'error occurred'' at line 1
+mysql>      Insert into product values(ppid,pnm,pqty,pprice,pcid);
+ERROR 1054 (42S22): Unknown column 'ppid' in 'field list'
+mysql>       Select * from product;
++-----+-----------+------+--------+-------+
+| pid | pname     | qty  | price  | catid |
++-----+-----------+------+--------+-------+
+|  10 | lays      |   23 |  44.00 |   100 |
+|  12 | nachos    |   23 | 154.00 |   100 |
+|  13 | coca cola |   10 |   NULL |   100 |
+|  14 | pepsi     |   23 |  48.00 |   200 |
+|  15 | miranda   |   23 | 168.00 |   200 |
++-----+-----------+------+--------+-------+
+5 rows in set (0.00 sec)
+
+mysql> delimiter //
+mysql> Create procedure insertproduct(in ppid int, pnm varchar(20), pqty int,pprice double(9,2),pcid int)
+    -> Begin
+    ->      Declare continue handler for 1062 select 'duplicate key';
+    ->  Declare exit handler for 3819 select 'value should be > 0';
+    ->      Declare continue handler for SQLEXCEPTION select 'error occurred';
+    ->      Insert into product values(ppid,pnm,pqty,pprice,pcid);
+    ->       Select * from product;
+    -> End//
+Query OK, 0 rows affected, 1 warning (0.00 sec)
+
+mysql> delimiter ;
+mysql> call insertproduct(14,'ccc',56,456,100);
++---------------+
+| duplicate key |
++---------------+
+| duplicate key |
++---------------+
+1 row in set (0.00 sec)
+
++-----+-----------+------+--------+-------+
+| pid | pname     | qty  | price  | catid |
++-----+-----------+------+--------+-------+
+|  10 | lays      |   23 |  44.00 |   100 |
+|  12 | nachos    |   23 | 154.00 |   100 |
+|  13 | coca cola |   10 |   NULL |   100 |
+|  14 | pepsi     |   23 |  48.00 |   200 |
+|  15 | miranda   |   23 | 168.00 |   200 |
++-----+-----------+------+--------+-------+
+5 rows in set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> call insertproduct(17,'ccc',-56,456,100);
++---------------------+
+| value should be > 0 |
++---------------------+
+| value should be > 0 |
++---------------------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> call insertproduct(17,'ccc',56,-456,100);
++---------------------+
+| value should be > 0 |
++---------------------+
+| value should be > 0 |
++---------------------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> call insertproduct(17,'ccc',56,456,10);
++----------------+
+| error occurred |
++----------------+
+| error occurred |
++----------------+
+1 row in set (0.00 sec)
+
++-----+-----------+------+--------+-------+
+| pid | pname     | qty  | price  | catid |
++-----+-----------+------+--------+-------+
+|  10 | lays      |   23 |  44.00 |   100 |
+|  12 | nachos    |   23 | 154.00 |   100 |
+|  13 | coca cola |   10 |   NULL |   100 |
+|  14 | pepsi     |   23 |  48.00 |   200 |
+|  15 | miranda   |   23 | 168.00 |   200 |
++-----+-----------+------+--------+-------+
+5 rows in set (0.00 sec)
+
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> call insertproduct(14,'ccc',-56,456,10);
++---------------------+
+| value should be > 0 |
++---------------------+
+| value should be > 0 |
++---------------------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> drop procedure insertproduct;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> delimiter //
+mysql> Create procedure insertproduct(in ppid int, pnm varchar(20), pqty int,pprice double(9,2),pcid int)
+    -> Begin
+    ->      Declare continue handler for 1062 select 'duplicate key' msg;
+    ->  Declare exit handler for 3819 select 'value should be > 0' msg;
+    ->      Declare continue handler for SQLEXCEPTION select 'error occurred' msg;
+    ->      Insert into product values(ppid,pnm,pqty,pprice,pcid);
+    ->       Select * from product;
+    -> End//
+Query OK, 0 rows affected, 1 warning (0.01 sec)
+
+mysql> call insertproduct(14,'ccc',-56,456,10);
+    -> //
++---------------------+
+| msg                 |
++---------------------+
+| value should be > 0 |
++---------------------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+mysql>

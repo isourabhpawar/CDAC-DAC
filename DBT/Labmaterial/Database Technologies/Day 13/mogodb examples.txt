@@ -1,0 +1,103 @@
+$lt,$gt, $gte,$lt, $lte,$ne, $in , $nin, $exists,$mod
+$type, $and, $or, $not,$elemMatch, $size
+
+1. to find all movies with rating=5
+db.movie.find({condition},{projection})
+db.movie.find({rating:5}).pretty()
+
+2. to find all movies with rating=5 and price=200
+> db.movie.find({rating:5,price:200}).pretty()
+
+3. to find all movies with rating >=5
+
+db.movie.find({rating:{$gte:5}}).pretty()
+
+4. to find all movies with rating >5
+db.movie.find({rating:{$gt:5}}).pretty()
+
+5. to find all movies with rating >5 and price < 400
+rating:{$gt:5}
+price:{$lt:400}
+db.movie.find({rating:{$gt:5},price:{$lt:400}})
+
+6.to find all movies with rating >5 or price <400
+rating:{$gt:5}
+price:{$lt:400}
+$or:[{rating:{$gt:5}},{price:{$lt:400}}]
+db.movie.find({$or:[{rating:{$gt:5}},{price:{$lt:400}}]});
+
+7. to find all movies with with price = either 200 or 210
+or 350
+price:{$in:[200,210,350]}
+db.movie.find({price:{$in:[200,210,350]}}).pretty()
+
+7. to find all movies with with price not = either 200 or 210
+or 350
+price:{$nin:[200,210,350]}
+db.movie.find({price:{$nin:[200,210,350]}}).pretty()
+
+8. to find all movies with odd ratings
+db.movie.find({rating:{$mod:[2,1]}})
+
+8. to find all movies with odd ratings, but display only 
+name and rating
+db.movie.find({rating:{$mod:[2,1]}},{name:1,rating:1,_id:0})
+
+10. display all movies all keys other than rating
+db.movie.find({},{rating:0,_id:0}).pretty();
+
+11. display all movies with price >=200 and < 400
+price:{$gte:200,$lt:400}
+db.movie.find({price:{$gte:200,$lt:400}});
+
+12. display all movies with rating in string format
+
+db.movie.find({rating:{$type:"string"}})
+
+
+12. display all movies with rating not in string format
+
+db.movie.find({rating:{$not:{$type:"string"}}})
+
+13. to find all movies in which Amitabh has acted
+db.movie.find({actor:'Amitabh'})
+
+14. to find all movies in which Amitabh has acted, 
+and the name is at 0th position
+db.movie.find({"actor.0":'Amitabh'})
+
+15. to find all movies in which Amitabh has acted
+and the name is at 1st  position
+db.movie.find({"actor.1":'Amitabh'})
+
+16.  to find all movies in which Amitabh has acted
+db.movie.find({"actor":/^[Aa]mitabh/})
+
+17. find all movies with name 
+starts with p and ends with a or t
+db.movie.find({"name":/^p.*[at]$/}).pretty()
+
+18. display all movies which has 3 ators in the array
+db.movie.find({"actor":{$size:3})
+
+19. to find all movies with rating is null
+db.movie.find({rating:null})
+
+19. to find all movies which has rating  key and 
+is assigned to null 
+> db.movie.find({rating:{$in:[null],$exists:true}}).pretty();
+
+14 to find all resturent with zipcode
+ db.restaurent.find({"address.zipcode":"11238"}).pretty();
+ 
+ 15. to find all restaurent with score =9
+ db.restaurent.find({"grades.score":9}).pretty();
+ 
+ 
+ 16. to find all restaurent with score =9 at 0 th position
+ db.restaurent.find({"grades.0.score":9}).pretty();
+
+
+
+
+

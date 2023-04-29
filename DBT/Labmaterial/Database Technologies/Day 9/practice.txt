@@ -1,0 +1,170 @@
+Enter password: *******
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 11
+Server version: 8.0.22 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> use dacmarch23
+Database changed
+mysql> call displayfactorial(5,@f);
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select @f;
++------+
+| @f   |
++------+
+|  120 |
++------+
+1 row in set (0.00 sec)
+
+mysql> Delimiter //
+mysql> Create procedure  displaydatarepeat(in start int, in stop int)
+    -> Begin
+    ->      Declare cnt int default start;
+    ->      Declare str varchar(100) default '';
+    ->       Repeat
+    ->         Set str=concat(str,cnt,',');
+    ->         Set cnt=cnt+1;
+    ->         Until  cnt > stop
+    ->       End repeat;
+    -> Set str=substr(str,1,length(str)-1);
+    -> Select str;
+    -> End//
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> Delimiter ;
+mysql> call displaydatarepeat(15,25);
++----------------------------------+
+| str                              |
++----------------------------------+
+| 15,16,17,18,19,20,21,22,23,24,25 |
++----------------------------------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> Delimiter //
+mysql> Create procedure displayfactorialrepeat(in num int, out fact int)
+    -> Begin
+    -> Declare start int default 1;
+    -> Set fact=1;
+    -> Repeat
+    ->     Set fact=fact*start;
+    ->     Set start=start+1;
+    ->     Until start>num
+    -> End repeat;
+    -> Select fact;
+    -> End//
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> call displayfactorialrepeat(5,@f);
+    -> //
++------+
+| fact |
++------+
+|  120 |
++------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> Delimiter //
+mysql> Create procedure displaydataloop(in start int,in stop int)
+    -> Begin
+    -> Declare str varchar(100) default '';
+    -> Declare cnt int default start;
+    ->               L1:Loop
+    ->                    Set str=concat (str,cnt,',');
+    ->                    Set cnt=cnt+1;
+    ->                    If cnt>stop then
+    ->                         Leave l1;
+    ->                    End if;
+    ->             End loop;
+    ->              Set str=substr(str,1,length(str)-1);
+    ->               Select str;
+    ->
+    ->
+    -> End//
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> Delimiter ;
+mysql> call displaydataloop(3,10);
++------------------+
+| str              |
++------------------+
+| 3,4,5,6,7,8,9,10 |
++------------------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> Delimiter //
+mysql> Create procedure displayfactorialloop(in num int,out fact int)
+    -> Begin
+    ->     Declare start int default 1;
+    ->     Set fact=1;
+    ->     L1:loop
+    ->         Set fact=fact*start;
+    ->         Set start=start+1;
+    ->         If start >num then
+    ->               Leave l1;
+    ->          End if;
+    ->     End loop
+    ->     Select fact;
+    -> End//
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Select fact;
+End' at line 12
+mysql> Delimiter //
+mysql> Create procedure displayfactorialloop(in num int,out fact int)
+    -> Begin
+    ->     Declare start int default 1;
+    ->     Set fact=1;
+    ->     L1:loop
+    ->         Set fact=fact*start;
+    ->         Set start=start+1;
+    ->         If start >num then
+    ->               Leave l1;
+    ->          End if;
+    ->     End loop;
+    ->     Select fact;
+    -> End//
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> call displayfactorialloop(5,@f);
+    -> //
++------+
+| fact |
++------+
+|  120 |
++------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> delimiter ;
+mysql>
+
+
+Delimiter //
+Create procedure displayfactorialloop(in num int,out fact int)
+Begin
+    Declare start int default 1;
+    Set fact=1;
+    L1:loop
+        Set fact=fact*start;
+        Set start=start+1;
+        If start >num then
+              Leave l1;
+         End if;
+    End loop;
+    Select fact;
+End//
+
+

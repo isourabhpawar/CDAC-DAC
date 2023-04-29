@@ -1,0 +1,154 @@
+1. find all employees whose sal > average salary of sales dept
+select *
+from emp
+where sal > (select avg(sal) from emp
+             where deptno= (select deptno 
+			                from dept
+							where dname='salaes'))
+							
+2. find all employees whose sal > average sal of its own department
+   select *       10 rows 
+   from emp e    
+   wheres sal > (selct avg(sal)    
+                 from emp d  
+                 where d.deptno= e.deptno) 
+				 
+3. find average sal of all employees who are working under same manager
+select mgr,avg(sal)
+from emp
+group by mgr
+
+4. find all employees whose sal > average salary of all employees 
+who are working under his manager
+
+select * from emp e
+where sal > (select avg(sal)
+             from emp d
+			 where d.mgr=e.mgr)
+			 
+exists and not exists
+1. to find all departments in which some employees are there
+
+selct *
+from dept d
+where exists ( select *
+               from emp e
+			   where e.deptno=d.deptno
+
+              )
+			  
+2. to find all departments in which no employees are there
+select *
+    -> from dept
+    -> where not exists (select *
+    -> from emp
+    -> where emp.deptno=dept.deptno);
+
+4. query to find nth highest
+select *
+from emp e   
+where 6=(
+select count(*)
+   from (select distinct(sal) from emp) e1
+     where e1.sal >= e.sal)	
+	 
+5. display remark based on comm
+if comm is null or 0 then display "need improvement"
+if comm < 500 then ok
+if comm >=500 and < 1000 the good
+else excellent
+
+select empno,ename,sal,comm,case 
+when comm is null or comm=0 then 'need improvement'
+when comm<500 then 'ok'
+when comm >=500 and comm<1000 then 'good'
+else 'excellent' end remark
+from emp;
+
+
+6. display department name
+if deptno=10 sales
+20  purchase
+30  accounting
+40 marketing
+			  
+select empno,ename,deptno,case when deptno=10 then 'sales'
+when deptno=20 then 'purchase'
+when deptno=30 then 'accounting'
+else 'marketing' end dname
+from emp		  
+
+---------------
+select empno,ename,deptno,case deptno when 10 then 'sales'
+when 20 then 'purchase' 
+when 30 then 'accounting'
+else 'marketing' end dname
+from emp			  
+
+4. write query to display remark for products based on qty
+if qty < 20 then 'less'
+if qty >=20 and < 35 then 'moderate'
+if >=35 and < 100 then 'good qty'
+otherwise 'excess'
+
+
+select pid,pname,qty,case when qty <20 then 'less'
+when qty>=20 and qty < 35 then 'moderate'
+when qty >=35 and qty<100 then 'good qty'
+else 'excess' end remark
+from product
+
+select pid,pname,qty,case when qty <20 then 'less'
+when qty between 20 and 34 then 'moderate'
+when qty between 35 and 99 then 'good qty'
+else 'excess' end remark
+from product
+
+faculty
+fid fname      skill
+ 1  narendra    Database
+ 2  Sarika      java
+ 3  priti       ML
+ 
+ rooms
+ rid  rname   loc
+ 401  Lotus     4 th floor
+ 402  Jasmin   4 th floor
+ 103  Mogra    1 st floor
+ 
+ Courses
+ cid   cname participants   fid  rid
+  10    DAC   224            2   401
+  11    DBDA  52             1   
+  12    DTISS 60                  
+  
+1. to find which faculty is not assined to any course
+ select *
+ from faculty f
+ where not exists (select fid
+ from course c
+ where c.fid=f.fid
+ ])
+2. find all the rooms which are not allocated to any course
+select rid,rname
+from room r
+where not exists ( select rid
+  from courses c
+  where c.rid=r.rid
+   )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

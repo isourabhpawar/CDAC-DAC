@@ -1,0 +1,480 @@
+Enter password: *******
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 13
+Server version: 8.0.22 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> use DACmarch23
+Database changed
+mysql> select * from emp
+    -> ;
++-------+------------+-----------+------+------------+---------+---------+--------+
+| EMPNO | ENAME      | JOB       | MGR  | HIREDATE   | SAL     | COMM    | DEPTNO |
++-------+------------+-----------+------+------------+---------+---------+--------+
+|  7369 | SMITH      | CLERK     | 7902 | 1980-12-17 |  800.00 |    NULL |     20 |
+|  7499 | ALLENXXXXX | SALESMAN  | 7698 | 1981-02-20 | 1600.00 |  300.00 |     30 |
+|  7521 | WARD       | SALESMAN  | 7698 | 1981-02-22 | 1250.00 |  500.00 |     30 |
+|  7566 | JONES      | MANAGER   | 7839 | 1981-04-02 | 2975.00 |    NULL |     20 |
+|  7654 | MARTIN     | SALESMAN  | 7698 | 1981-09-28 | 1250.00 | 1400.00 |     30 |
+|  7698 | BLAKE      | MANAGER   | 7839 | 1981-05-01 | 2850.00 |    NULL |     30 |
+|  7782 | CLARK      | MANAGER   | 7839 | 1981-06-09 | 2450.00 |    NULL |     10 |
+|  7788 | SCOTT      | ANALYST   | 7566 | 1982-12-09 | 3000.00 |    NULL |     20 |
+|  7839 | KING       | PRESIDENT | NULL | 1981-11-17 | 5000.00 |    NULL |     10 |
+|  7844 | TURNER     | SALESMAN  | 7698 | 1981-09-08 | 1500.00 |    0.00 |     30 |
+|  7876 | ADAMS      | CLERK     | 7788 | 1983-01-12 | 1100.00 |    NULL |     20 |
+|  7900 | JAMES      | CLERK     | 7698 | 1981-12-03 |  950.00 |    NULL |     30 |
+|  7902 | FORD       | ANALYST   | 7566 | 1981-12-03 | 3000.00 |    NULL |     20 |
+|  7934 | MILLER     | CLERK     | 7782 | 1982-01-23 | 1300.00 |    NULL |     10 |
+|   101 | Ashutosh   | CLERK     | 7902 | 2000-10-11 | 3456.00 |  345.00 |     10 |
+|   102 | Mugdha     | CLERK     | 7902 | 2000-10-11 | 3456.00 |  345.00 |     10 |
+|   103 | Tanaya     | NULL      | NULL | NULL       | 7555.00 |    NULL |   NULL |
++-------+------------+-----------+------+------------+---------+---------+--------+
+17 rows in set (0.00 sec)
+
+mysql> select * from dept
+    -> ;
++--------+------------+----------+
+| DEPTNO | DNAME      | LOC      |
++--------+------------+----------+
+|     10 | ACCOUNTING | NEW YORK |
+|     20 | RESEARCH   | DALLAS   |
+|     30 | SALES      | CHICAGO  |
+|     40 | OPERATIONS | BOSTON   |
++--------+------------+----------+
+4 rows in set (0.00 sec)
+
+mysql> select avg(sal)
+    -> from emp;
++-------------+
+| avg(sal)    |
++-------------+
+| 2558.352941 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> select avg(sal)
+    -> from emp
+    -> where deptno=10
+    -> group by deptno;
++-------------+
+| avg(sal)    |
++-------------+
+| 3132.400000 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> select avg(sal)
+    -> from emp
+    -> where deptno in (10,20)
+    -> group by deptno;
++-------------+
+| avg(sal)    |
++-------------+
+| 2175.000000 |
+| 3132.400000 |
++-------------+
+2 rows in set (0.00 sec)
+
+mysql> select deptno,avg(sal)
+    -> from emp
+    -> where deptno in(10,20)
+    -> group by deptno;
++--------+-------------+
+| deptno | avg(sal)    |
++--------+-------------+
+|     20 | 2175.000000 |
+|     10 | 3132.400000 |
++--------+-------------+
+2 rows in set (0.00 sec)
+
+mysql> select avg(sal)
+    -> from emp
+    -> where job='Salesman';
++-------------+
+| avg(sal)    |
++-------------+
+| 1400.000000 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> selct *
+    -> from dept d
+    -> where exists ( select *
+    ->                from emp e
+    ->    where e.deptno=d.deptno
+    ->
+    ->               );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'selct *
+from dept d
+where exists ( select *
+               from emp e
+   where e' at line 1
+mysql> select *
+    -> from dept
+    -> where exists (select *)
+    ->             ^C
+mysql> select *
+    -> from dept
+    -> where exists (select *
+    -> from emp
+    -> where emp.deptno=dept.deptno);
++--------+------------+----------+
+| DEPTNO | DNAME      | LOC      |
++--------+------------+----------+
+|     10 | ACCOUNTING | NEW YORK |
+|     20 | RESEARCH   | DALLAS   |
+|     30 | SALES      | CHICAGO  |
++--------+------------+----------+
+3 rows in set (0.00 sec)
+
+mysql> select *
+    -> from dept
+    -> where not exists (select *
+    -> from emp
+    -> where emp.deptno=dept.deptno);
++--------+------------+--------+
+| DEPTNO | DNAME      | LOC    |
++--------+------------+--------+
+|     40 | OPERATIONS | BOSTON |
++--------+------------+--------+
+1 row in set (0.00 sec)
+
+mysql> select count(*)
+    -> from emp
+    -> where comm is null;
++----------+
+| count(*) |
++----------+
+|       11 |
++----------+
+1 row in set (0.00 sec)
+
+mysql> select count(comm)
+    -> from emp;
++-------------+
+| count(comm) |
++-------------+
+|           6 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> use test
+Database changed
+mysql> select * from product
+    -> ;
++------+---------------+------+--------+------+
+| pid  | pname         | qty  | price  | cid  |
++------+---------------+------+--------+------+
+|    2 | Nachos123     |  302 | 150.00 |    1 |
+|    3 | Pringles123   |   29 | 150.00 |    1 |
+|    4 | Marie gold    |   20 |  50.00 |    2 |
+|    5 | nice1234      |   35 |  45.00 |    2 |
+|    6 | good day123   |   45 |  60.00 |    2 |
+|   20 | Hide and seek |   45 |  40.00 |    2 |
+|  145 | bread111      |   50 | 120.00 |    2 |
+|  222 | Marie         |   45 |  45.00 |    2 |
+|   35 | 50-50         |   34 |  45.00 |    2 |
+|  456 | fdgsdfg       |   45 | 345.00 |    2 |
++------+---------------+------+--------+------+
+10 rows in set (0.00 sec)
+
+mysql> select * from category;
++------+-------------+-------------------------+
+| cid  | cname       | cdesc                   |
++------+-------------+-------------------------+
+|    1 | chips       | very crispy             |
+|    2 | biscuits    | sweet and tasty         |
+|    3 | chocolate   | yummmmmy                |
+|    4 | cold drinks | thanda thanda cool cool |
++------+-------------+-------------------------+
+4 rows in set (0.02 sec)
+
+mysql> select *
+    -> from emp
+    -> order by sal desc ;
++-------+--------+-----------+------+------------+----------+---------+--------+
+| EMPNO | ENAME  | JOB       | MGR  | HIREDATE   | SAL      | COMM    | DEPTNO |
++-------+--------+-----------+------+------------+----------+---------+--------+
+|   123 | Rajan  | Designer  | 7902 | 2017-01-01 | 34567.00 | 3456.00 |     10 |
+|  7839 | KING   | PRESIDENT | NULL | 1981-11-17 |  5000.00 |    NULL |     10 |
+|  1211 | xxxx   | mmm       | 7902 | 2018-02-02 |  3456.00 |  456.00 |     10 |
+|  1212 | xxxx   | mmm       | 7902 | 2018-02-02 |  3456.00 |  456.00 |     20 |
+|  7788 | SCOTT  | ANALYST   | 7566 | 1982-12-09 |  3000.00 |    NULL |     20 |
+|  7902 | FORD   | ANALYST   | 7566 | 1981-12-03 |  3000.00 |    NULL |     20 |
+|  7566 | JONES  | MANAGER   | 7839 | 1981-04-02 |  2975.00 |    NULL |     20 |
+|  7698 | BLAKE  | MANAGER   | 7839 | 1981-05-01 |  2850.00 |    NULL |     30 |
+|  7782 | CLARK  | MANAGER   | 7839 | 1981-06-09 |  2450.00 |    NULL |     10 |
+|  7499 | ALLEN  | SALESMAN  | 7698 | 1981-02-20 |  1600.00 |  300.00 |     30 |
+|  7844 | TURNER | SALESMAN  | 7698 | 1981-09-08 |  1500.00 |    0.00 |     30 |
+|  7934 | MILLER | CLERK     | 7782 | 1982-01-23 |  1300.00 |    NULL |     10 |
+|  7521 | WARD   | SALESMAN  | 7698 | 1981-02-22 |  1250.00 |  500.00 |     30 |
+|  7654 | MARTIN | SALESMAN  | 7698 | 1981-09-28 |  1250.00 | 1400.00 |     30 |
+|  7369 | SMITH  | CLERK     | 7902 | 1980-12-17 |  1100.00 |    NULL |     20 |
+|  7876 | ADAMS  | CLERK     | 7788 | 1983-01-12 |  1100.00 |    NULL |     20 |
+|  7900 | JAMES  | CLERK     | 7698 | 1981-12-03 |   950.00 |    NULL |     30 |
++-------+--------+-----------+------+------------+----------+---------+--------+
+17 rows in set (0.01 sec)
+
+mysql> select *
+    -> from emp
+    -> order by sal desc
+    -> limit 4;
++-------+-------+-----------+------+------------+----------+---------+--------+
+| EMPNO | ENAME | JOB       | MGR  | HIREDATE   | SAL      | COMM    | DEPTNO |
++-------+-------+-----------+------+------------+----------+---------+--------+
+|   123 | Rajan | Designer  | 7902 | 2017-01-01 | 34567.00 | 3456.00 |     10 |
+|  7839 | KING  | PRESIDENT | NULL | 1981-11-17 |  5000.00 |    NULL |     10 |
+|  1211 | xxxx  | mmm       | 7902 | 2018-02-02 |  3456.00 |  456.00 |     10 |
+|  1212 | xxxx  | mmm       | 7902 | 2018-02-02 |  3456.00 |  456.00 |     20 |
++-------+-------+-----------+------+------------+----------+---------+--------+
+4 rows in set (0.00 sec)
+
+mysql> select *
+    -> from emp
+    -> order by sal desc
+    -> limit 4,1
+    -> ;
++-------+-------+---------+------+------------+---------+------+--------+
+| EMPNO | ENAME | JOB     | MGR  | HIREDATE   | SAL     | COMM | DEPTNO |
++-------+-------+---------+------+------------+---------+------+--------+
+|  7902 | FORD  | ANALYST | 7566 | 1981-12-03 | 3000.00 | NULL |     20 |
++-------+-------+---------+------+------------+---------+------+--------+
+1 row in set (0.00 sec)
+
+mysql> select *
+    -> from emp
+    -> order by sal desc ;
++-------+--------+-----------+------+------------+----------+---------+--------+
+| EMPNO | ENAME  | JOB       | MGR  | HIREDATE   | SAL      | COMM    | DEPTNO |
++-------+--------+-----------+------+------------+----------+---------+--------+
+|   123 | Rajan  | Designer  | 7902 | 2017-01-01 | 34567.00 | 3456.00 |     10 |
+|  7839 | KING   | PRESIDENT | NULL | 1981-11-17 |  5000.00 |    NULL |     10 |
+|  1211 | xxxx   | mmm       | 7902 | 2018-02-02 |  3456.00 |  456.00 |     10 |
+|  1212 | xxxx   | mmm       | 7902 | 2018-02-02 |  3456.00 |  456.00 |     20 |
+|  7788 | SCOTT  | ANALYST   | 7566 | 1982-12-09 |  3000.00 |    NULL |     20 |
+|  7902 | FORD   | ANALYST   | 7566 | 1981-12-03 |  3000.00 |    NULL |     20 |
+|  7566 | JONES  | MANAGER   | 7839 | 1981-04-02 |  2975.00 |    NULL |     20 |
+|  7698 | BLAKE  | MANAGER   | 7839 | 1981-05-01 |  2850.00 |    NULL |     30 |
+|  7782 | CLARK  | MANAGER   | 7839 | 1981-06-09 |  2450.00 |    NULL |     10 |
+|  7499 | ALLEN  | SALESMAN  | 7698 | 1981-02-20 |  1600.00 |  300.00 |     30 |
+|  7844 | TURNER | SALESMAN  | 7698 | 1981-09-08 |  1500.00 |    0.00 |     30 |
+|  7934 | MILLER | CLERK     | 7782 | 1982-01-23 |  1300.00 |    NULL |     10 |
+|  7521 | WARD   | SALESMAN  | 7698 | 1981-02-22 |  1250.00 |  500.00 |     30 |
+|  7654 | MARTIN | SALESMAN  | 7698 | 1981-09-28 |  1250.00 | 1400.00 |     30 |
+|  7369 | SMITH  | CLERK     | 7902 | 1980-12-17 |  1100.00 |    NULL |     20 |
+|  7876 | ADAMS  | CLERK     | 7788 | 1983-01-12 |  1100.00 |    NULL |     20 |
+|  7900 | JAMES  | CLERK     | 7698 | 1981-12-03 |   950.00 |    NULL |     30 |
++-------+--------+-----------+------+------------+----------+---------+--------+
+17 rows in set (0.00 sec)
+
+mysql> select cid,min(price)
+    -> from product
+    -> where cid in (1,2)
+    -> group by cid;
++------+------------+
+| cid  | min(price) |
++------+------------+
+|    1 |     150.00 |
+|    2 |      40.00 |
++------+------------+
+2 rows in set (0.00 sec)
+
+mysql> select count(*)
+    -> from emp
+    -> where sal > 3456;
++----------+
+| count(*) |
++----------+
+|        2 |
++----------+
+1 row in set (0.00 sec)
+
+mysql> select count(*)
+    -> from emp
+    -> where sal > 2975
+    -> ;
++----------+
+| count(*) |
++----------+
+|        6 |
++----------+
+1 row in set (0.00 sec)
+
+mysql> select count(*)
+    -> from (select distinct(sal) from emp)
+    -> where sal > 2975;
+ERROR 1248 (42000): Every derived table must have its own alias
+mysql> select count(*)
+    -> from (select distinct(sal) from emp) e
+    -> where sal > 2975;
++----------+
+| count(*) |
++----------+
+|        4 |
++----------+
+1 row in set (0.00 sec)
+
+mysql> select count(*)
+    ->    from (select distinct(sal) from emp) e1
+    ->      where e1.sal = 2975
+    -> ;
++----------+
+| count(*) |
++----------+
+|        1 |
++----------+
+1 row in set (0.00 sec)
+
+mysql> select count(*)
+    -> from (select distinct(sal) from emp) e
+    -> where sal >= 2975;
++----------+
+| count(*) |
++----------+
+|        5 |
++----------+
+1 row in set (0.00 sec)
+
+mysql> select empno,ename,sal,comm,case
+    -> when comm is null or comm=0 then 'need improvement'
+    -> when comm<500 then 'ok'
+    -> when comm >=500 and comm<1000 then 'good'
+    -> else 'excellent' end remark
+    -> from emp;
++-------+--------+----------+---------+------------------+
+| empno | ename  | sal      | comm    | remark           |
++-------+--------+----------+---------+------------------+
+|  7369 | SMITH  |  1100.00 |    NULL | need improvement |
+|  7499 | ALLEN  |  1600.00 |  300.00 | ok               |
+|  7521 | WARD   |  1250.00 |  500.00 | good             |
+|  7566 | JONES  |  2975.00 |    NULL | need improvement |
+|  7654 | MARTIN |  1250.00 | 1400.00 | excellent        |
+|  7698 | BLAKE  |  2850.00 |    NULL | need improvement |
+|  7782 | CLARK  |  2450.00 |    NULL | need improvement |
+|  7788 | SCOTT  |  3000.00 |    NULL | need improvement |
+|  7839 | KING   |  5000.00 |    NULL | need improvement |
+|  7844 | TURNER |  1500.00 |    0.00 | need improvement |
+|  7876 | ADAMS  |  1100.00 |    NULL | need improvement |
+|  7900 | JAMES  |   950.00 |    NULL | need improvement |
+|  7902 | FORD   |  3000.00 |    NULL | need improvement |
+|  7934 | MILLER |  1300.00 |    NULL | need improvement |
+|   123 | Rajan  | 34567.00 | 3456.00 | excellent        |
+|  1211 | xxxx   |  3456.00 |  456.00 | ok               |
+|  1212 | xxxx   |  3456.00 |  456.00 | ok               |
++-------+--------+----------+---------+------------------+
+17 rows in set (0.00 sec)
+
+mysql> select empno,ename,deptno,case deptno when 10 then 'sales'
+    -> when 20 then 'purchase'
+    -> when 30 then 'accounting'
+    -> else 'marketing' end dname
+    -> from emp;
++-------+--------+--------+------------+
+| empno | ename  | deptno | dname      |
++-------+--------+--------+------------+
+|  7369 | SMITH  |     20 | purchase   |
+|  7499 | ALLEN  |     30 | accounting |
+|  7521 | WARD   |     30 | accounting |
+|  7566 | JONES  |     20 | purchase   |
+|  7654 | MARTIN |     30 | accounting |
+|  7698 | BLAKE  |     30 | accounting |
+|  7782 | CLARK  |     10 | sales      |
+|  7788 | SCOTT  |     20 | purchase   |
+|  7839 | KING   |     10 | sales      |
+|  7844 | TURNER |     30 | accounting |
+|  7876 | ADAMS  |     20 | purchase   |
+|  7900 | JAMES  |     30 | accounting |
+|  7902 | FORD   |     20 | purchase   |
+|  7934 | MILLER |     10 | sales      |
+|   123 | Rajan  |     10 | sales      |
+|  1211 | xxxx   |     10 | sales      |
+|  1212 | xxxx   |     20 | purchase   |
++-------+--------+--------+------------+
+17 rows in set (0.00 sec)
+
+mysql> select * from product;
++------+---------------+------+--------+------+
+| pid  | pname         | qty  | price  | cid  |
++------+---------------+------+--------+------+
+|    2 | Nachos123     |  302 | 150.00 |    1 |
+|    3 | Pringles123   |   29 | 150.00 |    1 |
+|    4 | Marie gold    |   20 |  50.00 |    2 |
+|    5 | nice1234      |   35 |  45.00 |    2 |
+|    6 | good day123   |   45 |  60.00 |    2 |
+|   20 | Hide and seek |   45 |  40.00 |    2 |
+|  145 | bread111      |   50 | 120.00 |    2 |
+|  222 | Marie         |   45 |  45.00 |    2 |
+|   35 | 50-50         |   34 |  45.00 |    2 |
+|  456 | fdgsdfg       |   45 | 345.00 |    2 |
++------+---------------+------+--------+------+
+10 rows in set (0.00 sec)
+
+mysql>
+mysql> select pid,pname,qty,case when qty <20 then 'less'
+    -> when qty between 20 and 34 then 'moderate'
+    -> when qty between 35 and 99 then 'good qty'
+    -> else 'excess' end remark
+    -> from product;
++------+---------------+------+----------+
+| pid  | pname         | qty  | remark   |
++------+---------------+------+----------+
+|    2 | Nachos123     |  302 | excess   |
+|    3 | Pringles123   |   29 | moderate |
+|    4 | Marie gold    |   20 | moderate |
+|    5 | nice1234      |   35 | good qty |
+|    6 | good day123   |   45 | good qty |
+|   20 | Hide and seek |   45 | good qty |
+|  145 | bread111      |   50 | good qty |
+|  222 | Marie         |   45 | good qty |
+|   35 | 50-50         |   34 | moderate |
+|  456 | fdgsdfg       |   45 | good qty |
++------+---------------+------+----------+
+10 rows in set (0.00 sec)
+
+mysql> use DACmarch23
+Database changed
+mysql> create table room(
+    ->   rid int primary key,
+    ->   rname varchar(30),
+    ->   loc varchar(30)
+    -> )
+    -> ;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> desc room;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| rid   | int         | NO   | PRI | NULL    |       |
+| rname | varchar(30) | YES  |     | NULL    |       |
+| loc   | varchar(30) | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+3 rows in set (0.01 sec)
+
+mysql> insert into room values(12,'Lotus','first');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into room values(12,'Jasmin','first');
+ERROR 1062 (23000): Duplicate entry '12' for key 'room.PRIMARY'
+mysql> insert into room(rname,loc) values('Jasmin','first');
+ERROR 1364 (HY000): Field 'rid' doesn't have a default value
+mysql> insert into room(rid, rname,loc) values(23,'Jasmin','first');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from room;
++-----+--------+-------+
+| rid | rname  | loc   |
++-----+--------+-------+
+|  12 | Lotus  | first |
+|  23 | Jasmin | first |
++-----+--------+-------+
+2 rows in set (0.00 sec)
+
+mysql>
