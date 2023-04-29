@@ -1,0 +1,41 @@
+Revision
+Debugger
+regarding static methods 
+
+Today's topics
+Date time Handling : Java 8 onwards (Modern Java)
+String handling
+
+Revise wrapper classes
+
+var-args
+
+Bigger assignment to revise all the topics learnt so far
+Vehicle showroom management system
+
+Requirements 
+(Authentication n authorization later)
+1. Add new Vehicle to the showroom
+i/p : vehicle details
+
+validation rules :
+no dups
+color / category : supported
+manufacture : curnt or last
+....
+
+2. Display all vehicles
+3. Apply discount on a particular vehicle / by some company
+4. Remove vehicle details
+........
+
+
+
+Classes 
+1. Vehicle HAS-A :
+chasisNo (PK : UID) : string, color (enum : additional cost) , category(enum) , price(double),manufacture date(LocalDate) , company (string)
+.....
+
+
+
+
