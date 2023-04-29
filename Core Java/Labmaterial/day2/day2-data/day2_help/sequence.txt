@@ -1,0 +1,11 @@
+Go through exception handling :using
+
+Objective 
+1. Validate speed of a vehile running on the expressway
+min speed 40
+max spped 80
+In case of speed out of range , throw custom exc to alert the driver.
+
+Later : 
+2. check driving license :
+expired or not !
