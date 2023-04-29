@@ -1,0 +1,23 @@
+Final Variable in Java
+Programmers can create a final variable when they need to create a constant variable, which means after initializing it cannot be modified or updated.
+
+If we try to modify this variable, the compiler will throw an error. The same way they can do with objects but, in this case we can change the property of objects as we only finalize the reference variable of the object.
+
+Final variables can be used with primitive data types (int, float, double, and char) and non-primitive data types (object references).
+
+
+
+
+Final Method in Java
+
+Likewise final variables in Java, we can also use final keywords with methods in Java. When a method is defined as final, then it can not be overridden by its subclasses. So, if we try to override it, the system will throw a compile time error.
+
+
+
+Final Class in Java
+
+Likewise with the final variables and final methods, we can also use the final keyword with Java classes. These classes are called the final classes, which can not be inherited by any other classes.
+
+So, if we try to inherit a class which is declared as a final, the system will throw a compile time error.
+
+Classes like Integer, String, and many other wrapper classes are an example of Final classes.

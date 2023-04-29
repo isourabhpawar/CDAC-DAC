@@ -1,0 +1,14 @@
+1:Create Menu  for coffee shop using enum.
+Create tester class,display all available type of coffee,accept coffee type from user and display what user entered.
+
+
+2:Create  Enum category  for grosary shop.
+Create product class with id,name,price,Category
+Create menu driven programs 
+a: add new   products
+b: display all products
+c: show specific product by id
+d:show all product price >100
+e:accept category from user and show only matched products
+
+(Revise all theory session demos( abstract class ,abstract metohd ,interface))

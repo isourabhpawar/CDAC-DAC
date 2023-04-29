@@ -1,0 +1,84 @@
+Introduction to Java Abstract Class
+Hiding internal details and showing only the functionality is known as abstraction. Abstraction is one of the key concepts in Object Oriented Programming Paradigm.
+
+In order to implement Abstraction, we use Abstract Classes or Interfaces. 
+
+Abstract class in Java is a collection of abstract and non-abstract methods.
+
+Abstract methods do not have a body or implementation. The implementation for the abstract methods is provided by the child classes which extend the abstract class.
+
+Basically, an Abstract Class is nothing but a blueprint for the child class. Abstract classes justify the layout of your idea and does not really implement them.
+
+Syntax:
+abstract class ClassName {
+    // Abstract and Non-abstract methods
+}
+
+
+
+Rules for Using Abstract Class in Java
+
+* You have to use the keyword abstract.
+* You cannot instantiate an abstract class.
+* An abstract class can contain both abstract and non-abstract methods.
+* You can include non-abstract final methods (a method which cannot be overriden) as well in your   abstract class.
+* Final methods in abstract classes can not be abstract. They must be implemented in the abstract    class itself.
+* You can also include constructors and non-abstract static methods in your abstract class.
+
+
+
+
+Abstract Methods in Java
+If you use 'abstract' keyword while declaring the method, it is called an Abstract Method.
+
+An Abstract Method does not contain any body. Whenever you declare an abstract method, you must end it with a semicolon as shown in the syntax below. Abstract method is always present inside an abstract class, you cannot declare it inside regular (not abstract) class.
+
+Let's see that calculator app example. You create an abstract class Calculator and you need basic 4 functions - addition, substraction, multiplication and division. So you just declare them as abstract methods inside the Calculator class. So whenever you extend the abstract class you just need to define the abstract methods.
+
+Let's understand some of the rules on the usage of Abstract Method -
+
+* A method declared with the abstract keyword is called an Abstract method.
+* Abstract method can only be declared inside an abstract class or an interface.
+* Abstract methods must not contain any definition or body in abstract class.
+* You must end the declaration of the abstract method using ';'(semicolon).
+* In order to write the implementation code of these abstract method, you must inherit the abstract   class. Then the child class can write the definition for the abstract methods.
+* If you don't define the abstract method inside the child class, then you must declare the child class as abstract otherwise compiler will throw error.
+
+
+
+example:
+abstract class Calc {
+    abstract void display();
+}
+
+class Computer extends Calc{
+    
+}
+public class Main
+{
+	public static void main(String[] args) {
+		System.out.println("Hello World");
+	}
+}
+
+
+
+
+Q:Why Can’t We Create an Object of an Abstract Class?
+If you have read till now, you know we cannot instantiate an abstract class. Meaning you cannot create an object of the Abstract class.
+
+Abstract Class can have abstract methods and abstract method does not contain any body or definition inside it. This means that Abstract Class does not seem to be a complete class. It's just a template.
+
+So imagine, you create an object of that abstract class and try to access one of the abstract method, it will throw error because there is nothing inside the method to perform.
+
+For object to run any method, it must have some body and abstract method does not have any. Hence we cannot create the object of any abstract class.
+
+
+*Important Observations About Abstract Classes in Java
+-Use the 'abstract' keyword if you want to declare a class or method as abstract.
+-You have to provide implementation to all the abstract methods declared within the abstract class in its subclasses.
+-The class has to be abstract if you want to declare an abstract method within its scope.
+-You cannot create objects of abstract class because abstract class cannot be instantiated.
+-Whenever you create an object of the child class of any abstract class, compiler calls the the  constructor of the abstract class automatically.
+-You can declare non-abstract final and static methods inside abstract classes.
+-Multiple inheritance cannot be achived using abstract class.
