@@ -1,0 +1,51 @@
+
+3. Solve this.
+Fresh business scenario to apply inheritance , polymorphism n abstraction to emp based organization scenario.
+
+Create Emp based organization structure --- Emp , Mgr , Worker
+All of above classes must be in --com.app.org
+
+3.1 Emp state--- id(int), firstName, lastName , deptId , basic(double)
+emp id MUST be automatically generated.
+
+Behaviour ---1.  get emp details -- using  toString.
+
+2. compute net salary 
+
+3.2 Mgr state  ---id,name,basic,deptId , perfBonus
+Behaviour ----1. get mgr details :  using toString. 
+2. compute net salary (formula: basic+perfBonus) -- override computeNetSalary
+3. get performance bonus. --add a new method to return bonus.(getter)
+4:cal perBonus()
+
+3.3 Worker state  --id,name,basic,deptId,hoursWorked,hourlyRate
+Behaviour--- 
+1. get worker details -- :  override toString.
+2.  compute net salary (formula:  = basic+(hoursWorked*hourlyRate) --override computeNetSalary
+3. get hrlyRate of the worker  -- add a new method to return hourly rate of a worker.(getter)
+4: cal dayPayment(){}
+
+Organize classes in inheritance  hierarchy.
+
+NOTE : toString method SHOULD NOT include the net salary of the employee
+
+Write TestOrganization in "tester" package.
+Create suitable array to store organization details.
+Provide following options
+
+1. Hire Manager
+i/p : manager details , except id
+
+2. Hire Worker  
+i/p : worker details , except id
+
+3. Display information of all employees(toString) including net salary(computeNetSalary)  using single for-each loop.
+
+4. Update basic salary
+i/p : emp id , salary increment
+In case of invalid emp id  , either : display error message directly 
+OR (still better)
+
+
+10 Exit
+

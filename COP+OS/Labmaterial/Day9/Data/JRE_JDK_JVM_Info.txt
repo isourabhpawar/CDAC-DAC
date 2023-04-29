@@ -1,0 +1,8 @@
+JDK
+JDK stands for Java Development Kit. It is a software development environment used to develop Java applications and applets. It is a platform-specific software i.e there are separate installers for Windows, Mac, and Unix systems. Java developers can use it on their Windows, macOS, Solaris, and Linux to code and run Java programs. It contains Java Runtime Environment(JRE) and other development tools like an interpreter, compiler, archiver, and a document generator. We can possibly install more than one JDK version on the same computer. 
+
+
+JRE
+JRE stands for Java Runtime Environment. It is the implementation of JVM (Java Virtual Machine) and it is specially designed to provide an environment to execute Java programs. It is also platform dependent like JDK. It consists of JVM, Java binaries, and other classes for the smooth execution of the program. It doesn’t contain any development tools like a compiler, debugger, etc. If we only want to execute a program, we just need to install JRE and not JDK, since there is no development or compilation of the code required.
+
+JVM (Java Virtual Machine) is a very important part of both JDK and JRE because it is contained or inbuilt in both. Whatever Java program you run using JRE or JDK goes into JVM and JVM is responsible for executing the java program line by line, hence it is also known as an interpreter.

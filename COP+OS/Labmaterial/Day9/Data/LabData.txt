@@ -1,0 +1,128 @@
+1 Coding assignment
+
+1.1 Create a class Point2D ,    : for representing a point in x-y co-ordinate system.
+
+1.2 Create a parameterized constructor to init x & y co-ords.
+
+1.3 Add a method to return string form of  point's x & y co-ords
+Hint :  public String getDetails()) 
+
+1.4 Add isEqual method to Point2D class :a boolean returning method : must return true if both points are having same x,y co-ords or false otherwise.
+eg : public boolean isEqual(Point2D anotherPoint)
+{
+ .......
+}
+eg : p1.isEqual(p2)
+
+
+1.5 Add calculateDistance method to calculate distance between current point and specified point & return the distance to the caller.
+Hint : Use distance formula . Use java.lang.Math class methods --sqrt, pow etc.
+eg : public double calculateDistance(Point2D anotherPoint)
+{
+  Math.sqrt(.....);
+}
+
+
+1.6 Write TestPoint class    with a main method
+Accept co ordinates of 2 points from user (Scanner) --to create 2 points (p1 & p2)
+
+1.7 Use getDetails method to display point details.(p1's details & p2's details)
+
+1.8 Invoke isEqual & display if points are same or different (i.e p1 & p2 are located at the same position)
+
+1.9 Display distance between p1 & p2
+
+---------------------------------------------------------------------------------------
+1 Solve this.
+Fresh business scenario to apply inheritance , polymorphism   to emp based organization scenario.
+
+Create Emp based organization structure --- Emp , Mgr , Worker
+All of above classes must be in --com.app.org
+
+1.1 Emp state--- id(int), name, deptId , basicSalary(double)
+Accept all of above in constructor arguments.
+Methods ---1.To  get emp details -- override toString((inherited from Object class)
+1.2. compute net salary ---ret 0
+(eg : public double computeNetSalary(){return 0;})
+
+1.2 Mgr state  ---id,name,basic,deptId , perfBonus
+Add suitable constructor
+Methods ----1. get mgr details :  override toString (inherited from Emp class)
+1. compute net salary (formula: basic+perfBonus) -- override computeNetSalary
+2. get performance bonus. --add a new method to return bonus.(getter)
+
+1.3 Worker state  --id,name,basic,deptId,hoursWorked,hourlyRate
+Methods : 
+1. get worker details -- :  override toString. (inherited from Emp class)
+2.  compute net salary (formula:  = basic+(hoursWorked*hourlyRate) --override computeNetSalary
+3. get hrlyRate of the worker  -- add a new method to return hourly rate of a worker.(getter)
+
+Organize classes in inheritance  hierarchy.
+
+Write TestOrganization in "tester" package.
+Create suitable array to store organization details.
+Provide following options
+
+1. Hire Manager
+I/P : all manager details
+
+2. Hire Worker  
+I/P : all worker details
+
+3. Display information of all employees(toString) & display net salary (by invoking computeNetSal), 
+
+4. Exit
+----------------------------------------------------
+2: Solve assignment (to understand abstraction)
+1. Create abstract class Shape --state :  x,y 
+Abstract Method --public double area();
+public String toString() : to ret x & y
+
+Why will area() be abstract in Shape class ?????????
+
+2. Circle -- x,y,radius
+Concrete overriding Method --public double area() : ret area of circle
+public String toString() : ret x, y & radius
+
+3. Rectangle -- x,y,w,h
+Concrete overriding Method --public double area() : ret area of rectangle
+public String toString() : ret x, y , width & height
+
+4. Square-- x,y,side
+Concrete overriding Method --public double area() : ret area of square
+public String toString() : ret x, y , side
+
+5. Create a ShapeFactory class 
+Add a static method(generateShape)  to return randomly generated shape.
+Hint : random no generator
+
+6. Create a Tester . Invoke ShapeFactory's generateShape() method , in a for-loop (5 times)
+to display details & area of each shape
+----------------------------------------------
+7  Objective
+:Define an interface and implement it in any class wherever it is required.
+Pre-condition
+: Employee, Date and Shape class should be created.
+Problem Statement
+
+7.1:Define an interface Printable with a method print(). Implement this
+interface in Employee, Shape and Date class. 
+
+---------------------------------------------------------------------
+1:create student class with rollno,name,address,email,Course course(create ENUM course)
+
+
+2:create array of students
+3:Menu  1:add student  2: edit address  3: display
+
+Note:case 1:add Student
+ if student is duplicate then dont add in array.
+identity:rollno and cname
+
+
+101 vaishali pune DAC
+102 rahul pune DBDA
+101 ajay nagar DAC--->
+
+
+
