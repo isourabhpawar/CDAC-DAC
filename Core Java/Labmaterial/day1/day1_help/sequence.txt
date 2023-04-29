@@ -1,0 +1,268 @@
+Quick re cap of some of the earlier important topics
+
+Why Java ?
+Data Types in Java
+Important memory areas in JVM 
+stack ,heap , method area
+Are you absolutely clear with ?
+method local variables vs instance variables vs static variables ?
+refer to a diagram : "day1-data\day1_help\diagrams\different types of vars.png"
+eg : class Emp
+{
+ id , name , salary , deptId , noOfEmps,address, idGenerator : static
+How will you generate emp ids automatically ?
+Constructor(ctor) args : name , salary , deptId ,adr
+Emp(...)
+{
+ this.id=++idGenerator;
+noOfEmps++;
+}
+
+}
+Different example : 
+What will be the memory pic for the following code?
+eg : Emp e1=new Emp(101,"Rama Mathur",12345);
+Emp e2=e1;
+System.out.println(e1);
+System.out.println(e2);
+e1=null; //Any objects marked for GC ?
+System.out.println(e1.getFirstName());
+System.out.println(e2.getFirstName());
+e2=null; //Any objects marked for GC ?
+
+eg : Consider below code n check if any objects marked for GC ?
+Emp e1=new Emp(101,'Rama Mathur',12345);
+e1=new Emp(102,"Kirat Potdar",34567);
+sop(e1);//it will impliclitly invoke ???
+refer : "day1-data\day1_help\diagrams\whiteboard.png"
+
+If Emp class has a private method : 
+private boolean test()
+{...}
+
+What will be legal access specifiers , in overriding this methos in a sub class(Mgr, Worker....)
+You CAN NOT override a private method -to achieve run time poly.
+BUT you can re declare it!
+
+
+
+eg : What will be mem pic ?
+double[] data;
+data=new double[10];
+OR
+double[] data=/*new double[]*/ {12.3,1,2,3,4.5};
+
+eg : Given :
+Box class : w,d,h
+ctor , toString
+What will be mem pic ?
+Box[] boxes=new Box[2];
+How many objects are created in above statement ?
+
+How will you do this ?
+Customer wants to place the order for no. of boxes n wants to specify the dimensions @ run time , dynamically ?
+
+sop("Enter no of boxes to make?");
+Box[] boxes=new Box[sc.nextInt()];//10
+for(Box b : boxes) //b=boxes[0],b=boxes[1]....b=boxes[boxes.length-1]
+{
+ sop("Enter box dims w d h")
+ b=new Box(sc.nextDouble(),sc.nextDouble(),sc.nextDouble());//1 2 3 , 2 3 4 3 4 5....
+}
+//b : loop local var.
+for(Box b : boxes)
+ sop(b.getWidth());//NPE
+
+Soln : replace for-each by for loop
+for(int i=0;i<boxes.length;i++) //b=boxes[0],b=boxes[1]....b=boxes[boxes.length-1]
+{
+ sop("Enter box dims w d h")
+ boxes[i]=new Box(sc.nextDouble(),sc.nextDouble(),sc.nextDouble());//1 2 3 , 2 3 4 3 4 
+}
+
+Can you use for-each loop to double box widths ?  YES
+for(Box b : boxes)
+ b.setWidth(b.getWidth()*2));
+  
+
+Summary : You CAN NOT use for-each to modify array elements(since it works on a copy)
+BUT can be used(in case of array of refs) to modify state of the objects referred.
+
+
+
+Customer wants to place order for 3 boxes  , with the  dimensions hard coded as :
+10,20,30
+12.5,13.45,20
+1,2,3 
+How will you do this in 1 single java statement ?
+Direct init /dynamic init of array : useful testing practice!
+Box[] boxes=/*new Box[]*/ {new Box(10,20,30),new Box(12.5,13.45,20),new Box(1,2,3)};
+
+
+
+
+static keyword usages
+
+
+Why inheritance ?
+Revise important concepts n keywords , types of inheritance
+
+What about multiple inheritance ? : not supprted1
+why ? ambiguity issue(diamond problem)
+
+Annotations in Java
+It is the info.(metadata/tag)  meant for java tools(i.e either javac or JVM)
+eg : @Override
+Method level annotation
+To inform the javac , that following is either overriding form or the implementation form of the method.
+So in case of any mistakes , javac will give you error.
+
+
+Can a class implement multiple interfaces ? : YES
+
+What will happen when a class implements 2 interfaces with dup method declaration ? Any ambiguity issue ?
+
+Constructor invocation in the inheritance hierarchy 
+
+Consider Fruits :
+Fruit,Mango,Apple,Orange,Alphonso
+Can you organize them in inheritance hierarchy  ?
+
+Fruit : super class : abstract class
+public abstract String taste();
+/*{
+ return "No specific taste";
+}*/
+
+Mango extends Fruit
+{
+ 
+@Override
+public String taste()
+{
+  return "sweet";
+}
++ additional func
+public void pulp()
+{
+  sop("enjoy cool mango pulp!");
+}
+}
+
+Alphonso extends Mango
+{
+@Override
+public String taste()
+{
+  return "sweet n juicy";
+}
+}
+
+
+Orange extends Fruit
+{
+ @Override
+public String taste()
+{
+  return "sour";
+}
++ additional func
+public void juice()
+{
+  sop("extracting orange juice");
+}
+}
+
+Apple extends Fruit 
+{
+   override taste() : to return"sweet n sour"
+   //jam 
+   public void jam() 
+   {
+      sop("creating apple jam...");
+   }
+}
+
+
+Solve
+What will happen ?
+
+1. Fruit f=new Mango(); //no javac err : upcasting 
+sop(f.taste());// sweet ! : Run tm poly=Dyn method dispatch => JVM decides taste() method to be called on which type of instance @ run time.
+
+f=new Orange(...);//GC : Mango , no javac err : upcasting 
+sop(f.taste());//sour
+
+
+f=new Alphonso();//GC : Orange ,  no javac err : upcasting
+f.taste();//sweet n juicy
+
+
+2. Object o=f;//no javac err : upcasting
+sop(o.taste());//javac error!!!!!!!!!!!!!!!! : why : 
+IMPORTANT 
+Java compiler resolves method binding by the type of reference
+JVM resolves method binding by the type of instance/object it's referrring to.
+
+Meaning : IN sop(o.taste()); 
+this stmt : javac check if taste() exists : in java.lang.Object class -- NO
+javac err!
+
+BUT o ---> Alphonso instance
+soln : downcasting
+sop(((Alphonso)o).taste());//no err , o/p : sweet n juicy
+
+3. Solve :
+
+Fruit f=new Orange();
+f.taste(); //sour
+f.juice();//javac err ! --soln explic
+
+
+f=new Apple();
+f.juice();
+(((Orange)f)).juice();//works !
+
+
+4. Client wants to create a fruit basket , which can contain apples , oranges , alphonsos .
+How will you do it ?
+array : Fruit[] basket=new Fruit[sc.nextInt()];//1 array : basket of fruits
+int counter=0;
+Options
+1. Add Orange
+   if(counter < basket.length)
+{
+    basket[counter++]=new Orange(....); //up casting : indirect ref.
+    sop("Orange added to the basket!");
+}
+ else
+  sop("Basket full!!!!!!!!!!!");
+2. Add Alphonso
+ if(counter < basket.length)
+{
+    basket[counter++]=new Alphonso(....); //up casting : indirect ref.
+    sop("Alphonso added to the basket!");
+}
+ else
+  sop("Basket full!!!!!!!!!!!");
+ 
+3. Add Apple
+....
+
+4. Display tastes of all the fruits in the basket n if it's Alphonso : pulp ,.../jam /juice
+{al1,al2,al3,a1,a2,or1,null...null}
+for (Fruit f : basket) //f=basket[0] DIRECT ref
+ if(f != null) {
+ sop(f.taste());//run tm poly.
+if(f instanceof Alphonso)
+  ((Alphonso)f).pulp();  
+else if(.....)
+((Apple)f).jam();  
+  
+}
+
+Revise
+abstract methods
+abstract classes
+interfaces n implementation class. 
+
