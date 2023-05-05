@@ -1,0 +1,98 @@
+Revise 
+1. Showroom management App
+
+
+2. Generics
+eg : How will you create a generic class , which can hold pair of ANY type of refs ?
+eg : String n Customer
+String , Integer
+Integer,BankAccount
+eg : public class Pair<T,U>
+{
+   private T ref1;
+   private U ref2;
+   //ctor , getters/ setters....
+}
+In Tester class : 
+Pair<String,Customer> pair1=new Pair<>("abc@gmail.com",new Customer(....));
+
+Pair<String,Integer> pair2=new Pair<>("and",10);//auto boxing
+
+
+
+
+
+
+Draw a detailed diagram for Collection Framework overview
+
+List features n API
+
+1.List n implementation classes
+ArrayList of integers
+CRUD
+Sorting 
+Searching
+
+
+
+
+
+
+2. Use ArrayList instead of array to store vehicle details in the showroom  n perform earlier  operations.
+
+2.1 Add a new Vehicle (w/o a dup)
+dup : contains --uses internally equals of argument passed to it.
+adding the vehicle : add(E e) 
+
+2.2 Display all vehicles
+for loop | for-each | Iterator | ListIterator | toString
+
+
+New Options : 
+
+Option : get specific vehicle details
+i/p : chasis no
+o/p : either vehicle details (in case of vehicle found) or err mesg via custom exc!
+Hint : search criteria : PK based --methods exist
+indexOf -- -1 => not found --throw custom exc
+get(index) --elem
+
+
+3. Option
+Apply discount on all vehicles produced before a specific date
+i/p : date , discount
+Hint : search criteria --non PK based (date)
+for-each(Iterator) ---parse n validate date --- isBefore -- reduce price
+
+
+
+4. Objective :
+Create a new class : ShowroomUtils
+1. Add a static method to return populated list(sample hardcoded data) of vehicles
+
+
+5. Objective :
+Remove specific vehicle details
+i/p : chasis no
+o/p : valid ch no : del details o.w throw custom exc
+Hint --PK based searchig--removal
+indexOf -- -1 => throw custom exc
+remove(index)
+
+
+6. Objective :
+Remove all vehicle details by a specific color
+i/p : color
+Observation : java.util.ConcurrentModificationException 
+Why : Java Iterators are "Fail-Safe" 
+Will be discussed tomorrow!
+
+
+
+-------------PENDING ---------------------
+7. Objective :
+Sort the vehicles as per asc ch no(using natural ordering)
+
+8. Objective :
+Sort the vehicles as per price no(using custom ordering)
+
