@@ -1,0 +1,100 @@
+Revision
+
+Today's topics
+
+1. Solve : 
+eg : Given
+Emp 
+id,deptId,name.......
+PK : id (string) n deptId(int)
+Store emp details in List imple (AL/LL/Vector)
+
+Emp class
+state : ....
+paramterized ctor to init complete state
+toString
++
+public Emp(String id,int deptId)
+{....}
++
+@Override
+public boolean equals(Object o)
+{
+  sop("in emp eq");
+  if(o instanceof Emp)
+  {
+    Emp e=(Emp) o;
+    return this.id.equals(e.id) && (this.deptId == e.deptId);
+  }
+  return false;
+ 
+}
+Tester : 
+AL<Emp> list=new AL<Emp>();
+Hired 10 emps (list.add(e1) .....list.add(e10);)
+
+Tester class 
+Option
+Fetch particular emp details
+sop(emp id n dept id)
+Emp e=new Emp(sc.next(),sc.nextInt());
+int index=list.indexOf(e);//for e5 matching : 4
+sop(list.get(index));
+
+2. Solve Yesterday's Objective :
+1. Remove all vehicle details by a specific color
+i/p : color
+Observation : java.util.ConcurrentModificationException 
+Why : Java Iterators are "Fail-Fast" 
+Refer : collctions_readme.txt
+
+2. Apply discount
+1/2/2020 100.5
+Observe n conclude
+indefinite loop : InputMismatchException
+Solution : sc.nextLine() : in catch-all
+
+3. Iterators n ListIterators 
+Exceptions associated
+Refer : collctions_readme.txt n code samples
+
+
+4. Objective :
+Sort the vehicles as per asc ch no(using natural ordering)
+
+5. Objective :
+Sort the vehicles as per price(using custom ordering)
+Sort the vehicles as per date n price(using custom ordering : anonymous inner class)
+eg : Collections.sort(list,new Comparator<Vehicle> ()
+{ //inner class begins
+  @Override 
+   public int compare(....)
+   {....}
+}//inner cls over
+);//java stmt over
+
+
+new Comparator<Vehicle> () => instance of the ano inner class , which imple Comparator<Vehicle>
+
+
+6. ArrayList vs Vector
+refer to detailed overview diagram n code sample.
+
+
+---------------Pending ---------------
+ LinkedList n it's comparison with ArrayList
+
+Set overview.
+Refer to diagrams
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,220 @@
+Day 1
+0. After the combined lab session ,
+please download javadocs
+https://www.oracle.com/java/technologies/javase-jdk11-doc-downloads.html
+
+1. Go through today's sequence.txt
+Revise n brush up on all mentioned concepts.
+
+2. Solve this
+5.1 Can you arrange Fruit,Apple,Orange,Mango in inheritance hierarchy ?
+Use tight encapsulation.
+
+5.2 Properties (instance variables)  : color : String , weight : double , name:String, fresh : boolean
+
+5.3 Add suitable constructors.
+
+5.4 Override  toString correctly to return state of all fruits (return only  : name ,color , weight )
+
+5.5 Add a taste() method : public String taste()
+
+For Fruit : Can you identify taste of any general fruit ?
+So will you add a taste() with this definition : returns "no specific taste" OR can u apply abstraction?
+
+Apple : should return  "sweet n sour"
+Mango : should return  "sweet"
+Orange : should return  "sour"
+
+5.6 Add specific functionality , in the sub classes
+In Mango : public void pulp() {Display name n color of the fruit + a mesg  creating  pulp!}
+In Orange : public void juice() {Display name n weight of the fruit + a mesg extracting juice!}
+In Apple : public void jam() {Display name of the fruit + a mesg  making jam!}
+
+
+5.7 Add all of above classes under the package "com.app.fruits"
+5.8 Create java application FruitBasket , with main method , as a tester , in com.app.tester package.
+5.9 Prompt user for the basket size n create suitable data structure
+
+5.10 Supply options
+1. Add Mango
+2. Add Orange
+3. Add Apple
+NOTE : You will be adding a fresh fruit in the basket , in all of above options.
+
+4. Display names of all fruits in the basket.
+
+5. Display name,color,weight , taste of all fresh fruits , in the basket.
+
+
+6. Mark a fruit in a basket , as stale(=not fresh)
+i/p : index 
+o/p : error message (in case of invalid index) or mark it stale
+
+7. Mark all sour fruits stale 
+Hint : Use equals() method of the String class.
+
+8. Invoke fruit specific functionality (pulp / juice / jam)
+i/p : index
+Invoke correct functionality (pulp / juice / jam)
+
+10. Exit 
+
+
+Day 2
+In combined lab
+
+1. import day2.1 in your workspace
+Refer to "day2-data\day2_help\exception handling\readme.txt"
+Revise some of the important code samples.
+
+2. Complete license expiry validation 
+
+
+3. 
+Can you override static methods ? 
+Confirm with code example
+
+4. Attach debugger , to confirm the flow of execution.
+
+5. Continue to the individual lab
+5.1 Complete revision of exc handling n date time handling
+
+5.2 Complete pending assignment of Day 1
+
+
+
+Day 3.
+
+1. import day3.1 n queries eclipse projects ,  in your workspace . Refer to today's readmes n revise
+1.1 static methods n overriding
+1.2 Attach debuger n check
+1.3 Java 8 (modern java) Date time handling
+1.4 String , StringBuilder classes 
+immutability , == vs equals , literal vs non literal strings
+
+1.5 Wrapper classes n conversions
+
+1.6 Variable args (var-args)
+
+
+2. After completing earlier work , try this.
+
+ Beginning of a mini Project , to apply the learnt concepts.
+
+Final Aim : To Create a Java application for customer management system.
+(signIn , signup, update password, un subsribe user ....)
+
+2.1 Customer HAS-A 
+customer id(int) ,first name, last name (string),email(string),password(string),registrationAmount(double),dob(LocalDate),plan(ServicePlan : enum)
+
+ServicePlan charges : 
+SILVER : 1000 
+GOLD : 2000
+DIAMOND : 5000
+PLATINUM : 10000
+
+Depending on the plan chosen , customer will have to pay specific registration amount
+
+customer id should be system generated , using auto increment.
+
+Unique ID(Primary Key ) : email  (2 customers are SAME iff their email ids are same)
+
+After reading above , can you create a Customer class ?
+Try it !
+
+Happy weekend !
+
+Day 3
+
+Student queries : 
+1.Still not clear about downcasting , classcast exc n instanceof checking!
+Will be revised in today's lab.
+Then you will understand equals method : completely!
+Refer : Emp , Mgr ,Worker , SalesMgr,HRMgr,TempWorker,PermanentWorker 
+We will develop this n understand .
+
+2. import day4.2 
+We will revise COMPLETELY showroom management system.
+(You can add break points n test the flow of execution)
+
+3. Will try to complete : atleast the Customer class
+n some validation rules !(Time permitting)
+
+4. Revise later (self study time)
+import day4.1
+4.1 revise enums
+4.2 revise generics
+
+
+Day 5
+1. import day5.1 in your workspace
+Revise ArrayList API , with Integer type
+
+2. import day5.2 in your workspace
+Revise ArrayList API , with Vehicle type (practical case study)
+
+3. Start with customer management system
+Supply Options
+1. Sign up
+2. Sign in
+i/p : email n password
+3. Change password
+4. Un subscribe customer
+5. Display all customers.
+
+Design 
+Identify the classes/enums involved
+1. ServicePlan : enum
+ServicePlan charges : 
+SILVER : 1000 
+GOLD : 2000
+DIAMOND : 5000
+PLATINUM : 10000
+
+
+2. Customer class (core class)
+state(non static data members : instance vars)  : customer id(int) ,first name, last name (string),email(string),password(string),registrationAmount(double),dob(LocalDate),plan(ServicePlan : enum)
+idGenerator : static
+ctors 
+1. all args ctor
+2. PK based ctor
+
+override : toString n equals
+
+3. custom exception class
+4. validation rules
+no dup customers
+Hint : public static void checkForDup(....)
+{
+api : contains
+}
+
+validate plan
+reg amount must match with the plan
+customer's age  must be > 21 : lab work
+
+5. Tester
+
+
+Day 6
+In combined lab : 
+1. Complete Day 5 assignment
+
+2. In individual labs 
+2.1 import day6.1 , to revise case study : showroom management , using ArrayList
+
+2.2 import day6.2 , to revise
+Iterators 
+Vector
+
+2. If time permits 
+Solve : 
+Sort customers as per asc order of email (natural ordering)
+
+
+
+
+
+
+
+
