@@ -1,0 +1,113 @@
+Revision
+Object Streams
+Serialization n save bin strm in a bin file
+try(OOS out=new OOS(new FOS(fileName))
+{
+  out.writeObject(map);//ser --JVM chks serializability of entire obj graph --chks if all objects (class) imple. Serializable i/f --yes -- success(conversion) 
+o.w throws NotSerializableExc
+}
+
+
+De-Serialization =restoring / reconstructing entire obj graph in mem
+
+Confirming pre requisites of the de-serialization
+1.state -- bin .ser file
+2. behavior -- .class files (user defined classes) ---
+what's best poosuble way to share these dependencies with de-ser ?
+using JAR file.
+If JVM's class loader can't find these classes (in the run time classpath) -- throws 
+java.lang.ClassNotFoundExc : checked exc
+
+
+During ser --Product.java --Product.class --products.ser is created 
+Prog modifies --Product.java --Product.class
+de -ser -- .ser file + modified Product.class
+What will happen during de-serial?
+JVM will throw : java.io.InvalidClassException
+HOw JVM detects this incompatibility ?
+Based upon SerailVerUID
+JVM during ser. computes SerialVerUID n stores it in the bin strm. It's computed based upon class structure.
+During de-ser , JVM computes this SerialVerUID , based upon .class files , available in the classpath. Then tries to match this computed(local) SerialVerUID , with the one in the bin file. If it matches --continues with conversion (de-ser) 
+o.w throws java.io.InvalidClassException
+
+
+
+How will you return empty data structure , if the data restoring fails ?
+File class API -- for validating the file.
+
+
+ClassNotFoundException
+transient keyword
+InvalidClassException
+----------------------------------
+
+Enter Multi threading in Java : 
+
+
+1. Multitasking :
+Multi processing vs multi threading
+(Process based vs Thread based) 
+Refer to a diagram
+
+2. Thread state transitions
+Does Not Exist ,NEW,Runnable(Ready-to-run n Running),Blocked
+, Dead
+
+3. Thread related API
+3.1 Different ways of creating threads
+extends Thread 
+implements Runnable
+OR
+Executor framework
+
+4. Thread class methods
+start,sleep,run.....
+
+5. Write a multi threaded app , to test the concurrency(i.e concurrent execution of threads)
+5.1 extends Thread 
+5.2 implements Runnable
+
+
+6. More Threads API
+join 
+join(msec)
+interrupt
+
+---------------------------------------PENDING---------------------------
+
+6.5 Discuss lab work : 
+Lab work : Create a multi threaded app to solve these objective in a parallel manner
+1. Accept range of nos from user : main
+2. print all even nos : even_printer thrd
+3. print all odd nos : odd_printer
+4. print average of the range supplied : averager thrd
+
+
+7. Apply threads to Collections n I/O
+practical usage of threads.
+Create a multi threaded app to solve these objective in a parallel manner
+1. Get a map of products with sample (hard coded data)
+2. Sort the products as per date n save the sorted results (on separate lines) in the text file (u can replace it by bin file using ser. as extra task)
+3. Sort the products as per price n save the sorted results (on separate lines) in the text file (u can replace it by bin file using ser. as extra task)
+4. Ensure no orphans.
+
+classes 
+Product : core class 
+Categry : enum
+custom exception class
+validation rules (optional)
+CollectionUtils
+IOUtils --store / restore
+runnable tasks
+Tester --UI
+
+
+
+8.Think of a joint account scenario
+example of the sharing of resources , among concurrent threads.
+eg : Book My Show or any online reservation system
+Identify the problem n then apply the solution.
+
+
+
+
