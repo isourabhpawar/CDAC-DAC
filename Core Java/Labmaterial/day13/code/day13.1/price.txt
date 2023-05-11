@@ -1,0 +1,8 @@
+Product [productId=50, name=Marie, desc=Healthy Biscuits, quantity=80, price=10.0, productCategory=BISCUITS, manufactureDate=2022-05-01]
+Product [productId=40, name=Monaco, desc=Salty Biscuits, quantity=75, price=15.0, productCategory=BISCUITS, manufactureDate=2022-04-21]
+Product [productId=100, name=White_Bread, desc=Tasty Bread, quantity=70, price=35.0, productCategory=BREAD, manufactureDate=2022-05-09]
+Product [productId=10, name=Brown_Bread, desc=Healthy Bread, quantity=100, price=40.0, productCategory=BREAD, manufactureDate=2023-05-11]
+Product [productId=15, name=Watermelon, desc=Great Fruit, quantity=60, price=70.0, productCategory=FRUITS, manufactureDate=2022-05-04]
+Product [productId=70, name=Gemini_Oil, desc=Vegetable Oil, quantity=80, price=220.0, productCategory=OIL, manufactureDate=2022-01-30]
+Product [productId=60, name=Sunflowe_Oil, desc=Healthy Oil, quantity=50, price=240.0, productCategory=OIL, manufactureDate=2022-01-20]
+Product [productId=80, name=Mango, desc=Seasonal Fruit, quantity=45, price=800.0, productCategory=FRUITS, manufactureDate=2022-05-06]

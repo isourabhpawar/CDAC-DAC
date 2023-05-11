@@ -1,0 +1,486 @@
+Day 1
+0. After the combined lab session ,
+please download javadocs
+https://www.oracle.com/java/technologies/javase-jdk11-doc-downloads.html
+
+1. Go through today's sequence.txt
+Revise n brush up on all mentioned concepts.
+
+2. Solve this
+5.1 Can you arrange Fruit,Apple,Orange,Mango in inheritance hierarchy ?
+Use tight encapsulation.
+
+5.2 Properties (instance variables)  : color : String , weight : double , name:String, fresh : boolean
+
+5.3 Add suitable constructors.
+
+5.4 Override  toString correctly to return state of all fruits (return only  : name ,color , weight )
+
+5.5 Add a taste() method : public String taste()
+
+For Fruit : Can you identify taste of any general fruit ?
+So will you add a taste() with this definition : returns "no specific taste" OR can u apply abstraction?
+
+Apple : should return  "sweet n sour"
+Mango : should return  "sweet"
+Orange : should return  "sour"
+
+5.6 Add specific functionality , in the sub classes
+In Mango : public void pulp() {Display name n color of the fruit + a mesg  creating  pulp!}
+In Orange : public void juice() {Display name n weight of the fruit + a mesg extracting juice!}
+In Apple : public void jam() {Display name of the fruit + a mesg  making jam!}
+
+
+5.7 Add all of above classes under the package "com.app.fruits"
+5.8 Create java application FruitBasket , with main method , as a tester , in com.app.tester package.
+5.9 Prompt user for the basket size n create suitable data structure
+
+5.10 Supply options
+1. Add Mango
+2. Add Orange
+3. Add Apple
+NOTE : You will be adding a fresh fruit in the basket , in all of above options.
+
+4. Display names of all fruits in the basket.
+
+5. Display name,color,weight , taste of all fresh fruits , in the basket.
+
+
+6. Mark a fruit in a basket , as stale(=not fresh)
+i/p : index 
+o/p : error message (in case of invalid index) or mark it stale
+
+7. Mark all sour fruits stale 
+Hint : Use equals() method of the String class.
+
+8. Invoke fruit specific functionality (pulp / juice / jam)
+i/p : index
+Invoke correct functionality (pulp / juice / jam)
+
+10. Exit 
+
+
+Day 2
+In combined lab
+
+1. import day2.1 in your workspace
+Refer to "day2-data\day2_help\exception handling\readme.txt"
+Revise some of the important code samples.
+
+2. Complete license expiry validation 
+
+
+3. 
+Can you override static methods ? 
+Confirm with code example
+
+4. Attach debugger , to confirm the flow of execution.
+
+5. Continue to the individual lab
+5.1 Complete revision of exc handling n date time handling
+
+5.2 Complete pending assignment of Day 1
+
+
+
+Day 3.
+
+1. import day3.1 n queries eclipse projects ,  in your workspace . Refer to today's readmes n revise
+1.1 static methods n overriding
+1.2 Attach debuger n check
+1.3 Java 8 (modern java) Date time handling
+1.4 String , StringBuilder classes 
+immutability , == vs equals , literal vs non literal strings
+
+1.5 Wrapper classes n conversions
+
+1.6 Variable args (var-args)
+
+
+2. After completing earlier work , try this.
+
+ Beginning of a mini Project , to apply the learnt concepts.
+
+Final Aim : To Create a Java application for customer management system.
+(signIn , signup, update password, un subsribe user ....)
+
+2.1 Customer HAS-A 
+customer id(int) ,first name, last name (string),email(string),password(string),registrationAmount(double),dob(LocalDate),plan(ServicePlan : enum)
+
+ServicePlan charges : 
+SILVER : 1000 
+GOLD : 2000
+DIAMOND : 5000
+PLATINUM : 10000
+
+Depending on the plan chosen , customer will have to pay specific registration amount
+
+customer id should be system generated , using auto increment.
+
+Unique ID(Primary Key ) : email  (2 customers are SAME iff their email ids are same)
+
+After reading above , can you create a Customer class ?
+Try it !
+
+Happy weekend !
+
+Day 3
+
+Student queries : 
+1.Still not clear about downcasting , classcast exc n instanceof checking!
+Will be revised in today's lab.
+Then you will understand equals method : completely!
+Refer : Emp , Mgr ,Worker , SalesMgr,HRMgr,TempWorker,PermanentWorker 
+We will develop this n understand .
+
+2. import day4.2 
+We will revise COMPLETELY showroom management system.
+(You can add break points n test the flow of execution)
+
+3. Will try to complete : atleast the Customer class
+n some validation rules !(Time permitting)
+
+4. Revise later (self study time)
+import day4.1
+4.1 revise enums
+4.2 revise generics
+
+
+Day 5
+1. import day5.1 in your workspace
+Revise ArrayList API , with Integer type
+
+2. import day5.2 in your workspace
+Revise ArrayList API , with Vehicle type (practical case study)
+
+3. Start with customer management system
+Supply Options
+1. Sign up
+2. Sign in
+i/p : email n password
+3. Change password
+4. Un subscribe customer
+5. Display all customers.
+
+Design 
+Identify the classes/enums involved
+1. ServicePlan : enum
+ServicePlan charges : 
+SILVER : 1000 
+GOLD : 2000
+DIAMOND : 5000
+PLATINUM : 10000
+
+
+2. Customer class (core class)
+state(non static data members : instance vars)  : customer id(int) ,first name, last name (string),email(string),password(string),registrationAmount(double),dob(LocalDate),plan(ServicePlan : enum)
+idGenerator : static
+ctors 
+1. all args ctor
+2. PK based ctor
+
+override : toString n equals
+
+3. custom exception class
+4. validation rules
+no dup customers
+Hint : public static void checkForDup(....)
+{
+api : contains
+}
+
+validate plan
+reg amount must match with the plan
+customer's age  must be > 21 : lab work
+
+5. Tester
+
+
+Day 6
+In combined lab : 
+1. Complete Day 5 assignment
+
+2. In individual labs 
+2.1 import day6.1 , to revise case study : showroom management , using ArrayList
+
+2.2 import day6.2 , to revise
+Iterators 
+Vector
+
+2. If time permits 
+Solve : 
+Sort customers as per asc order of email (natural ordering)
+
+Day 7
+In combined lab
+1. MUST complete Day 5 assignment
+
+2. Solve this
+2.1 Sort customers as per asc order of email (natural ordering)
+2.2 Sort customers as per dob n reg amount (custom ordering n anonymous inner class)
+
+OPTIONAL work
+If time permits , in the combined lab itself, solve this
+In Customer class , add a field (instance var.) 
+private LocalDate lastSubscriptionPaidDate;
+Add Option(for customer) : Pay Subscription
+It should update the date.
+
+Add Option(for admin)  :  delete the customer details ,who have not paid the subscription(reg amount) for more than last 3  months 
+
+In individual labs
+import day7.1 n day 7.2 projects in your workspace.
+1. Revise hashing algorithm : using diagram,code n readmes + hashing observations text file
+(mandatory part n then optional part of the contract)
+
+2. Try 
+Emp class : add another data member.
+private int deptId.
+Rule : 2 emps are same iff id n dept id are same.
+Store emp details in the HashSet .
+try these combinations n check the o/p
+same id , same dept id
+same id , different dept id
+different id , same dept id
+different id , different dept id
+
+
+Day 8
+
+1. import day8.1 , in your workspace n revise CRUD operations with HashMap
+
+2. Add these options
+2.1 Fetch account summary
+i/p : acct no
+o/p : a/c details or error message via custom exception : invalid acct no
+
+2.2 Display customer names having specified type of account (admin role)
+i/p : account type
+o/p : display names
+
+2.3 Modify  transfer funds operation :
+If dest a/c is locked(in active) , restore the balance in the src account
+
+2.4 Add a method in BankAccount class to apply simple interest
+i/ps : 
+
+Add the option in tester : to apply simple interest to all saving type of accounts.
+
+3. Revise additional generic syntax
+Solve : generic questions 
+(Skip the questions with super keyword)
+
+
+0. Solve addAll , putAll , ArrayList(Collection c)
+
+Interesting Hands on (practice of generics)
+1. Write a method to Find average of  numbers from any List of any numbers (integer / float / double ...) n return it to the caller.
+Test cases : AL<Integer> , Vector<Double> , LinkedList<Float> .....
+
+2. Write a method to Find max element from List of any elements (integer / float / double/string/date/Customer/Vehicle ...) n return it to the caller.
+
+Day 9
+Good news!
+NO new assignments !!!!
+Revise complete week's work 
+How ?
+1. Keep Collection Overview diagram in front of you.
+2. Compare List features with Set vs Map
+3. Go through Iterator n ListIterator 
+Exceptions associated with them
+4. Sorting in Java : Comparable n Comparator
+5. Map CRUD API 
+Go through complete showroom management system (based on ArrayList)
+Close the solution n try to solve it on your own , referring to readmes , your notes n mainly javadocs
+
+6. Go through Banking system : HashMap based.
+Close the solution n try to solve it on your own , referring to readmes , your notes n mainly javadocs
+
+7. Revise ? extends and super
+Solve "day9-data\day9_help\generic-questions.txt"
+
+
+8.Revise today's code
+import day9.1 n day 9.2
+default n static methods in interface
+functional interfaces
+higher order functions
+
+
+Day 10
+
+1. import day10.1 
+Revise I/O First.
+1.1 Imperative approach 
+1.2 Functional approach
+
+2. 
+More practicse of Functional programming using Functional Streams n lambda expression
+Refer to ready code (students based scenario)
+1. Display all student details from a student list
+Hint : forEach  method of Iterable
+
+2. Display all student details from a student map
+Hint : forEach(BiConsumer)
+
+
+3. Display all student details(list) sorted as per GPA 
+Use custom ordering
+Hint :list --> stream --> sorted(comp) --> forEach
+
+4. Write a tester to print average of  gpa of students(map) for the specified subject
+eg : i/p : subject
+Hint : map --> Collection -- Stream --filter --mapToDouble --isPresent --getAsDouble
+
+
+
+5 Print name of specified subject  topper
+
+
+6 Print no of  failures for the specified subject chosen  from user.
+(gpa < 5 : failed case)
+
+7. Display student names of all the students , from a specified city.
+
+
+Day 11
+
+1. import day11.2 in your workspace
+We will revise serialization n de-ser. in a combined lab.
+
+2. Solve this (For lab exam practice)
+Create Java application for emp management system
+Requirements 
+2.1 It should be able to store n restore emp details in a bin file using object streams
+2.2 Emp details : id(string), first name , last name , dept(enum : RND,HR,SALES,FINANCE,PRODUCTION), joining date(LocalDate),salary
+2.3 Let's say that : Company is only 3 years old. (so think of a validation rule on joining date)
+
+2.4 Add required parsing / validation methods n custom exceptions
+
+2.5 Ask yourself : where will you perform serialization(store detail) ---before terminating app(exit option)
+
+ n de-serialization(restore details) ? -- in beginning of the app
+
+Options
+All CRUD operations MUST happen in constant time performance.
+1. Hire new emp
+2. List all emp details
+3. Promote an emp
+4. Delete emp details
+5. Sort emps as per join date n display the same.
+6. We can add many more options here.....
+0. Exit
+
+Design steps
+1. core classes
+1.1 Employee --state , ctor , toString, getters/setters(if required)
+Will you need to override hashCode n equals , as per the contract ? NO (since HashMap uses key based hashCode n equals , Key class  : Integer : alrdy followed the contract
+HOw ?
+1.2. Department : enum
+
+2. custom exc class : checked exc
+
+3. utils : pkg
+3.1 ValidationRules 
+1. for join date
+eg : i/f
+static LocalDate validateDate(String date).....{...}
+2. for enum
+
+3.2 IOUtils : i/f
+1. store
+static void storeEmpDetails(String fileName, Map ...)
+{
+ .....
+}
+2. restore
+static Map restoreEmpDetails(String fn)
+{
+ //ret empty map --in case of any exc(file not found exc)
+o.w -- ret map restored from bin file
+}
+
+
+4. Tester 
+try(sc) {
+  1. restore details 
+  exit=false
+  while(!exit)
+  {
+    try {
+    options --hire emp, display
+    switch-case
+    case 0 : exit=true
+    store emp details 
+  } catch-all
+ }
+}
+
+
+Day 12
+
+1. Revise Threads first
+import day12_threads project in your workspace.
+Revise .
+
+2. Immediate hands on 
+ Create a multi threaded app to solve these objective in a parallel manner
+1. Accept range of nos from user : main
+2. print all even nos : even_printer thrd
+3. print all odd nos : odd_printer thrd
+4. print average of the range supplied : averager thrd
+
+Ensure no orphans
+
+
+3. Complete (at least some options) Day 11's assignment
+
+
+4. Do you want to check : JAR creation n class not found exc n invalid class exceptions ?
+
+
+5. Optional work (If time permits , in the individual labs)
+Apply threads to Collections n I/O (practical usage of threads.)
+
+Create a multi threaded app to solve these objective in a parallel manner
+1. Get a map of products with sample (hard coded) data
+
+2. Sort the products as per date n save the sorted results (on separate lines) in the text file (u can replace it by bin file using serialization for extra practice)
+
+3. Sort the products as per price n save the sorted results (on separate lines) in the text file (u can replace it by bin file using serialization for extra practice)
+
+4. Ensure no orphans.
+
+
+Day 13
+In combined labs , revise synchronization first.
+1. import day13.2 , to revise synchronized methods
+
+2. import day13.3 , to revise synchronized blocks
+
+3. Solve 
+3.1 day13-data\day13_help\rdy code\thrd_unsafe_coll\ThreadUnsafeCollections.java
+Guess what will happen ?
+In case of a problem , fix it !
+
+3.2 day13-data\day13_help\rdy code\tester\Test1.java
+Replace ano inner class by lambda expression n guess the o/p
+We will be adding lot many testers to understand synchronization inside out.
+
+In individual labs
+1. import day13.1 , to understand 
+collection , I/O n threads.
+
+2. import day13.4 to revise
+user threads vs daemon threads
+
+3. import day13.5 , to understand the problem , mentioned in today's sequence.txt
+
+
+
+
+
+
+
+
+

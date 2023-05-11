@@ -1,0 +1,81 @@
+Have you completed this ?
+6.5 Discuss lab work : 
+Lab work : Create a multi threaded app to solve these objective in a parallel manner
+1. Accept range of nos from user : main
+2. print all even nos : even_printer thrd
+3. print all odd nos : odd_printer
+4. print average of the range supplied : averager thrd
+
+
+
+Revise Multi threading in Java 
+main thread : sop("in main");
+Create another thread : to print in thread : name of the thread : "testMe"
+
+main(...) throws IE
+{
+ sop("in main");
+ Thread t1=new Thread(() -> sop("in "+Thread.currentThread().getName()),"testMe");
+t1.start();
+  t1.join();
+sop("main over...");
+
+}
+
+
+
+Solve this (Func Streams)
+
+7. Apply threads to Collections n I/O
+practical usage of threads.
+Create a multi threaded app to solve these objective in a parallel manner
+1. Get a map of products with sample (hard coded data)
+2. Sort the products as per date n save the sorted results (on separate lines) in the text file (u can replace it by bin file using ser. as extra task)
+3. Sort the products as per price n save the sorted results (on separate lines) in the text file (u can replace it by bin file using ser. as extra task)
+4. Ensure no orphans.
+
+classes 
+Product : core class 
+Categry : enum
+custom exception class
+validation rules (optional)
+CollectionUtils
+IOUtils --store / restore
+runnable tasks
+Tester --UI
+
+
+
+8.Think of a joint account scenario
+example of the sharing of resources , among concurrent threads.
+eg : Book My Show or any online reservation system
+Identify the problem n then apply the solution.
+
+Different ways of applying synchronization
+1. synchronized methods
+OR
+2. synchronized blocks
+(refer to "readme synchronization")
+
+
+9.User threads vs daemon threads
+
+10.Refer to Producer Consumer scenario
+Is synchronization applied ? YES 
+How writeData n readData methods synchronized ? YES
+Run the tester n observe
+Are there any problems ?
+YES 
+If producer gets consecutive chances : problem observed --data loss (overwriting data sample)
+
+If consumer gets consecutive chances : problem observed --dup data sample (stale data)
+i.e same data sample read repeatedly !
+
+Continue to solution tomorrow....
+
+
+
+
+
+
+
