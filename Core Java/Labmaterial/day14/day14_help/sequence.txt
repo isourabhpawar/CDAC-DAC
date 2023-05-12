@@ -1,0 +1,40 @@
+Revise Synchronization
+synchronized methods n blocks
+
+Continue with ITC
+Why ITC
+ITC with sleep 
+ITC with wait
+ITC with wait n notify
+
+Student query 
+Authentication = confirming the identity of a user (typically : sign in)
+Authorization = access control or permissions or authorities 
+Even after successful authentication , user may not have sufficient permissions to access a resource
+eg : In online voting web app 
+A voter can only vote.
+BUT admin can add , remove voters or candidates etc....
+It's a part of security , will be covered in adv java , along with spring security!
+
+
+Enter Java DB connectivity (JDBC)
+refer : jdbc help
+Objectives 
+1.Display all user details (R)
+2. Display complete name , reg date , reg amount for all users reged between 2 dates
+sql : select first_name,last_name,reg_date,reg_amt from users where reg_date between ? and ?
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

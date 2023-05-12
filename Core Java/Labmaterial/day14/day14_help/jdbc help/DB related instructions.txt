@@ -1,0 +1,23 @@
+1. login to mysql db (either using workbench or cmd line client)
+
+1.5 From cmd line client , type : status 
+confirm user name n TCP port no
+
+2. From cmd line client : type
+show databases
+
+OR check server status from workbench
+
+3. create database advjava
+
+4. Extract eclipse project : day14.2 n import it in your workspace.
+
+5. From utils : DBUtils 
+String url = "jdbc:mysql://localhost:3306/advjava?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true";
+//url userName password
+line  : return DriverManager.getConnection(url, "root", "root");
+After url , edit  as per your db username n then db password.
+
+6. Run the Tester : TestConnection.java
+Should show you the o/p
+connected to DB com.mysql.cj.jdbc.ConnectionImpl@hashcode 

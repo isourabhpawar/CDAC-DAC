@@ -1,0 +1,23 @@
+create table users (
+id int primary key auto_increment,
+first_name varchar(20),
+last_name varchar(20),
+email varchar(20) unique,
+password varchar(20),
+reg_amt double,
+reg_date date,
+role varchar(10));
+
+#users table data
+insert into users values(1,'Rama','Singh','rama@gmail.com','1234',1500,'2017-1-23','ADMIN');
+
+insert into users values(2,'Kiran', 'Patil','kir@gmail.com','123',1200,'2018-5-29','CUSTOMER');
+
+insert into users values(3,'Shekhar' ,'Kadam','shek@gmail.com','1235',1800,'2016-3-4','CUSTOMER');
+
+insert into users values(4,'Riya','Pathak','riya@gmail.com','4235',1700,'2017-3-4','CUSTOMER');
+
+insert into users values(5,'Raj','Kale','raj@gmail.com','4535',1900,'2019-3-4','CUSTOMER');
+
+
+
