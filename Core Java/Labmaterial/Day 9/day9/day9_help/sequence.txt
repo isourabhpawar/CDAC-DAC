@@ -1,0 +1,199 @@
+Revise generic syntax
+1. Generic methods
+example
+
+2. 
+Create GenericUtils class : non generic--static methods
+1. Add a method to print any element from any of the following
+ Test cases : AL<String> , LL<Integer> , Vector<LocalDate> , HS<Double> , LHS,TS
+
+eg : public static void printAllElems(Collection<Object> objs)
+{
+ for(Object o : objs)
+  sop(o);
+}
+Tester 
+AL<String> strings=new AL<>(Arrays.asList(.....));
+strings.add("abcd");
+printAllElems(strings);//javac err!
+
+eg : public static void printAllElems(Collection<?> objs)
+{
+ for(Object o : objs)
+  sop(o);
+}
+
+Tester 
+AL<String> strings=new AL<>(Arrays.asList(.....));
+strings.add("abcd");
+printAllElems(strings);
+
+
+1.1 Using T : generic method
+1.2 Using ? : un bounded wild card
+
+
+
+
+	
+3. Add a method to find sum of salary of emps from any List 
+Test cases : AL<Mgr> ,LL<Worker> , Vector<SM> 
+
+eg : public static double computeSum(List<? extends Emp> empList)
+{
+ double sum=0;
+ for (Emp e : empList)
+  sum += e.computeSal();
+  return sum;
+}
+
+? extends Emp => Emp or any of it's sub types 
+
+Tester class 
+AL<Mgr> mgrs=new AL<>();
+mgrs.add(m1);.......
+double sum=computeSum(mgrs);
+Vector<TempWorker> workers=new Vector<>();
+add few workers.....
+double sum2=computeSum(workers);
+AL<String> strings=new AL<>(Arrays.asList(.....));
+strings.add("abcd");
+double sum3=computeSum(strings);//javac err : since String IS NOT an Emp
+
+
+
+Solve : 
+ArrayList(Collection<? extends E> coll)
+
+Can you create populated AL of Fruits(AL<Fruit>) from
+1. HS<Orange>
+2. Vector<Fruit>
+3. LL<String>
+4. TS<Mango>
+5. AL<Alphonso>
+6. LL<Object>
+Ans : 1 , 2,4,5
+
+Ref : Map i/f method
+public void putAll(Map<? extends K,? extends V> map)
+
+Can you do the bulk addition for populating HM<Integer,BankAccount> from
+1. Collection<BankAccount>
+2. HM<Integer,BankAccount>
+3. TM<Integer,SavingAccount>
+4. TM<Integer,LoanAccount>
+5. LHM<Integer,Object>
+6.  TM<Integer,FDAccount>
+Ans : 2, 3,4,6
+
+
+List<? extends Emp> :
+legal args : AL/LL/Vector <Mgr>
+list.add(new Worker(...));
+
+? : un restricted access
+PECS : Producer Extends Consumer Super
+
+extends : upper bound (while using the collection as a Producer , meaning to get data from the collection)
+
+BUT you CAN NOT add any elems to it.
+If it was allowed -- it can lead to ClassCastExc
+
+Solution : When you want to treat the collection as a consumer(i.e want to add the elems)
+super : keyword in generic syntax
+specifies : inclusive lower bound
+? super T => T or it's super types
+
+Can you add any elem to such a list(using extends) ?NO
+Why ? : to avoid class cast exception
+
+
+4. Discuss Day 8's generic assignments
+	
+5. Add a method to hire a sales mgr to the list
+What should be the type of the List ?
+AL/LL/Vector <SalesMgr,Mgr,Emp,Object>
+
+6. Add a method to hire a temp worker to the list
+What should be the type of the List ?
+
+Today's topics
+1. Java 8 new features
+default n static methods in i/f
+Ref to readme : day9-data\day9_help\java8_new_features.txt
+
+2. Enter Functional prog in Java
+Functional i/f
+Ref to readme : day9-data\day9_help\java8_new_features.txt
+
+3. Lambda expression
+Ref to readme :day9-data\day9_help\regarding lambdas.txt
+
+4. Create your own functional interface n substitute  it with lambda expression
+
+Question :   Perform ANY arithmetic operation on 2 double operands & return the result
+eg --add/multiply/subtract/divide....  ANY such operation !
+
+
+
+
+4.1 Create i/f : SAM => Functional i/f
+eg : Computable 
+
+4.2 Later : Create another i/f : ComputationUtils :  to add a static method
+To invoke compute method on  2 double operands n operation
+
+4.3 Create a Tester n use it.
+Operations to perform : add/multiply/subtract/divide ....
+
+
+
+5. Higher order Functions/methods already existing in Collection frmwork
+
+
+
+Solve :  
+
+5.1.
+Display all products (from a product list)
+API :  Iterable : forEach 
+eg : productList.forEach(p -> sop(p));
+
+5.2. 
+Remove all the products of a specific category
+Collection : removeIf
+5.3. 
+Display all products (from a product map)
+Ans this 
+Is Map Iterable ?
+Can u attach DIRECTLY a for-each loop to the map ? 
+
+Imperative style
+for(Product p : map.values())
+ sop(p);
+Any Declarative (Functional prog solution ?)
+????
+
+-------------------Pending--------------------
+5.4. Sort the products in the list as per date : custom ordering
+How ?
+
+
+5.5 Use Function literal
+
+
+5.6 Using above API(higher order funcs) , can you chain multiple operations like sorting & displaying the sorted data ? 
+
+OR
+Filter the elements n display filtered list. 
+
+Objective : Accept product category from user
+remove all products from specified category n display remaining list : multiple ops can't be chained n it will modify the original List !
+
+Better Solution : 
+6. Enter Java 8 Streams (Functional Streams)
+6.1 Refer to diagrams from : day9-data\day9_help\streams\diagrams
+collections vs streams n streams basics
+6.2 Refer to 
+day9-data\day9_help\streams\readme_streams.txt
+
