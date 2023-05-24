@@ -1,0 +1,53 @@
+<html>
+    <head>
+        <style>
+            div{
+                position: absolute;
+                top:30px;
+                z-index:2;
+            }
+
+            img{
+                z-index:-1;
+            }
+            #mydiv2{
+                z-index:1;
+                position:absolute;
+                top:0;
+            }
+        </style>
+    </head>
+    <body>
+        <img src="./images/clock.jpg" height="200px" width="300px"></img>
+        <div>
+            <table bgcolor="cyan" border="2" width="200px">
+                <caption align="bottom">This is caption</caption>
+                <thead>
+                    <tr>
+                        <th>Product Id</th>
+                        <th>Name</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr valign="top" align="center">
+                        <td>1</td>
+                        <td>Chair</td>
+                        <td>3456</td>
+                        <td>23</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Shelf</td>
+                        <td>3333</td>
+                        <td>10</td>
+                    </tr>
+                </tbody>
+            </table> 
+        </div>
+        <div id="mydiv2" style="background-color: aquamarine;width:150pxpx;height:100px;border:2px solid red">
+            this is div
+        </div>
+    </body>
+</html>

@@ -1,0 +1,77 @@
+<html>
+    <head>
+    <style>
+        @keyframes animation1{
+            from{
+                background-color: green; 
+                left:100px;
+                top:20px;
+                width:200px
+            }
+            to{
+                background-color: pink; 
+                left:50px;
+                top:0px;
+                width:100px 
+            }
+        }
+        @keyframes animation2 {
+            10% {
+                background-color: red;
+                color: blue;
+                width: 300px;
+                margin-left: 20px;
+            }
+            25% {
+                background-color: green;
+                color: white;
+                width: 300px;
+                margin-left: 50px;
+                margin-top: 200px;
+            }
+            50% {
+                background-color: yellow;
+                color: blue;
+                width: 300px;
+                margin-left: 20px;
+                margin-top: 50px;
+            }
+            70% {
+                background-color: cyan;
+                color: white;
+                width: 300px;
+                margin-left: 200px;
+                margin-top: 200px;
+            }
+            100% {
+                background-color: pink;
+                color: white;
+                width: 300px;
+                margin-left: 200px;
+                margin-top: 200px;
+            }
+        }
+        div{
+            /*position:relative;*/
+            background-color: aqua;
+            border:2px solid red;
+            border-radius:10px;
+            width:100px;
+            height:100px;
+            animation: animation2;
+            animation-duration: 4s;
+            animation-iteration-count: 2;
+            animation-delay: 2s; 
+        }
+        
+    </style>
+    </head>
+    <body>
+        <div>
+             This is http request will dirctly go to server
+            
+            
+               
+        </div>
+    </body>
+</html>
