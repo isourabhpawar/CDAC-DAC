@@ -1,0 +1,67 @@
+<html>
+    <head>
+        <style>
+            span{
+                color:red;
+            }
+        </style>
+        <script>
+            function validatedata(numid,errmsg){
+                var a=document.getElementById(numid).value;
+                //alert(a)
+                //to check whether a is blank or a string
+                if(a==="" || isNaN(a)){
+                    //display message beside the text box
+                    document.getElementById(errmsg).innerHTML="pls enetr numeric data"
+                    return false
+                }
+                document.getElementById(errmsg).innerHTML="";
+                return true;
+
+            }
+            
+            function validatenumbers(){
+                //retrieve data from the textbox
+                var flag=validatedata('n1',"errn1")
+                var flag1=validatedata('n2','errn2')
+                //alert(flag+" "+flag1)
+                if (flag && flag1){
+                    //alert("data is valid");
+                    addnumbers();
+                }
+                /*else{
+                    alert("data is invalid")
+                }*/
+            }
+            function addnumbers(){
+                var a=parseInt(document.getElementById('n1').value);
+                var b=parseInt(document.getElementById('n2').value);
+                var ans=a+b;
+                //document.write("Addition : "+ans);
+                //display anser below form in the div
+                document.getElementById("mydiv").innerHTML="Addition : "+ans;
+                //display answer in textbox
+                document.getElementById("result").value=ans;
+                console.log("Addition : "+ans);
+            }
+       </script>
+</head>
+    <body>
+        
+        <form name="frm">
+            Number 1: <input type="text" name="num1" id="n1">
+            <span >*</span>
+            <span  id="errn1"></span>
+            <br>
+            Number 2: <input type="text" name="num2" id="n2">
+            <span >*</span>
+            <span  id="errn2"></span>
+            <br>
+            result: <input type="text" name="result" id="result" disabled><br>
+<button type="button" name="add" id="add" value="add" onclick="validatenumbers()">Add numbers</button>
+        </form>
+        <div id="mydiv">
+
+        </div>
+    </body>
+</html>

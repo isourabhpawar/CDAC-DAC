@@ -1,0 +1,51 @@
+<html>
+    <head>
+        <script>
+            function validatedata(numid){
+                var a=document.getElementById(numid).value;
+                //alert(a)
+                //to check whether a is blank or a string
+                if(a==="" || isNaN(a)){
+                    
+                    return false
+                }
+                return true;
+
+            }
+            
+            function validatenumbers(){
+                //retrieve data from the textbox
+                var flag=validatedata('n1')
+                var flag1=validatedata('n2')
+                //alert(flag+" "+flag1)
+                if (flag && flag1){
+                    alert("data is valid");
+                    addnumbers();
+                }
+                else{
+                    alert("data is invalid")
+                }
+            }
+            function addnumbers(){
+                var a=parseInt(document.getElementById('n1').value);
+                var b=parseInt(document.getElementById('n2').value);
+                var ans=a+b;
+                //document.write("Addition : "+ans);
+                document.getElementById("mydiv").innerHTML="Addition : "+ans;
+                document.getElementById("result").value=ans;
+            }
+       </script>
+</head>
+    <body>
+        
+        <form name="frm">
+            Number 1: <input type="text" name="num1" id="n1"><br>
+            Number 2: <input type="text" name="num2" id="n2"><br>
+            result: <input type="text" name="result" id="result" disabled><br>
+<button type="button" name="add" id="add" value="add" onclick="validatenumbers()">Add numbers</button>
+        </form>
+        <div id="mydiv">
+
+        </div>
+    </body>
+</html>

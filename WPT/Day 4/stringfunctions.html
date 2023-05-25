@@ -1,0 +1,35 @@
+<html>
+    <head>
+        <script>
+            function changestring(){
+                var sel=document.getElementById("operation");
+                var pos=sel.selectedIndex
+                alert(sel.selectedIndex);
+                alert(sel.options[pos].value);
+
+            }
+        </script>
+    </head>
+    <body>
+        <form>
+            Enter String : <input type="text" name="str" id="str">
+            Operation : <select id="operation">
+                  <option value="upper">upper case</option>
+                  <option value="lower">lower case</option>
+                  <option value="charAt">charAt</option>
+                  <option value="slice">slice</option>
+                  <option value="concat">concat</option>
+                  <option value="match">match</option>
+                  <option value="serach">serach</option>
+                  <option value="replace">replace</option>
+                  <option value="split">split</option>
+                  <option value="indexof">indexof</option>
+                  
+            </select>
+            <button type="button" name="btn" id="btn" value="btn" onclick="changestring()">display result</button>
+        </form>
+        <div id="mydiv">
+
+        </div>
+    </body>
+</html>
