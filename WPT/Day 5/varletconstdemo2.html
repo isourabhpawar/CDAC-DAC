@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+</head>
+<body>
+    <script>
+           function f1(){
+            var x=45;
+            let y=20;
+            if(x<50){
+                var p="check";
+                let q="test"
+                console.log("inside if :",p,q,x,y)
+            }
+            console.log("inside if :",p,x,y)
+           }
+           f1()
+           //console.log("outside if :",p,q,x,y); //error
+           //hoisting of variable is allowed in var
+
+           console.log("the value of a is: ",a)
+           var a=45;
+           //hoisting of variable is not allowed in let
+
+           //console.log("the value of a is: ",b)  //error
+           let b=45;
+
+           const c=34;
+           c=45;
+    </script>
+</body>
+</html>

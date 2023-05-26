@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        var d=new Date();
+        document.write("today's date :"+d+"<br>");
+        var dt=d.getDate();
+        var m=d.getMonth()+1
+        var y=d.getFullYear();
+        document.write("custom format : "+dt+"/"+m+"/"+y+"<br>");
+        d1=new Date(2023,1,1);
+        d2=new Date(2022,1,1)
+        document.write("d1 : "+d1+"<br>")
+        document.write("d2 : "+d2+"<br>")
+        diff=d1.getTime()-d2.getTime();
+        days=((((diff/1000)/60)/60)/24);
+        document.write("days :" +days);
+        document.write("difference in millisec :" +diff)
+
+</script>
+
+</body>
+</html>

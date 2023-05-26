@@ -1,0 +1,50 @@
+<html>
+    <head>
+        <script></script>
+    </head>
+    <body>
+        <script>
+            //self calling function gets executed only once
+            ///usually used for initialization
+            (function(){
+                console.log("in self calling function")
+            })()
+            //recurssive function
+            //if function calls itself then it is recussive function
+            function f3(x){
+                if(x<0){
+                    return x;
+                }
+                f3(x-1);
+            }
+            function calculate(x,y){
+                //closure function
+                var factorial=function(num){
+                f=1;
+                for(var i=1;i<=num;i++){
+                    f=f*i
+                }
+                return f;
+
+            }
+                permutation=factorial(x)/factorial(x-y);
+                console.log("permutation: "+permutation)
+    
+            }
+            function f1(x=12,y=3,...c){ //rest parameters
+                 console.log(x,y,c)
+            }
+            var f2=function(){
+                alert("in f2 function")
+            }
+            //arrow operator
+            var f3=()=>{
+                alert("in f2 function")
+            }
+            f1(1,2,3,4.5,6)
+            f2()
+            f3()
+            calculate(6,5);
+        </script>
+    </body>
+</html>

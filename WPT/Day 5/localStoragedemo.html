@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        function decrementcount(){
+                //to check whether browser supports storage API
+                if(typeof(Storage)!== undefined){
+                  if(localStorage.count===undefined || localStorage.count==="0" ){
+                       localStorage.count=0;
+                   }else{
+                    //val=parseInt(localStorage.count)
+                    val=parseInt(localStorage.getItem("count"))
+                    localStorage.count=val-1
+                   }
+                }else{
+                    document.getElementById("mydiv").innerHTML="web storage is not supported"  
+                }
+                document.getElementById("mydiv").innerHTML="you clicked "+localStorage.count+ " times";
+        }
+        function increment(){
+            //to check whether browser supports storage API
+            if(typeof(Storage)!== undefined){
+                  if(localStorage.count===undefined){
+                    localStorage.count=1
+                    localSTorage.name="Kishori";
+                    //localStorage.setItem("count","1");
+                  } else{
+                    val=parseInt(localStorage.count);
+                    localStorage.count=val+1
+                  }
+                  document.getElementById("mydiv").innerHTML="you clicked "+localStorage.count+ " times";
+            }
+            else{
+                document.getElementById("mydiv").innerHTML="web storage is not supported"  
+            }
+        }
+        function remove(){
+            if(typeof(Storage)!== undefined){
+                if(localStorage.count!==undefined){
+                    //to remove a particular key
+                    localStorage.removeItem("count");
+                    //to delete all the keys
+                    //localStorage.clear()
+                }
+            }else{
+                document.getElementById("mydiv").innerHTML="web storage is not supported"  
+            }
+        }
+    </script>
+</head>
+<body>
+    <button type="button" name="btn" id="btn" onclick="remove()">remove count</button> 
+    <button type="button" name="btn" id="btn1" onclick="decrementcount()">decreament count</button> 
+   <button type="button" name="btn" id="btn2" onclick="increment()">increament count</button> 
+   <div id="mydiv">
+
+   </div>
+</body>
+</html>

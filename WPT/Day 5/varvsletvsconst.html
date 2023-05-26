@@ -1,0 +1,28 @@
+<html>
+    <body>
+        <script>
+            //duplicate declaration is allowed in var   
+            var a=23
+            var a="Kishori"
+            //duplicate delartion is not allowed in let
+            let x=45;
+            //let x="zxcvxzcv"
+
+            //var is global or function scope
+            var s="test" //global
+            function f1(){
+              var s="check";
+               console.log("inside f1 :",s)
+            }
+            f1()
+            console.log("outside f1 :",s)
+            //let is blocked scope
+            a=4;
+            for(let i=4;i<10;i++){
+                a++;
+            }
+            console.log("value of i :" +i)
+            
+        </script>
+    </body>
+</html>

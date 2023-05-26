@@ -1,0 +1,42 @@
+<html>
+    <head>
+        <script>
+            var str=""
+            function validateskill(){
+                str=""
+                var arr=document.getElementsByName("skill")
+                var cnt=0;
+                for(var i=0;i<arr.length;i++){
+                    if(arr[i].checked){
+                        str+=arr[i].value+","
+                        cnt++;
+                    }
+                }
+                if(cnt>=3){
+                    document.getElementById("errskill").innerHTML=""
+                    str=str.slice(0,str.length-1)
+                    document.getElementById("mydiv").innerHTML=str;
+                    return true;
+                }
+                else{
+                    document.getElementById("errskill").innerHTML="Please select minimum 3 skills"
+                    return false;
+                }
+            }
+        </script>
+    </head>
+    <body>
+        <input type="checkbox" name="skill" id="java" value="java">
+        <label for="java">java</label>
+        <input type="checkbox" name="skill" id="c++" value="c++">
+        <label for="c++">c++</label>
+        <input type="checkbox" name="skill" id="python" value="python">
+        <label for="python">python</label>
+        <input type="checkbox" name="skill" id="dbms" value="dbms">
+        <label for="dbms">dbms</label>
+        <input type="checkbox" name="skill" id="javascript" value="javascript">
+        <label for="javascript">javascript</label><span id="errskill"></span><br>
+        <button type="button" name="btn" id="btn" value="btn" onclick="validateskill()">show skill</button>
+        <div id="mydiv"></div>
+    </body>
+</html>
