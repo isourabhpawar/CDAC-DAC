@@ -1,0 +1,27 @@
+<html>
+    <head>
+        <!--external java script-->
+        <script src="./js/regularexprdemo.js">         
+        </script>
+        
+    </head>
+    <body>
+        String : <input type="text" name="s1" id="str" size="50"><br>
+        pattern : <input type="text" name="p1" id="pattern"><br>
+
+        operations:
+        <input type="radio" name="operation" id="search" value="search">
+        <label for="search">search</label>
+        <input type="radio" name="operation" id="replace" value="replace">
+        <label for="replace">replace</label>
+        <input type="radio" name="operation" id="match" value="match">
+        <label for="match">match</label>
+        <input type="radio" name="operation" id="test" value="test">
+        <label for="test">test</label><br>
+        <button type="button" name="btn" id="btn" value="btn" onclick="searchpattern()">search pattern</button>
+        <div id="mydiv">
+
+        </div> 
+        
+    </body>
+</html>

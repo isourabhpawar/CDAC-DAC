@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+       <title>Document</title>
+</head>
+<body>
+    <script>
+        class Person{
+            constructor(id,nm,mob){
+                this.pid=id;
+                this.name=nm;
+                this.mobile=mob;
+            }
+            display(){
+                console.log("id "+this.pid+"name "+this.name+ " mobile"+this.mobile);
+            }
+        }
+        class Employee extends Person{
+            constructor(id,nm,mob,dt,ds){
+                super(id,nm,mob);
+                this.dept=dt;
+                this.desg=ds;
+            }
+            display(){
+                super.display()
+                console.log(" dept: "+this.dept+"desg:"+this.desg)
+            }
+        }
+        p1=new Person(12,"Rajan",3333333)
+        e1=new Employee(13,"Revati",33333,"ux","UX designer")
+        e1.display()
+    </script>
+    
+</body>
+</html>

@@ -1,0 +1,65 @@
+<html>
+    <html>
+        <head>
+            <script>
+                arr=[];
+                function showdata(){
+                   document.getElementById("mydiv").innerHTML=arr; 
+                }
+                function getseatnumber(ev){
+                    alert("in get seatnumber function"+ev.target.name+"===="+ev.target.id+"====="+ev.target.value);
+                    if(ev.target.checked){
+                         //add in the array
+                        //search the data
+                        arr.push(ev.target.value)
+                        console.log(arr)}
+                    else{
+                        //delete the data
+                    }
+                    
+                }
+            </script>
+        </head>
+    </html>
+    <body>
+        <input type="checkbox" name="1" id="1" value="1"
+        onchange="getseatnumber(event)">
+        <label for="1" >1</label>
+
+        <input type="checkbox" name="2" id="2" value="2"
+        onchange="getseatnumber(event)">
+        <label for="2" >2</label>
+
+        <input type="checkbox" name="3" id="3" value="3"
+        onchange="getseatnumber(event)">
+        <label for="3" >3</label>
+
+        <input type="checkbox" name="4" id="4" value="4"
+        onchange="getseatnumber(event)">
+        <label for="4" >4</label>
+
+        <input type="checkbox" name="5" id="5" value="5"
+        onchange="getseatnumber(event)">
+        <label for="5" >5</label><br>
+
+        <input type="checkbox" name="6" id="6" value="6"
+        onchange="getseatnumber(event)">
+        <label for="6" >6</label>
+
+        <input type="checkbox" name="7" id="7" value="7"
+        onchange="getseatnumber(event)">
+        <label for="7" >7</label>
+
+        <input type="checkbox" name="8" id="8" value="8"
+        onchange="getseatnumber(event)">
+        <label for="8" >8</label>
+
+        <input type="checkbox" name="9" id="9" value="9"
+        onchange="getseatnumber(event)">
+        <label for="9" >9</label><br>
+        <button type="button" name="btn" id="show" onclick="showdata()" value="show">Show booking</button>
+        <div id="mydiv">
+
+        </div>
+    </body>
+</html>

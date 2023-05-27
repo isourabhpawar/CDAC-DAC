@@ -1,0 +1,59 @@
+<html>
+    <head>
+        <script>
+        arr=["Kishori","Ganesh","namrata"]
+        function displaylist(){
+           str="<ul>"
+           for(var i=0;i<arr.length;i++){
+            str+="<li>"+arr[i]+"</li>"
+           } 
+           str+="</ul>" 
+           console.log(str);
+           document.getElementById("mydiv").innerHTML=str;
+        }
+        var displaydetails=function(){
+            displaylist()
+        }
+        var addname=()=>{
+            nm=document.getElementById("name").value;
+            arr.push(nm);
+            displaylist();
+            //clear the data
+            document.getElementById("name").value="";
+            document.getElementById("name").focus()
+        }
+        var deletename=()=>{
+            nm=document.getElementById("name").value;
+            /*for(var i=0;i<arr.length;i++){
+                if(arr[i]==nm){
+                    //delete from a particular position
+                    arr.splice(i,1)
+                    break;
+                }
+            }*/
+            //foreach
+            cnt=0
+            for(var name of arr){
+               if(name==nm){
+                
+                    arr.splice(cnt,1)
+                    break;
+               }
+               cnt++
+            }
+            displaylist();
+            //clear the data
+            document.getElementById("name").value="";
+            document.getElementById("name").focus()
+        }
+    </script>
+    </head>
+    <body onload="displaydetails()">
+        Name: <input type="text" name="name" id="name">
+        <button type="button" name="btn" id="add" value="add" onclick="addname()">add new</button>
+        <button type="button" name="btn" id="delete name" value="delete name" onclick="deletename()">delete name</button>
+        <div id="mydiv">
+
+        </div>
+    </body>
+</html>

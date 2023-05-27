@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    </head>
+<body>
+    <script>
+        ob={
+            empid:1,
+            ename:"kishor",
+            dept:{deptno:1,dname:'Admin'},
+            hobbies:["reading","biking","trekking"],
+            experience:[{name:'igate', years:5},
+            {name:'techM',years:4},
+			],
+            desg:"Manager"
+         }
+         console.log(ob.hobbies[2])
+         console.log(ob["hobbies"][2])
+         console.log(ob.experience[1].name)
+         console.log(ob["experience"][1]["name"]);
+        console.log(ob.ename)
+    </script>
+</body>
+</html>

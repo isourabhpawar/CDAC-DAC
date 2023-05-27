@@ -1,0 +1,37 @@
+<html>
+    <body>
+        <script>
+            //constructor function
+            var Person=function(id,nm,m){
+                this.eid=id;
+                this.name=nm;
+                this.mobile=m;
+            }
+            var Employee=function(dept,desg){
+                this.dept=dept;
+                this.desg=desg;
+            }
+            p1=new Person(1,"vaibhav","programmer")
+            e1=new Employee("HR","Analyst")
+            p1.mobile=4567
+            p1.email="sjdhfj@sdj"
+            p2=new Person(1,"Ashish","analyst")
+            //object for loop
+            for(var property in p1){
+                console.log(property+"====>"+p1[property]) 
+            }
+            //properties of p1 will get inherited in e1
+            e1.__proto__=p1;
+            console.log("e1 properties")
+            for(var property in e1){
+                //checks these properties are of it own
+                if(e1.hasOwnProperty(property)){
+                   console.log("own property--->"+property+"====>"+e1[property]) 
+                }else{
+                    console.log("parent property--->"+property+"====>"+e1[property]) 
+                }
+                
+            }
+        </script>
+    </body>
+</html>

@@ -1,0 +1,50 @@
+<html>
+    <head>
+        <script>
+            var validatepasswd=function(){
+                var pass=document.getElementById("passwd").value
+                var cpass=document.getElementById("cpasswd").value
+                if(pass===cpass){
+                    document.getElementById("errpass").innerHTML="";
+                    return true;
+                }
+                document.getElementById("errpass").innerHTML="passwords are not matching"
+                return false;
+            }
+            function validatedata(){
+                flag=validatepasswd();
+                return flag;
+            }
+        </script>
+    </head>
+    <body>
+        <form action="validateuser" method="get" onsubmit="return validatedata()">
+            <table>
+            <tr>
+                <td><label for="uname">user name</label></td>
+                <td><input type="text" name="uname" id="uname" placeholder="enetr uname" required autofocus minlength="3" pattern="[A-Za-z]+[#@][A-Za-z0-9]+"
+                    maxlength="8" ></td>
+                    <td id="erruname"></td>
+            </tr> 
+            <tr>
+                <td><label for="passwd">Passwd</label> </td>
+              <td><input type="password" name="passwd" id="passwd" placeholder="enetr password" required></td>
+            </tr> 
+            <tr>
+                <td><label for="cpasswd">Confirm Passwd</label> </td>
+              <td><input type="password" name="cpasswd" id="cpasswd" placeholder="enetr password" required></td>
+              <td id="errpass"></td>
+            </tr> 
+            <tr>
+                <td></td>
+                <td><!--<input type="submit" name="btn" id="btn" value="Login">-->
+                    <button type="submit" name="btn" id="btn" value="Login">Login user</button>
+                     &nbsp;&nbsp;&nbsp;&nbsp;
+                    <input type="reset" name="btn" id="btn" value="Cancel"></td>
+            </tr> 
+             
+            
+         </table>
+        </form>
+    </body>
+</html>

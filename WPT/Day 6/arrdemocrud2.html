@@ -1,0 +1,58 @@
+<html>
+    <head>
+        <script>
+        arr=["Kishori","Ganesh","namrata"]
+        function displaylist(){
+           str="<ul>"
+           for(var i=0;i<arr.length;i++){
+            str+="<li>"+arr[i]+"</li>"
+           } 
+           str+="</ul>" 
+           console.log(str);
+           document.getElementById("mydiv").innerHTML=str;
+        }
+        var displaydetails=function(){
+            displaylist()
+        }
+        var addname=()=>{
+            nm=document.getElementById("name").value;
+            arr.push(nm);
+            displaylist();
+            //clear the data
+            document.getElementById("name").value="";
+            document.getElementById("name").focus()
+        }
+        var updatename=()=>{
+            nm=document.getElementById("name").value;
+            pos=arr.findIndex(name=>name===nm);
+            //overwrite the value
+            arr[pos]=nm;
+            //to delete and replace
+            arr.splice(pos,1,nm,"adfsdf","sdsd","sdfsdfsd")
+        }
+        var deletename=()=>{
+            nm=document.getElementById("name").value;
+            //search the name and returns the postion where condition is true first time
+            pos=arr.findIndex(name=>name===nm)
+            //if found the delete the value
+            if(pos!==-1){
+                arr.splice(pos,1)
+            }
+            
+            displaylist();
+            //clear the data
+            document.getElementById("name").value="";
+            document.getElementById("name").focus()
+        }
+    </script>
+    </head>
+    <body onload="displaydetails()">
+        Name: <input type="text" name="name" id="name">
+        <button type="button" name="btn" id="add" value="add" onclick="addname()">add new</button>
+        <button type="button" name="btn" id="delete" value="delete name" onclick="deletename()">delete name</button>
+        <button type="button" name="btn" id="update" value="delete name" onclick="updatename()">update name</button>
+        <div id="mydiv">
+
+        </div>
+    </body>
+</html>
