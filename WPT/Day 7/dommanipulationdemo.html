@@ -1,0 +1,37 @@
+<html>
+    <script>
+        cnt=0
+        function addnewtextbox(){
+            var textb=document.createElement("input")  ;   //<input>
+            textb.setAttribute("type","text");  //<input type="text"
+            textb.setAttribute("name","nm"+cnt); 
+            textb.setAttribute("id","nm"+cnt);
+            cnt++;
+            var dv=document.getElementById("mydiv")
+            dv.appendChild(textb);
+            
+        }
+        function assignevent(){
+            document.getElementById("add").addEventListener("click",addnewtextbox);
+        }
+        function showdetails(){
+            document.getElementById("add").removeEventListener("click",addnewtextbox);
+            var str=document.getElementById("nm").value;
+            for(var i=0;i<cnt;i++){
+                str+=","+document.getElementById("nm"+i).value
+            }
+            document.getElementById("display").innerHTML=str;
+        }
+    </script>
+    <body onload="assignevent()">
+        <div id="mydiv"> 
+        <input type="text" name="nm" id="nm">
+        <button type="button" name="btn" id="add" value="add">add new</button>
+        <button type="button" name="btn" id="show" value="show" onclick="showdetails()">show selected</button>
+
+        </div>
+        <div id="display">
+
+        </div>
+    </body>
+</html>

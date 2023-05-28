@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        div{
+            background-color: aqua;
+            border:2px solid red;
+            border-radius:10px;
+            width:400px;
+            margin:10px;
+            height:100px;
+
+        }
+        .myclass{
+            display: none
+        }
+        .myc{
+            display:block
+        }
+    </style>
+    <script>
+        function validate(id,errm){
+            var v=document.getElementById(id).value
+            if((v!=="") && (v.trim().length>0)){
+                document.getElementById(errm).innerHTML=""
+                return true
+            }
+            document.getElementById(errm).innerHTML="value cannot be blank"
+            return false;
+        }
+        function showcourses(){
+            var arr=document.getElementsByName("courses");
+            for(var ob of arr){
+                if(ob.checked){
+                    var cseleted=ob.value;
+                    var nm=document.getElementById("nm").value
+                    var addr=document.getElementById("addr").value
+                    str=`Name : ${nm} Address: ${addr} course selected ${cseleted}`
+                    alert(str);
+                    break;
+                }
+            }
+
+        }
+        function displaycourses(){
+            var chk=document.getElementById
+            var flag=validate('nm','errnm')
+            var flag1=validate('addr','erraddr')
+            if(flag && flag1){
+                if(document.getElementById("show").checked){
+                    document.getElementById("mydiv2").classList.add("myc");
+                    document.getElementById("mydiv2").classList.remove("myclass");
+                    document.getElementById("btn").addEventListener("click",showcourses)
+                }
+            }else{
+                document.getElementById("show").checked=false;
+            }
+        }
+    </script>
+    
+</head>
+<body>
+    <div>
+        <form>
+        Name: <input type="text" name="nm" id="nm"><span id="errnm"></span><br>
+        Address: <input type="text" name="addr" id="addr"><span id="erraddr"></span><br>
+        <input type="checkbox" name="show" id="show" value="show" onclick="displaycourses()"><label for="show">Show courses</label>
+        </form>
+    </div>
+    <div id="mydiv2" class="myclass">
+        <form>
+         <input type="radio" name="courses" id="java" value="java">
+         <label for="java">Java</label>
+         <input type="radio" name="courses" id="c++" value="c++">
+         <label for="c++">c++</label>
+         <input type="radio" name="courses" id="dbms" value="dbms">
+         <label for="dbms">dbms</label><br>
+         <button type="button" name="btn" id="btn" value="btn" >Show selected</button>
+        </form>
+    </div>
+    
+</body>
+</html>

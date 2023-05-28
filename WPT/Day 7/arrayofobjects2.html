@@ -1,0 +1,145 @@
+<html>
+    <head>
+        <style>
+            #mydiv2{
+                background-color:cyan;
+                border:2px solid red;
+                border-radius:10px;
+                width:300px
+            }
+            .myclass{
+                display:none;
+            }
+            .myc{
+                display:block;
+            }
+        </style>
+        <script>
+            arr=[{pid:1,pname:'chair',qty:34,price:3456},
+            {pid:2,pname:'table',qty:35,price:3100},
+            {pid:3,pname:'shelf',qty:30,price:3355},
+            {pid:4,pname:'stool',qty:10,price:3222}
+        ]
+        function displaydata(pid){
+         //alert(pid);
+         var pos=arr.findIndex(a=>a.pid===pid)
+         var mydiv=document.getElementById("mydiv2");
+         mydiv.classList.add("myc");
+         mydiv.classList.remove("myclass");
+         str="";
+            if(pos!==-1){
+
+               str=`ID : ${arr[pos].pid}<br>Name : ${arr[pos].pname}<br>Quantity :${arr[pos].qty}<br>Price :${arr[pos].price} `
+               mydiv.innerHTML=str
+            }else{
+                mydiv.innerHTML="not found"
+            }
+
+        }
+        function displaytable(a=arr){
+            str="<table border='2'><tr><th>Product id</th><th>Product name</th><th>Product qty</th><th>product price</th><th>display</th></tr>";
+            for( var ob of a){
+                //str+="<tr><td>"+ob.pid+"</td><td>"+ob.pname+"</td><td>"+ob.qty+"</td><td>"+ob.price+"</td></tr>"
+                str+=`<tr><td>${ob.pid}</td><td>${ob.pname}</td><td>${ob.qty}</td><td>${ob.price}</td><td><button type='button' name='btn' id='btn' value='btn' onclick='displaydata(${ob.pid})'>display data</button></td></tr> `
+
+            }
+            str+="</table>"
+            document.getElementById("mydiv").innerHTML=str;
+        }
+        let clearform=()=>{
+           document.getElementById("pid").value=""
+            document.getElementById("pname").value=""
+            document.getElementById("qty").value=""
+            document.getElementById("price").value=""
+        }
+         function addnewproduct(){
+            var pid=document.getElementById("pid").value
+            var pname=document.getElementById("pname").value
+            var qty=document.getElementById("qty").value
+            var price=document.getElementById("price").value
+            var ob={pid:parseInt(pid),pname:pname,qty:parseInt(qty),price:parseFloat(price)}
+            arr.push(ob);
+            displaytable();
+            clearform()
+            document.getElementById("pid").focus();
+
+         }
+         var updateproduct=()=>{
+            //retrieve product id
+            pid=parseInt(document.getElementById("pid").value)
+            //search product
+            var pos=arr.findIndex(a=>a.pid===pid)
+            if(pos!==-1){
+                var ans= confirm(`${pid} do you want to update(Y?N)`)
+
+                if(ans){
+                     //accept new qty and price
+                    var newqty=parseInt(prompt("Enter new qty"))
+                    var newprice=parseFloat(prompt("Enter new price"))
+                     //overwrite new qty and price
+                    arr[pos].qty=newqty
+                    arr[pos].price=newprice
+                    //display table only if array 
+                    displaytable()
+                } 
+
+
+            }
+            //clear the form
+            clearform()
+            //bring focus into pid
+            document.getElementById("pid").focus()
+           
+           
+            
+            
+            
+            
+         }
+         var deleteproduct=()=>{
+            var pid=parseInt(document.getElementById("pid").value)
+            var pos=arr.findIndex(a=>a.pid===pid)
+            if(pos!=-1){
+                var ans=confirm(`${pid} do you want tot delete(y/n)`)
+                if(ans){
+                   arr.splice(pos,1)
+                }
+                displaytable()
+            }else{
+                alert("not found")
+            }
+
+            clearform()
+         }
+         function filterdata(event){
+            console.log(event.key)
+            console.log(event.which)
+            if(event.which===13){
+                var searchtext=document.getElementById("search").value;
+                var arr2=arr.filter(a=>a.pname.includes(searchtext));
+                displaytable(arr2)
+            }
+         }
+        
+        </script>
+    </head>
+    <body onload="displaytable()">
+        <form>
+            Product id : <input type="text" name="pid" id="pid"><br>
+            Product name: <input type="text" name="pname" id="pname"><br>
+            Product quantity : <input type="text" name="qty" id="qty"><br>
+            Product price: <input type="text" name="price" id="price"><br>
+            <button type="button" name="btn" id="add" value="add" onclick="addnewproduct()">add new product</button>
+            <button type="button" name="btn" id="del" value="del" onclick="deleteproduct()">delete product</button>
+            <button type="button" name="btn" id="btn" value="update" onclick="updateproduct()">update product</button>
+        </form>
+        Search : <input type="text" name="search" id="search" onkeydown="filterdata(event)">
+        <div id="mydiv">
+            
+        </div>
+        <div id="mydiv2" class="myclass">
+        </div>
+
+        
+    </body>
+</html>
