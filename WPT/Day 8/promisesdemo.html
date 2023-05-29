@@ -1,0 +1,18 @@
+<html>
+    <body>
+        <script>
+          async function test(){
+            console.log("in test");
+            return "hello";
+        }
+        /*console.log("before test")
+        test().then((result)=>{console.log("in then",result)})
+        .catch((err)=>{console.log("error ocuured",err)})
+        
+        console.log("after test")*/
+        s=test();
+        console.log(s)
+        s.then((result)=>{console.log(result)}) 
+      </script>
+    </body>
+</html>

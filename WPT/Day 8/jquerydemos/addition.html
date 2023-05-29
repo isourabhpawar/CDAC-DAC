@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="./jquery.js"></script>
+  <script >
+    $(document).ready(function(){
+         $('#btn').click(function(){
+            var n1=parseInt($('#n1').val());//retu=rieve the value property
+            var n2=parseInt($('#n2').val());
+            var addition=n1+n2;
+            $('#result').val(addition) //assign addition to value property
+            $('#mydiv').html(addition)//assign addition to innerHTML property
+            //$('#mydiv').html($('#mydiv').html()+addition) //concatenate the value to innerhtml
+         })
+    })
+  </script>
+</head>
+<body>
+    <form>
+        Number 1 : <input type="text" name="num1" id="n1">
+        Number 2 : <input type="text" name="num2" id="n2">
+        result: <input type="text" name="result" id="result" readonly>
+        <button type="button" name="btn" id="btn" value="btn">Addition</button>
+    </form>
+    <div id="mydiv">
+
+    </div>
+</body>
+</html>

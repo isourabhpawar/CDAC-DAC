@@ -1,0 +1,25 @@
+<html>
+    <head>
+        <script src="./jquery.js"></script>
+        <script>
+            $(document).ready(function(){
+                $('p').hover(function(){
+                    console.log("mouse over")
+                    //$(this).css("background-color","blue")
+                    $(this).css({"background-color":"blue",
+                      "color":"white",
+                       "font-size":"50px"})
+                },function(){
+                    console.log("mouse out")
+                    $(this).css({"background-color":"yellow",
+                      "color":"black",
+                       "font-size":"20px"})
+                })
+                
+            })
+        </script>
+    </head>
+    <body>
+        <p>this is para</p>
+    </body>
+</html>

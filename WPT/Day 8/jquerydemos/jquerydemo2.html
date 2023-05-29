@@ -1,0 +1,31 @@
+<html>
+    <head>
+        <!--load jquery library -->
+        <script src="./jquery.js"></script>
+        <script>
+
+            jQuery(document).ready(function(){
+               /*arr=document.getElementsByTagName("p");
+               for(var ob of arr){
+                  alert(ob.innerHTML);
+               }
+               arr=document.getElementsByTagName("h1");
+               for(var ob of arr){
+                  alert(ob.innerHTML);
+               }*/
+               $('p,h1').each(function(index,element){
+                    alert($(element).html())
+               })
+            })
+        </script>
+    </head>
+    <body>
+        <p id="myp">This is para</p>
+        <p>This is para</p>
+        <p>This is para</p>
+        <p>This is para</p>
+        <h1>This is h1</h1>
+        <h1>This is h12</h1>
+        <h1>This is h13</h1>
+    </body>
+</html>

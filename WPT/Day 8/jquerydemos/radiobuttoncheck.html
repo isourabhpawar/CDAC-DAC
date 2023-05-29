@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <script src="./jquery.js"></script>
+   <script>
+    $(document).ready(function(){
+       $('#btn').click(function(){
+        //it will select value of cheked radio button
+           var v=$('input[name=degree]:checked').val();
+           //if v is undefined then display error message beside degrees
+           skills=[]
+           /*$('input[name=skill]').each(function(index,element){
+                if($(element).is(':checked')){  //if($(element).prop('checked',true))
+                    skills.push($(element).val())
+                }
+           })*/
+           //it will select all checkboxes which are checked
+           $('input[name=skill]:checked').each(function(index,element){
+                skills.push($(element).val())
+                
+           })
+           $('#mydiv').html("skills : "+skills)
+
+
+       })
+
+    })
+   </script>
+</head>
+<body>
+    Degree : <input type="radio" name="degree" id="BE" value="BE">
+    <label for="BE">BE</label>
+    <input type="radio" name="degree" id="BTech" value="BTech">
+    <label for="BTech">BTech</label>
+    <input type="radio" name="degree" id="MTech" value="MTech">
+    <label for="MTech">MTech</label>
+    <input type="radio" name="degree" id="Msc" value="Msc">
+    <label for="Msc">Msc</label><br>
+    Skills: <input type="checkbox" name="skill" id="Java" value="Java">
+    <label for="Java">Java</label>
+    <input type="checkbox" name="skill" id="DBMS" value="DBMS">
+    <label for="DBMS">DBMS</label><br>
+    <input type="checkbox" name="skill" id="C++" value="C++">
+    <label for="C++">C++</label>
+    <input type="checkbox" name="skill" id="Linux" value="Linux">
+    <label for="Linux">Linux</label><br>
+    <button type="button" name="btn" id="btn" value="btn">validate data</button>
+    <div id="mydiv">
+
+    </div>
+</body>
+</html>

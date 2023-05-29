@@ -1,0 +1,20 @@
+<html>
+    <body>
+        <script>
+            function test(f){
+                setTimeout(()=>{console.log("in test function")
+                 f();
+            },500);
+                //f();
+            }
+            function f1(){
+                console.log("in f1")
+            }
+            console.log("before test function")
+            test(f1)
+            
+             console.log("after test function")
+
+        </script>
+    </body>
+</html>
