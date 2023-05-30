@@ -1,0 +1,65 @@
+<html>
+    <html>
+        <head>
+            <script src="./jquery.js"></script>
+            <script>
+                $(document).ready(function(){
+                    var tickets=[];
+                    $("#show").click(function(){
+                        $('#mydiv').html("tickets: "+tickets)
+                    })
+
+                    $('input[type=checkbox]').change(function(){
+                        if($(this).is(':checked')){
+                            var v=$(this).val()
+                            pos=tickets.findIndex(a=>a===v);
+                            if(pos===-1){
+                               tickets.push(v);
+                            }
+                        }else{
+                            pos=tickets.findIndex(a=>a===v);
+                            if(pos!==-1){
+                               tickets.splice(pos,1);
+                            }
+                            
+                            
+                        }
+                        alert(tickets);
+                    })
+                })
+            </script>
+        </head>
+    </html>
+    <body>
+        <input type="checkbox" name="1" id="1" value="1">
+        <label for="1" >1</label>
+
+        <input type="checkbox" name="2" id="2" value="2">
+        <label for="2" >2</label>
+
+        <input type="checkbox" name="3" id="3" value="3">
+        <label for="3" >3</label>
+
+        <input type="checkbox" name="4" id="4" value="4">
+        <label for="4" >4</label>
+
+        <input type="checkbox" name="5" id="5" value="5">
+        <label for="5" >5</label><br>
+
+        <input type="checkbox" name="6" id="6" value="6">
+        <label for="6" >6</label>
+
+        <input type="checkbox" name="7" id="7" value="7">
+        <label for="7" >7</label>
+
+        <input type="checkbox" name="8" id="8" value="8">
+        <label for="8" >8</label>
+
+        <input type="checkbox" name="9" id="9" value="9">
+        <label for="9" >9</label><br>
+        <button type="button" name="btn" id="show" value="show">Show booking</button>
+        <div id="mydiv">
+
+        </div>
+    </body>
+</html>

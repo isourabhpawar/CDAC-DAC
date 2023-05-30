@@ -1,0 +1,34 @@
+<html>
+    <head>
+       <style>
+          .myclass{
+            background-color:blue;
+            color:white;
+            border: 2px solid red;
+          }
+          .myc{
+            background-color:aqua;
+            color:aqua;
+            text-shadow:2px 2px 2px red;
+            border: 2px solid red;
+          }
+       </style>
+       <script src="./jquery.js"></script>
+       <script>
+        $(document).ready(function(){
+            $('h1').hover(function(){
+                //function chaining
+                $(this).addClass('myc')
+                .removeClass('myclass');
+            },function(){
+                $(this).removeClass('myc')
+                .addClass('myclass')
+            })
+        })
+       </script>
+
+    </head>
+    <body>
+        <h1 class="myclass">This is para</h1>
+    </body>
+</html>

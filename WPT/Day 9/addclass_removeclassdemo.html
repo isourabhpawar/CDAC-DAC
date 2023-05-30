@@ -1,0 +1,75 @@
+<html>
+    <head>
+        <style>
+            div{
+                border:2px solid red;
+                background-color: aqua;
+                color:red;
+                border-radius:10px;
+                width:300px;
+                margin-left:100px;
+                margin-top: 10px
+            }
+            .myclass{
+                display:none;
+            }
+            .myc{
+                display:block
+            }
+        </style>
+        <script src="./jquery.js"></script>
+        <script>
+
+           $(document).ready(function(){
+               function validatetextbox(name,errname){
+                //retrieve the value of the text box
+                     var name=$('#'+name).val();
+                     //check for the error and display message  
+                     if(name==="" || name.trim().length===0){
+                        $('#'+errname).html("the text box cannot be empty")
+                        return false;
+                     }else{
+                        $('#'+errname).html("")
+                        return true;
+                     }
+               }
+              //assign click event to show value of selected radio button 
+              $('#btn').click(function(){
+                 var data=$('input[name=courses]:checked').val();
+                 
+                 alert(data)
+              })
+
+              $('#show').change(function(){
+                flag=validatetextbox("nm","errnm")
+                flag1=validatetextbox("addr","erraddr")
+                if(flag && flag1){
+                    if($('#show').is(":checked")){
+                            $("#mydiv").addClass("myc").removeClass("myclass")
+                    }else{
+                        $("#mydiv").removeClass("myc").addClass("myclass")
+                    }
+                }
+              })
+
+           })
+        </script>
+    </head>
+    <body>
+        <div>
+            Name : <input type="text" name="nm" id="nm"><span id="errnm"></span><br>
+            address : <input type="text" name="addr" id="addr"><span id="erraddr"></span><br>
+          <input type="checkbox" name="show" id="show">
+          <label for="show"> show courses</label><br>
+        </div>
+        <div id="mydiv" class="myclass">
+            <input type="radio" name="courses" id="Java" value="Java">
+          <label for="Java"> Java</label><br>
+          <input type="radio" name="courses"" id="C++" value="Java>
+          <label for="C++"> C++</label><br>
+          <input type="radio" name="courses"" id="DBMS" value="Java>
+          <label for="DBMS"> DBMS</label><br>
+          <button type="button" name="btn" id="btn" value="select">Select course</button>
+        </div>
+    </body>
+</html>

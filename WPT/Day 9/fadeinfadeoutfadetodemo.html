@@ -1,0 +1,60 @@
+<html>
+    <head>
+        <style>
+            div{
+                border:2px solid red;
+                border-radius:10px;
+                width:200px;
+                height:200px;
+                margin:10px
+            }
+            #div1{
+                background-color: aqua;
+            }
+            #div2{
+                background-color: palevioletred
+            }
+        </style>
+        <script src="./jquery.js"></script>
+        <script>
+            $(document).ready(function(){
+                //show div1 and hide div2
+                $('#fadein').click(function(){
+                    $('#div1').fadeIn("slow",function(){
+                        $('#msg').html("show completed")
+                    })
+                    $('#div2').fadeOut("slow",function(){
+                        $('#msg').html("hide completed")
+                    })
+                })
+                //show div2 and hide div1
+                $('#fadeout').click(function(){
+                    $('#div1').fadeOut(800,function(){
+                        $('#msg').html("hide completed")
+                    })
+                    $('#div2').fadeIn(800,function(){
+                        $('#msg').html("show completed")
+                    })
+                })
+                $('#fadeTo').click(function(){
+                    $('#div1').fadeTo(800,0.3,function(){
+                        $('#msg').html("toggle div1  completed")
+                    })
+                    $('#div2').fadeTo(800,0.5)
+                })
+            })
+        </script>
+    </head>
+    <body>
+        <button type="button" name="btn" id="fadein" value="fadein">fadein</button>
+        <button type="button" name="btn" id="fadeout" value="fadeout">fadeout</button>
+        <button type="button" name="btn" id="fadeTo" value="fadeTo">fadeTo</button>
+        <p id="msg"></p>
+        <div id="div1">
+            This is div1
+        </div>
+        <div id="div2">
+            This is div2
+        </div>
+    </body>
+</html>

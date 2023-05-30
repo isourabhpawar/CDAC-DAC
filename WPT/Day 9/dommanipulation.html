@@ -1,0 +1,48 @@
+<html>
+    <head>
+        <script src="./jquery.js"></script>
+        <script>
+            $(document).ready(function(){
+                var cnt=0
+                $('#btn2').one("click",function(){
+                    alert("Hello");
+                })
+                $('#btn').on("click",function(){
+                    var c=$('#nm').clone()
+                    //c.attr("id","nm"+cnt)
+                    c.attr({"id":"nm"+cnt,"name":"nm"+cnt})
+                    $(c).val("")
+                    cnt++;
+                    $('#mydiv').append(c);
+                    $('#mydiv').append("<br>");
+
+                    
+                })
+
+
+                $('#btn1').click(function(){
+                    $('#btn').off("click");
+                    var str=""
+                    $('input[name^=nm]').each(function(index, element){
+                        str+=$(element).val()
+                    
+                    })
+                    $('#mydiv1').html(str);
+                    
+                })
+            })
+        </script>
+
+    </head>
+    <body>
+        <div id="mydiv">
+        Name : <input type="text" name="nm" id="nm">
+        <button type="button" name="btn" id="btn" value="btn">add new</button>
+        <button type="button" name="btn" id="btn1" value="show">show selected</button><br>
+        <button type="button" name="btn" id="btn2" value="one">one time event</button><br>
+    </div>
+    <div id="mydiv1">
+
+    </div>
+    </body>
+</html>

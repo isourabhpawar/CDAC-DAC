@@ -1,0 +1,38 @@
+<html>
+    <head>
+        <style>
+            div{
+                border:2px solid red;
+                border-radius:10px;
+                width:200px;
+                height:200px;
+                margin:10px
+            }
+            #div1{
+                background-color: aqua;
+            }
+            #div2{
+                background-color: palevioletred
+            }
+        </style>
+        <script src="./jquery.js"></script>
+        <script>
+            $(document).ready(function(){
+                $('#animation').click(function(){
+                   $('#div1').animate({"margin-left":"100px","background-color":"pink","text-color":"red"},2000) 
+                })
+                
+            })
+        </script>
+    </head>
+    <body>
+        <button type="button" name="btn" id="animation" value="animation">animation</button>
+        
+        <div id="div1">
+            This is div1
+        </div>
+        <div id="div2">
+            This is div2
+        </div>
+    </body>
+</html>

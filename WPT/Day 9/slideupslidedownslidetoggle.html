@@ -1,0 +1,62 @@
+<html>
+    <head>
+        <style>
+            div{
+                border:2px solid red;
+                border-radius:10px;
+                width:200px;
+                height:200px;
+                margin:10px
+            }
+            #div1{
+                background-color: aqua;
+            }
+            #div2{
+                background-color: palevioletred
+            }
+        </style>
+        <script src="./jquery.js"></script>
+        <script>
+            $(document).ready(function(){
+                //show div1 and hide div2
+                $('#slideup').click(function(){
+                    $('#div1').slideUp(800,function(){
+                        $('#msg').html("show completed")
+                    })
+                    $('#div2').slideDown(800,function(){
+                        $('#msg').html("hide completed")
+                    })
+                })
+                //show div2 and hide div1
+                $('#slidedown').click(function(){
+                    $('#div1').slideDown(800,function(){
+                        $('#msg').html("hide completed")
+                    })
+                    $('#div2').slideUp(800,function(){
+                        $('#msg').html("show completed")
+                    })
+                })
+                $('#slidetoggle').click(function(){
+                    $('#div1').slideToggle(800,function(){
+                        $('#msg').html("toggle div1  completed")
+                    })
+                    $('#div2').slideToggle(800,function(){
+                        $('#msg').html("toggle div2 completed")
+                    })
+                })
+            })
+        </script>
+    </head>
+    <body>
+        <button type="button" name="btn" id="slideup" value="slideup">slideup</button>
+        <button type="button" name="btn" id="slidedown" value="slidedown">slidedown</button>
+        <button type="button" name="btn" id="slidetoggle" value="slidetoggle">slidetoggle</button>
+        <p id="msg"></p>
+        <div id="div1">
+            This is div1
+        </div>
+        <div id="div2">
+            This is div2
+        </div>
+    </body>
+</html>

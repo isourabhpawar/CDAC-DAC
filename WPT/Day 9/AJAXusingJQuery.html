@@ -1,0 +1,94 @@
+
+<html>
+<head>
+   <script src="./jquery.js"></script>
+   <script>
+      $(document).ready(function(){
+        /*function displayTable(result){}
+        var displayTable=function(result){
+
+         }*/
+         var displayTable=(result)=>{
+            str="<table border='2'><tr><th>Id</th><th>UserId</th><th>title</th><th>body</th></tr>";
+                for(var ob of result){
+                    str+=`<tr><td>${ob.id}</td><td>${ob.userId}</td><td>${ob.title}</td><td>${ob.body}</td></tr>`
+                }
+                str+="</table>";
+                $('#mydiv3').html(str);
+         }
+         var displaydropdown=(result)=>{
+            str="<select id='pid' name='pid'>" 
+                for(var ob of result){
+                    str+=`<option value=${ob.id}>${ob.id}</option>`
+                }
+            str+="</select>"
+            $("#mydiv2").html(str);
+         }
+         var  displaydetails=(result)=>{
+            str="Id : "+result.id+"<br>";
+            str+="user id :"+result.userId+"<br>"
+            str+="title:"+result.title+"<br>"
+            str+="body :"+result.body+"<br>"
+            $('#mydiv').html(str);
+         }
+         $('#btn1').click(function(){
+             var v=$('#pid option:selected').val();
+             $.ajax({
+                async:true,
+                url:"https://jsonplaceholder.typicode.com/posts/"+v,
+                type:"GET",
+                success:function(result){
+                    displaydetails(result);
+
+                },
+                error:function(err){
+
+                }
+            })
+         })
+         $("#btn").click(function(){
+
+            $.ajax({
+                async:true,
+                url:"https://jsonplaceholder.typicode.com/posts/",
+                type:"GET",
+                success:function(result){
+                    displayTable(result)
+                    displaydropdown(result)
+
+                },
+                error:function(err){
+
+                }
+            })
+         })
+      })
+   </script>
+
+</head>
+<body>
+    <pre>
+        This is http request will dirctly go to server
+   
+
+        After you click on the link this entire page will be changed to new response
+        It will not update portion of the page
+        It is time consuming
+        and dosnot give good user experience
+    </pre>
+    <div id="mydiv2">
+
+    </div>
+    <button type="button" name="btn" id="btn1">get data by Id</button>
+    <button type="button" name="btn" id="btn">get data</button>
+    <div id="mydiv">
+
+    </div> 
+    <div id="mydiv3">
+
+    </div> 
+      
+
+</body>   
+</body>
+</html>
