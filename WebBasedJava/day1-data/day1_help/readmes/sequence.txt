@@ -1,0 +1,118 @@
+Revise
+
+What is JDBC ?
+Why ?
+How ?
+
+JDBC Steps
+
+Layered Architecture
+
+Solve
+1. Sign up (User Registration)
+i/p : all user details (excluding id)
+Layers
+1. Table  : users
+2. POJO/MOdel/Entity layer : ORM
+Table --- POJO class
+Rows -- POJOs
+Cols --POJO props
+eg : User --props , def ctor , overloaded ctor , g/s , toString
+3. DBUtils 
+openCn
+closeCn
+4. DAO 
+4.1 i/f 
+eg UserDao
+String registerUser(User userDTO) throws SE
+4.2 UserDaoImpl
+state --cn , psts,csts
+def ctor : open cn , create psts/csts
+clean up : psts/csts : close , close cn
+CRUD 
+String registerUser(User userDTO) throws SE
+set IN params
+execUpdate -- update count ==1 => success , ow. : failed!
+
+2. Delete User details
+i/p : user id 
+
+
+3. Change password (Lab work)
+i/p : email , old password , new password
+
+
+
+
+4. Execute stored procedure to transfer funds from src to dest account
+
+Steps
+1. Stored proc/func exists in DB
+
+2. Create CST(CallableStatement) from DB connection. => pre-parsed , pre compiled statement
+API of Connection i/f
+public CST prepareCall(String sql) throws SQLExc.
+sql : proc : "{call procName(?,?,?,?....)}"
+sql : func : "{?=call funcName(?,?,?,?....)}"
+{} : esc sequence meant for JDBC driver , to translate invocation syntax into DB specific invocation of a proc/function.
+
+3. Register OUT params => Informing JVM about JDBC data type (generic SQL type : DB independent )  of OUT param.
+API of  CST 
+public void registerOutParameter(int paramPos,int jdbcType) throws SQLException
+Use java.sql.Types class constants to specify : jdbcType
+eg : Types.DOUBLE , Types.DECIMAL,....
+
+
+4. IN : set it's value : public void setType(int paramIndex,Type value) throws SE
+OUT :  public void registerOutParamter((int paramIndex,int jdbcType) throws SE
+IN OUT :set it's value + registerOutParamter
+
+5. Execute the proc/func
+public boolean execute() throws SQLException
+
+6. Retrieve the results stored in OUT param
+API of CST
+public Type getType(int paramIndex) throws SQLException
+
+DB Transactions 
+Functionally grouped SQL stmts : representing a B.L.
+Tx => all the stmts from a Tx either fail or succeed.
+i.e If any stmt fails : entire Tx has to be discarded. 
+The changes made by the Tx will be made permanent : IFF all the stmts succeed.
+eg : Purchase a product
+Involves 1. Checking availability of the product
+2. Customer credit/debit limit & updating the same
+3. Updating stock .
+
+How to do it from JDBC API?
+
+1. Start a Tx
+Connection i/f method 
+void setAutoCommit(boolean flag:false)
+ie. unset the auto-commit flag.
+eg : cn.setAutoCommit(false);
+2. Wrap entire Tx within a separate try-catch block.
+3. If the entire try block succeds (i.e at the end of try) ---> commit the Tx
+API : cn.commit();
+4.But if u reach inside the catch clause(due to system exc or custom exc) : rollback the Tx
+API : cn.rollback();
+5. To continue , in a non transactional manner  : set auto-commit to true again.
+
+6. To rollback a transaction partially , there exists additional method for setting save points.
+Connection i/f method
+public Savepoint setSavepoint() throws SQLException
+
+7. How to restore the DB state to a savepoint ?
+Connection i/f method
+void rollback(Savepoint savepoint) throws SQLException
+It will undo all changes made after the given Savepoint object was set.
+
+Do refer to : links shared on our g drive, under "adv java pre requisites"
+
+
+Enter Web programming in Java ....
+refer " readme Java EE "
+
+
+
+
