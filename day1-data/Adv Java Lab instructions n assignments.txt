@@ -1,0 +1,46 @@
+Day 1
+1. Confirm that MySql  DB is working fine , using cmd prompt OR mysql workbench
+
+2. Refer , to installation instructions , shared on 1st day of core Java.
+2.1 JDK version : JDK 11
+2.2 IDE : Eclipse STS 3.9.18
+2.3 Create NEW workspace , for advanced java.
+2.4 AS per the instructions : in "day1-data\day1_help\readmes\Installation steps for Tomcat.txt" add Apache Tomcat web server.
+2.5 Confirm if it's starting properly , without any exceptions
+2.6 Create dynamic web app n test index.html
+
+3. Extract Java EE docs from : "Advance Java Software n Help\\web_prog_prerequisites\softwares n docs\javaee-api-8.0-javadoc.jar"
+
+4. In index.html , add a link to test the servlet , deployed using annotations
+(Servlet1)
+
+5. In index.html , add another link to test the servlet , deployed using xml tags
+(Servlet2)
+
+Servlet1 should be loaded eagerly
+Servlet2 should be loaded lazily
+
+
+Confirm complete servlet life cycle
+(by printing messages on the server console)
+
+In individual labs , revise all of today's work .
+Go through :readme Java EE.txt
+If time permits : 
+1. Create  advjava db in mysql 
+Solve, using DB layered approach(Tester, DAO , DBUtils ,POJO,DB)
+
+User signin 
+Steps
+1.Tables : users 
+2. POJOs : User (voting status : boolean)
+3 Create DBUtils: edit DB user name n pwd
+openConnection : 
+closeConnection
+
+4. DAO
+4.1 UserDao
+User  authenticateUser(String email,String pwd) throws SqlException
+4.2 Implementation class
+5. Write a tester for testing this
+(main class n not a servlet !)
