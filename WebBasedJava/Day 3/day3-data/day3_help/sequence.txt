@@ -1,0 +1,131 @@
+Assignment status
+
+Has any one tried admin part of the assignment ?
+
+
+Today's topics
+Revision of HttpSession with API steps n diagram
+Continuation of case study : complete voter flow
+
+
+
+
+
+
+
+
+
+
+
+------------------------------
+1. Solve
+eg : remote web server IP address is  --ip1 
+In web app(/day5.1) --- /s1(is a servlet) ---
+Creates a  cookie  --- name --"clnt_info" , value --"details1234"  & sends it to a clnt.
+
+clnt IP adr--  ip2
+
+Q Will Clnt browser of ip2  send the cookie in request header ?
+
+1. clnt sends the URL --- http://ip3:8080/day5.1 : NO ---since different server
+2. clnt sends the URL --- http://ip1:8080/day2/ : NO ---since different web site
+3. clnt sends the URL --- http://ip1:8080/day5.1/s2 : YES
+4. clnt sends the URL --- http://ip1:8080/day5.1/s10 : YES
+
+
+What is the Default behaviour : cookies are by default sent to the SAME web app of origin(i.e the web site which has generated cookies)
+
+
+Can it be modified by Cookie class methods??? YES
+
+Which ones ?
+
+setPath : allows the cookie/s to be shared across multiple web apps hosted on the same server.
+setDomain : allows the cookie/s to be shared across multiple hosts from the same domain
+
+
+2. Revision of HttpSession with API steps n diagram
+HttpSession i/f based session management
+(Refer to code , API n draw the diagram)
+
+1. HttpServletRequest getSession methods (refer to a diag : "day5-data\day5_help\diagrams\getSession details.png")
+1.1 HttpSession getSession() : WC will create a new Session if it doesn't exist OR rets the existing one 
+1.2 HttpSession getSession(boolean create) : Reading H.W
+
+
+2. Session Tracking with HttpSession i/f
+
+2.1 Get HttpSession from WC
+HttpSession session=request.getSession();
+What will WC do internally ?
+
+2.2 How to save validated user details under session scope?
+HttpSession API 
+public void setAttribute(String attrName,Object attrValue)
+
+2.3 How to retrieve ?
+public Object getAttribute(String attrName)
+
+2.4 How to remove attribute from the session scope ?
+public void removeAttribute(String attrName)
+
+2.5 How to get all attr names bound to HttpSession ?
+Enumeration<String> getAttributeNames()
+
+2.6 To send to clnt : session creation date/time
+pw.print("Session Created on "+new Date(session.getCreationTime()));
+
+2.7 How to invalidate session ?
+session.invalidate(); => WC marks HS object for GC , unbinds all session scoped attributes.
+
+
+3. How to make it DB independent ?  
+
+
+Steps
+3.1 web.xml
+add 3 init params in a servlet
+(db config : db URL, user name ,password)
+URL : jdbc:mysql://localhost:3306/advjava?createDatabaseIfNotExist=true&amp;useSSL=false&amp;allowPublicKeyRetrieval=true";
+
+3.2 In Login Servlet
+Read init params : from ServletConfig
+
+3.3 pass these params to DBUtils 
+openConnection : to actually open a new connection.
+
+
+4. Page Navigation with server pull.
+
+New Scenario
+Student Admission Form (Accept student details : first name , last name , entrance test score,course,admission status)
+--> submit this info to Student Admission Servlet. Validate if student has min score for a specific course .
+Accordingly give admission or deny admission. 
+Navigate the client to result page n display suitable message.
+(refer to flow diagram)
+
+
+Request Dispatching technique (Server Pull)
+
+refer : readme n diagrams
+
+Student Admission
+1. Student POJO
+firstName,lastName, --string
+course : enum
+score : int
+admissionStatus : boolean
+
+3.1RD's forward scenario
+
+3.2 RD's include scenario
+
+----------------------------Pending------------------------
+
+5. Complete Servlet Life cycle (including thread pool)
+Executor Framework (used by WC to support concurrent handling of multiple client requests)
+CGI Vs Servlets :(reading H.W)
+
+
+6. Web app listeners
+Add a listener in the existing web app n test it.
