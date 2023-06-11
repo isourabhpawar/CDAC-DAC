@@ -1,0 +1,209 @@
+<html>
+    <head><title>Info</title>
+        <style>
+            span{
+                color: red;
+            }
+        </style>
+    <script>
+        var f=[];
+        function populateYear(){
+            var selectyear=document.getElementById('yyyy');
+            for(var i=1930;i<=2023;i++){
+            var option=document.createElement('option');
+            option.value=i;
+            option.text=i;
+            selectyear.appendChild(option);
+        }
+        }
+        function populateDay(){
+            var selectday=document.getElementById('dd');
+            for(var j=1;j<=31;j++){
+            var option=document.createElement('option');
+            option.value=j;
+            option.text=j;
+            selectday.appendChild(option);
+            }
+        }
+        
+        window.onload=function(){
+            populateDay();
+            populateYear();
+        };
+
+        function sendData(){
+            var name=document.getElementById('nm').value;
+            var month=document.getElementById('mm').value;
+            var day=document.getElementById('dd').value;
+            var year=document.getElementById('yyyy').value;
+            var mail=document.getElementById('email').value;
+            var gender=document.getElementsByName('gender');
+
+            
+            
+            for(var i=0;i<gender.length;i++){
+                if(gender[i].checked){
+                    var g=gender[i].value;
+                    break;
+                }
+            }
+            var luck= parseInt(document.getElementById('lucky').value);
+            var food= document.getElementsByName('food');
+
+            for(var j=0; j<food.length; j++){
+                if(food[j].checked){
+                    f.push(food[j].value);
+                }
+            }
+            var flag1=validateName(name);
+            var flag2=validateDate(year,month,day);
+            var flag3=validateMail(mail);
+            var flag4=validateGender(gender);
+            var flag5=validateNumber(luck);
+            var flag6=validateFood(food);
+            alert(flag1+" "+flag6+" "+flag2+" "+flag3+" "+flag4+" "+flag5)
+            if(flag1 && flag2 && flag3 && flag4 && flag5 && flag6){
+                document.getElementById('mydiv').innerHTML="You entered :"+"<br>"+
+            "Name : "+name+"<br>"+"Birth Date :"+month+"/"+day+"/"+year+"<br>"+"Email :"+mail+"<br>"+
+            "Gender : "+g+"<br>"+"Lucky number : "+luck+"<br>"+"Favorite Food : "+f.join(",");
+            }   
+        }
+        function validateName(name){
+            if(name.trim()!=='' && isNaN(name)){
+                document.getElementById('err1').innerHTML='';
+                return true;
+            }else{
+                document.getElementById('err1').innerHTML='Enter valid name';
+                return false;
+            }
+        }
+        function validateNumber(num){
+            if(num!=='' && !isNaN(num)){
+                if(num>1 && num<100){
+                    document.getElementById('err5').innerHTML='';
+                    return true;
+                }else{
+                    document.getElementById('err5').innerHTML='Enter number between 1 and 100';
+                    return false;
+                }
+                
+            }else{
+                document.getElementById('err5').innerHTML='Enter valid number';
+                return false;
+            }
+        }
+        function validateGender(gender){
+            for(var i=0;i<gender.length;i++){
+                if(gender[i].checked){
+                    document.getElementById('err4').innerHTML='';
+                    return true;
+                }else{
+                    document.getElementById('err5').innerHTML='Select Gender';
+                    return false;
+                }
+            }
+        }
+        function validateMail(mail){
+            var pattern=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if(pattern.test(mail)){
+                document.getElementById('err3').innerHTML="";
+                return true;
+            }else{
+                document.getElementById('err3').innerHTML="Enter valid email";
+                return false;
+            }
+        }
+        function validateFood(food){
+            var isChecked=false;
+            for(var j=0; j<food.length; j++){
+                if(food[j].checked){
+                    isChecked=true;
+                    break;
+                }
+            }
+            if(isChecked){
+                document.getElementById('err6').innerHTML="";
+                return true;
+            }else{
+                document.getElementById('err6').innerHTML="Select at least one";
+                return false;
+            }
+        }
+        function validateDate(year, month, day) {
+        var selectedMonth = document.getElementById('mm').selectedIndex;
+        var selectedDay = document.getElementById('dd').selectedIndex;
+        var selectedYear = document.getElementById('yyyy').selectedIndex;
+
+        if (selectedMonth === 0 || selectedDay === 0 || selectedYear === 0) {
+            document.getElementById('err2').innerHTML = 'Select a valid date';
+            return false;
+        } else {
+        document.getElementById('err2').innerHTML = '';
+        return true;
+        }
+    }
+
+    </script>
+    </head>
+    <body>
+        <table border="2">
+            <tr>
+                <td>Name</td>
+                <td><input type="text" name="nm" id="nm"></td>
+                <td><span>*</span><span id="err1"></span></td>
+            </tr>
+            <tr>
+                <td>Birth Date</td>
+                <td><select name="month" id="mm">
+                    <option value="test">---select---</option>
+                    <option value="January">January</option>
+                    <option value="February">February</option>
+                    <option value="March">March</option>
+                    <option value="April">April</option>
+                    <option value="May">May</option>
+                    <option value="June">June</option>
+                    <option value="July">July</option>
+                    <option value="August">August</option>
+                    <option value="September">September</option>
+                    <option value="October">October</option>
+                    <option value="November">November</option>
+                    <option value="December">December</option>
+                </select>
+                <select name="day" id="dd">
+                    <option value="test">---select---</option>
+                </select>
+                <select name="year" id="yyyy">
+                    <option value="test">---select---</option>
+                
+            </td>
+            <td></select><span>*</span><span id="err2"></span></td>
+            </tr>
+            <tr>
+                <td>Email Address</td>
+                <td><input type="text" name="email" id="email"></span></td>
+                <td><span>*</span><span id="err3"></span></td>
+            </tr>
+            <tr>
+                <td>Gender</td>
+                <td><input type="radio" name="gender" id="m" value="Male" checked><label for="m">Male</label><br>
+                    <input type="radio" name="gender" id="f" value="Female"><label for="f">Female</label></td>
+                    <td><span>*</span><span id="err4"></span></td>
+            </tr>
+            <tr>
+                <td>Lucky number</td>
+                <td><input type="text" name="lucky" id="lucky"></span></td>
+                <td><span>*</span><span id="err5"></span></td>
+            </tr>
+            <tr>
+                <td>Favorite Foods</td>
+                <td><input type="checkbox" name="food" id="pizza" value="Pizza"><label for="pizza">Pizza</label></span><br>
+                    <input type="checkbox" name="food" id="Pasta" value="Pasta"><label for="Pasta">Pasta</label><br>
+                    <input type="checkbox" name="food" id="Chinese" value="Chinese"><label for="Chinese">Chinese</label>
+                    <td><span>*</span><span id="err6"></span></td>
+            </tr>
+        </table>
+        <button type="button" onclick="sendData()">Send Data</button>
+        <div id="mydiv"></div>
+        <div id="mydiv2"></div>
+    </body>
+</html>

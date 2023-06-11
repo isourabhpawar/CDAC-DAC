@@ -1,0 +1,45 @@
+html>
+    <head><title>Add Digits</title>
+        <script>
+                function sum(){
+                    var flag=validateNumber(parseInt(document.getElementById('four').value));
+                    if (flag) {
+                var num = parseInt(document.getElementById('four').value);
+                var digitSum = 0;
+                var rem = 0;
+                while (num > 0) {
+                rem = num % 10;
+                digitSum += rem;
+                num = Math.floor(num / 10); 
+                }
+                document.getElementById('res').value = digitSum; 
+                }
+                }
+                function validateNumber(num) {
+  if (num === "" || isNaN(num)) {
+    document.getElementById('err').innerHTML = "Enter a numeric value";
+    return false;
+  } else if (num < 0) {
+    document.getElementById('err').innerHTML = "Enter a positive number";
+    return false;
+  } else if (num > 1000) {
+    document.getElementById('err').innerHTML = "Enter a number less than 1000";
+    return false;
+  } else {
+    document.getElementById('err').innerHTML = '';
+    return true;
+  }
+}
+
+        </script>
+    </head>
+        <body>
+           Add Digits
+                <form>
+                    Enter a 4 digit number : <input type="text" name="four" id="four"><span id="err"></span><br>
+                    &emsp; &emsp; &emsp; &emsp;&emsp; Answer : <input type="text" name="res" id="res" disabled><br>
+                    <button type="button" onclick="sum()">Calculate</button><br>
+                </form>
+           
+        </body>
+</html>

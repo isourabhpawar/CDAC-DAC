@@ -1,0 +1,34 @@
+<html>
+    <head>
+        <script>
+            function pow(){
+                {
+                    var a=document.getElementById("base").value;
+                    var b=document.getElementById("power").value;
+                    var p=1;
+                    var i=0;
+                    while(i<b){
+                        p*=a;
+                        i++;
+                    }
+                    document.getElementById('mydiv').innerHTML=p;
+
+                }
+                
+
+                
+            }
+            
+        </script>
+    </head>
+    
+        <body>
+            <label for="base"> base:</label>
+            <input type="text" name="base" id="base"><span>*</span><span id="abc"></span><br>
+            <label for="power"> power</label>
+            <input type="text" name="power" id="power"><span>*</span><span id="xyz"></span><br>
+            <button type="button" onclick="pow()">Answer</button>
+            <div id="mydiv"></div>
+        </body>
+    
+</html>

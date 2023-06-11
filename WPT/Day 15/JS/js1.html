@@ -1,0 +1,66 @@
+<html>
+    <head><title>Largest Number</title>
+        <style>
+            
+            input{
+                width: 50px;
+            }
+            span{
+                color: red;
+            }
+        </style>
+    <script>
+        function validateData(numId,ermsg){
+            // alert('vd');
+            var a=parseFloat(document.getElementById(numId).value);
+            if(a==='' || isNaN(a)){
+                document.getElementById(ermsg).innerHTML = "Invalid number";
+                return false;
+            }
+            // alert('true');
+            document.getElementById(ermsg).innerHTML=" ";
+            return true;
+        }
+        function largestNum(){
+            // alert('ln');
+            var flag1=validateData('n1','er1');
+            var flag2=validateData('n2','er2');
+            var flag3=validateData('n3','er3');
+            // alert(flag1+" "+flag2+" "+flag3);
+            if(flag1 && flag2 && flag3){
+                // alert(flag1+" "+flag2+" "+flag3);
+                var a=parseFloat(document.getElementById('n1').value);
+                var b=parseFloat(document.getElementById('n2').value);
+                var c=parseFloat(document.getElementById('n3').value);
+                // alert(a+" "+b+" "+c);
+                if(a>b){
+                    if(a>c){
+                        // alert(a+" "+c);
+                        document.getElementById('res').value = a;
+                    }else{
+                        document.getElementById('res').value = c;
+                    }
+                }else{
+                 if(b>c){
+                        document.getElementById('res').value = b;
+                    }else{
+                        document.getElementById('res').value = c;
+                    }
+                }
+            }
+        }
+    </script>
+    </head>
+    <body>
+        Largest Number
+            <form name="largest">
+                Enter three numbers : <br>
+                Number 1 : <input type="text" name="num1" id="n1"><span>*</span><span id="er1"></span> 
+                Number 2 : <input type="text" name="num2" id="n2"><span>*</span><span id="er2"></span> 
+                Number 3 : <input type="text" name="num3" id="n3"><span>*</span><span id="er3"></span>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  Result : <input type="text" name="res" id="res" disabled><br>
+                <button type="button" style="margin: 20px;" onclick="largestNum()">Answer</button>
+            </form>
+       
+    </body>
+</html>

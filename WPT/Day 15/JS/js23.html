@@ -1,0 +1,84 @@
+<html>
+    <head>
+        <title>Loan Calculator</title>
+        <script>
+            function computePayment(){
+                var loanAmount=parseFloat(document.getElementById('amount').value);
+                var roi=parseFloat(document.getElementById('rate').value);
+                var period=parseFloat(document.getElementById('year').value);
+
+                var flag1 = validateLoanAmount(loanAmount);
+                var flag2 = validateRateOfInterest(roi);
+                var flag3 = validateRepaymentPeriod(period);
+
+                if(flag1 && flag2 && flag3){
+                    
+                    var monthlyRoi=(roi/100)/12;
+                    
+                var totalPayment=period*12;
+                    
+                var monthlyPayment=(loanAmount*monthlyRoi*Math.pow(1+monthlyRoi,totalPayment)/(Math.pow(1+monthlyRoi,totalPayment)-1));
+                alert(monthlyPayment);
+
+                var totalPay=monthlyPayment*totalPayment;
+                var totalInterest=totalPay-loanAmount;
+
+                document.getElementById("payment").value=monthlyPayment.toFixed(2);
+                document.getElementById("total").value=totalPay.toFixed(2);
+                document.getElementById("interest").value=totalInterest.toFixed(2);
+
+                }
+            }
+            function validateLoanAmount(amount){
+                if(amount !== "" && !isNaN(amount)){
+                    if(amount<1500000){
+                        document.getElementById('err1').innerHTML="";
+                        return true;
+                    }else{
+                        document.getElementById('err1').innerHTML="Enter amount less than 15 lakhs"
+                        return false;
+                    }
+                    
+                }else{
+                    document.getElementById('err1').innerHTML="Enter a valid number";
+                    return false;
+                }
+            }
+            function validateRepaymentPeriod(year){
+                if(year !== "" && !isNaN(year)){
+                    if(year<15 && year>7){
+                        document.getElementById('err3').innerHTML="";
+                        return true;
+                    }else{
+                        document.getElementById('err3').innerHTML="Enter a number between 7 and 15"
+                    }
+                    
+                }else{
+                    document.getElementById('err3').innerHTML="Enter a valid number";
+                    return false;
+                }
+            }
+            function validateRateOfInterest(rate){
+                if(rate !== "" && !isNaN(rate)){
+                    document.getElementById('err2').innerHTML="";
+                    return true;
+                }else{
+                    document.getElementById('err2').innerHTML="Enter a valid number";
+                    return false;
+                }
+            }
+        </script>
+    </head>
+    <body>
+        <form>
+            <h3>Enter Loan Information :</h3>
+            Amount of the loan (any currency) : <input type="text" name="amount" id="amount"><span>*</span><span id="err1"></span><br>
+            Annual percentage rate of interest : <input type="text" name="rate" id="rate"><span>*</span><span id="err2"></span><br>
+            Repaymet period in years : <input type="text" name="year" id="year"><span>*</span><span id="err3"></span><br>
+            <button type="button" onclick="computePayment()">Calculate</button> <h3>Payment Informantion : </h3>
+            Your monthly payment will be : <input type="text" name="payment" id="payment" disabled><br>
+            Your total payment will be : <input type="text" name="total" id="total" disabled><br>
+            Your total intrest payments will be : <input type="text" name="interest" id="interest" disabled>
+        </form>
+    </body>
+</html>

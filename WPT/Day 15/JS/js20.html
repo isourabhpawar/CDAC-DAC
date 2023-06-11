@@ -1,0 +1,19 @@
+<html>
+    <head>
+        <title>Members of my group</title>
+        <script>
+            var groupMembers=["Pranav","Sahil","Santosh"]
+
+            function a(){
+                for(var i=0;i<groupMembers.length;i++){
+                document.getElementById("mydiv").innerHTML=groupMembers.join(",");
+                }
+            }
+        </script>
+    </head>
+    <body onload="a()">
+       Members of group
+            <div id="mydiv"></div><br>
+       
+    </body>
+</html>

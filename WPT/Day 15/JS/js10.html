@@ -1,0 +1,51 @@
+<html>
+   
+    <body>
+        <Date and Greeting></Date>
+        <div id="date"></div>
+        <div id="greeting"></div>
+        <div id="daysLeft"></div>
+        
+        <script>
+            // Function to get the current date in the specified format
+            function getCurrentDate() {
+                const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+                const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+                
+                const currentDate = new Date();
+                const dayOfWeek = days[currentDate.getDay()];
+                const month = months[currentDate.getMonth()];
+                const day = currentDate.getDate();
+                const year = currentDate.getFullYear();
+                
+                return dayOfWeek + ', ' + day + ' ' + month + ' ' + year;
+            }
+            function getCurrentTime(){
+                const currentTime=new Date().getHours();
+                if(currentTime>=4 && currentTime<12){
+                    return 'Good Morning';
+                }else if(currentTime>=12 && currentTime<16){
+                    return 'Good Afternoon';
+                }else{
+                    return 'Good Evening';
+                }
+                
+            }
+            function getDaysLeft(){
+                const currentDate=new Date();
+                const currentYear=currentDate.getFullYear();
+                const endOfYear=new Date(currentYear,11,31);
+                const oneDay=24*3600*1000;
+
+                const daysLeft=Math.floor((endOfYear-currentDate)/oneDay);
+                return daysLeft;
+            }
+            
+            
+            document.getElementById('date').innerHTML = 'Today is ' + getCurrentDate();
+           document.getElementById('greeting').innerHTML=" Welcome and "+getCurrentTime()+" to you."
+           document.getElementById('daysLeft').innerHTML="Number of days left till end of year : "+getDaysLeft();
+            
+        </script>
+    </body>
+</html>

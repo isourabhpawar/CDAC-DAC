@@ -1,0 +1,48 @@
+<html>
+    <head>
+        <title>Circle</title>
+        <style>
+        
+        </style>
+        <script>
+            function calculateAC(){
+                var flag= validateRadius(parseInt(document.getElementById('radius').value));
+                
+                if(flag){
+                    var r=parseInt(document.getElementById('radius').value);
+                var area=calculateArea(r);
+                var circumference=calculateCircumference(r);
+                document.getElementById('area').innerHTML="Area : "+area;
+                document.getElementById('circum').innerHTML="Circumference : "+circumference;
+                }                
+            }
+            function calculateArea(radius){
+                return 3.14*radius*radius;
+            }
+            function calculateCircumference(radius){
+                return 2*3.14*radius;
+            }
+            function validateRadius(num){
+                
+                if(num==="" || !(isNaN(num))){
+                    
+                document.getElementById('err').innerHTML='';
+                return true;
+                }
+                
+                document.getElementById('err').innerHTML="Enter a numeric value";
+                    return false;
+            }
+        </script>
+    </head>
+    <body>
+       Circle
+            <form>
+                Enter Radius : <input type="text" name="radius" id="radius"><span id="err"></span><br>
+                <button type="button" onclick="calculateAC()">Calculate</button>
+            </form>
+            <div id="area"></div>
+            <div id="circum"></div><br>
+        
+    </body>
+</html>

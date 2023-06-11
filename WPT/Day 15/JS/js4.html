@@ -1,0 +1,73 @@
+<html>
+<head>
+    <title>Calculator</title>
+    <style>
+       
+    </style>
+    <script>
+        function validateNumbs(){
+            // alert('vN');
+            var flag1=validateData('n1','er1');
+            var flag2=validateData('n2','er2');
+            if(flag1 && flag2){
+                operationOn();
+                // addnumbers();
+            }
+        }
+        function validateData(numId,ermsg){
+            // alert('vD');
+            var a=document.getElementById(numId).value;
+            if(a==='' || isNaN(a)){
+                document.getElementById(ermsg).innerHTML='  enter a number'
+                return false
+            }
+            document.getElementById(ermsg).innerHTML=''
+            return true;
+        }
+
+        function operationOn(){
+            // alert("op");
+            var a=parseFloat(document.getElementById('n1').value);
+            var b=parseFloat(document.getElementById('n2').value);
+            // alert(a+" "+b);
+            var c=document.getElementById('ch').value;
+            // alert("c "+c);            
+            switch(c){
+                case 'add':
+                    var ans=a+b;
+                    break;
+                case 'sub':
+                    ans=a-b;
+                    break;
+                case 'mul':
+                    ans=a*b;
+                    break;
+                case 'div':
+                    ans=a/b;
+                    break;               
+            }
+            document.getElementById('mydiv').innerHTML+=" Answer : "+ans;
+            document.getElementById('res').value=ans;
+            console.log('Answer : '+ans);
+        }
+    </script>
+</head>
+
+<body>
+
+    <form name="calc">
+        Operation :  &nbsp;<select name="choice" id="ch">
+                    <option value="add">Addition</option>
+                    <option value="sub">Substraction</option>
+                    <option value="mul">Multipication</option>
+                    <option value="div">Divide</option>
+        </select><span id="er0"></span> <br>
+        Number 1 : <input type="text" name="num1" id="n1"><span id="er1"></span><br>
+        Number 2 : <input type="text" name="num2" id="n2"><span id="er2"></span><br>
+          Result : &nbsp;&emsp; <input type="text" name="result" i="res" disabled><br>
+          <button type="button" name="res" id="res" value="res" onclick="validateNumbs()">Answer</button>
+    </form><br>
+    <div id="mydiv"></div><br>
+
+</body>
+</html>

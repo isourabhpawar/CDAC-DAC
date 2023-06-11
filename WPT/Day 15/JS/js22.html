@@ -1,0 +1,32 @@
+<html>
+    <head>
+        
+        <script>
+            function searchText(){
+                var searchInput=document.getElementById('search').value.toLowerCase();
+                var divElements=document.getElementsByTagName('div');
+               
+                var pattern=new RegExp(searchInput,'gi');
+                
+                for(var i=0;i<divElements.length;i++){
+                    var divContent=divElements[i].textContent.toLowerCase();
+                    var highlightContent=divContent.replace(pattern,function(match){ return '<span>'+match+'</span>';});divElements[i].innerHTML=highlightContent;
+                }
+            }
+        </script>
+        <style>
+            span{
+                background-color: rgb(211, 43, 20);
+                font-weight: bold;
+            }
+        </style>
+    </head>
+    <body>
+        <label for="search">Search : </label><input type="text" name="search" id="search" onkeyup="searchText()"><br><br>
+        <div id="div1"> Meta Platforms, Inc.,[14][15] formerly named Facebook, Inc., and TheFacebook, Inc.,[16] is an American multinational technology conglomerate based in Menlo Park, California. The company owns Facebook, Instagram, and WhatsApp, among other products and services.[17] Meta is one of the world's most valuable companies and among the ten largest publicly traded corporations in the United States.[18] It is considered one of the Big Five American information technology companies, alongside Alphabet (Google), Amazon, Apple, and Microsoft. </div><br>
+        
+        <div id="div2">Meta's products and services include Facebook, Instagram, WhatsApp, Messenger, and Quest 2. It has acquired Reality Labs, Mapillary, CTRL-Labs, Kustomer, and has a 9.99% stake in Jio Platforms.[19] In 2021, the company generated 97.5% of its revenue from the sale of advertising.[20]  </div><br>
+
+        
+    </body>
+</html>

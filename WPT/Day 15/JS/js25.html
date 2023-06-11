@@ -1,0 +1,128 @@
+<html>
+    <head>
+        <title>Order</title>
+        
+        <script>
+
+            var order=[];
+            var str='';
+            function displayTable(){
+                str+=`<table border=2>
+            <tr>
+                <th>Order id</th>
+                <th>Customer Name</th>
+                <th>Billing Date</th>
+                <th>Shipping Date</th>
+                <th>Order Total</th>
+            </tr>`
+            for(var i=0;i<order.length;i++){
+                str+=`<tr>
+                    <td>${order[i].orderId}</td>
+                    <td>${order[i].custName}</td>
+                    <td>${order[i].billDate}</td>
+                    <td>${order[i].shippDate}</td>
+                    <td>${order[i].totalAmount}</td>
+                </tr>`
+            }
+        str+=`</table>`
+        var newWnidow=window.open('','_blank');
+        // str1=JSON.stringify(str)
+        // newWnidow.document.write(str1);
+        document.getElementById("mydiv2").innerHTML=str;
+            }
+            
+
+            function displayOrder(){
+                var oi=parseInt(document.getElementById('oid').value);
+                var cn=document.getElementById('cname').value;
+                var bd=document.getElementById('bdate').value;
+                var sd=document.getElementById('sdate').value;
+                var ot=parseFloat(document.getElementById('total').value);
+                
+                var flag1=validateId(oi);
+                var flag2=validateName(cn);
+                var flag3=validateBillingDate(sd,bd);
+                var flag4=validateShippingDate(sd);
+                var flag5=validateTotal(ot);
+                
+                if(flag1 && flag2 && flag3 && flag4 && flag5){
+                    document.getElementById('mydiv').innerHTML="Order id : "+oi+ "<br>"+ "Cust name : "+cn+"<br>"+"Billing date : "+bd+"<br>"+"Shipping date : "+sd+"<br>"+"Order total : $"+ot;
+                    var Order={orderId:oi,custName:cn,billDate:bd,shippDate:sd,totalAmount:ot};
+                    order.push(Order);
+                    str="";
+                    displayTable();
+                    // clearForm();
+                }
+            }
+            function validateId(orderId){
+                if(orderId!=="" && !isNaN(orderId)){
+                    document.getElementById('err1').innerHTML="";
+                    return true;
+                }else{
+                    document.getElementById('err1').innerHTML="Enter valid numeric id";
+                    return false;
+                }
+            }
+            function validateTotal(amount){
+                if(amount!=="" && !isNaN(amount)){
+                    document.getElementById('err5').innerHTML="";
+                    return true;
+                }else{
+                    document.getElementById('err5').innerHTML="Enter valid Amount";
+                    return false;
+                }
+            }
+            function validateName(custname){
+                if(custname.trim()!=="" && isNaN(custname)){
+                    document.getElementById('err2').innerHTML="";
+                    return true;
+                }else{
+                    document.getElementById('err2').innerHTML="Enter valid name";
+                    return false;
+                }
+            }
+            function validateShippingDate(date){
+                var pattern=/^\d{4}-\d{2}-\d{2}$/;
+                
+                if(pattern.test(date)){
+                    document.getElementById('err4').innerHTML="";
+                    return true;
+                }else{
+                    document.getElementById('err4').innerHTML="Enter valid date";
+                    return false;
+                }
+            }
+            function validateBillingDate(date1,date2){
+                var pattern=/^\d{4}-\d{2}-\d{2}$/;
+                if(pattern.test(date1) && pattern.test(date2)){
+                    var shipp=new Date(date1);
+                    var bill=new Date(date2);
+                    if(shipp.getTime()-bill.getTime()>0){
+                        document.getElementById('err3').innerHTML="";
+                        return true;
+                    }else{
+                        document.getElementById('err3').innerHTML="Billing date cannot be after Shipping date";
+                        return false;
+                    }
+                    
+                }else{
+                    document.getElementById('err3').innerHTML="Enter valid date";
+                    return false;
+                }
+            }
+        </script>
+    </head>
+    <body>
+        <form>
+            Order Id : <input type="text" name="oid" id="oid" autofocus><span id="err1"></span><br>
+            Cust name : <input type="text" name="cname" id="cname"><span id="err2"></span><br>
+            Enter Billing date : <input type="text" name="date" id="bdate" value="yyyy-mm-dd"><span id="err3"></span><br>
+            Enter Shipping date : <input type="text" name="date" id="sdate"  value="yyyy-mm-dd"><span id="err4" ></span><br>
+            Order total : <input type="text" name="total" id="total"><span id="err5"></span><br>
+            <button type="button" onclick="displayOrder()">Display</button>
+        </form>
+        <div id="mydiv"></div>
+        <div id="mydiv2"></div>
+
+    </body>
+</html>

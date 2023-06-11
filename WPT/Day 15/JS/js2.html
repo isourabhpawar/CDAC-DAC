@@ -1,0 +1,52 @@
+<html>
+    <head><title>Print Message</title>
+    <script>
+        function printMessage(){
+            var flag1=validatestring(document.getElementById('m1').value);
+            var flag2=validatefrequency(document.getElementById('m2').value);
+            if(flag1 && flag2){
+            var message=document.getElementById('m1').value;
+            var fre=parseInt(document.getElementById('m2').value);
+            }
+            // alert(message+" "+fre);
+            var i=0;
+            while(i<fre){
+                document.getElementById('mydiv').innerHTML+=message;
+                i++;
+            }
+        
+        }
+        function validatefrequency(num){
+            if(num===""||isNaN(num)){
+                document.getElementById("err").innerHTML="please enter valid number";
+                return false;
+            }
+            document.getElementById("err").innerHTML="";
+            return true;
+        }
+        function validatestring(str){
+            if(str.trim()===""){
+                document.getElementById("err1").innerHTML="please enter valid string";
+                return false;
+            }
+            document.getElementById("err1").innerHTML="";
+            return true;
+        }
+    </script>
+    <style>
+        span{
+            color:red;
+        }
+    </style>
+    </head>
+    <body>
+        Print Message
+            <form name="msg">
+                 Enter Message : <input type="text" name="msg" id="m1"><span>*</span><span id="err1"></span><br><br>
+                 Frequency: <input type="text" name="msg" id="m2"><span>*</span><span id="err"></span><br><br>
+                <button type="button" name="btn" id="btn" onclick="printMessage()">Answer</button><br>
+            </form>
+            <div id="mydiv"></div>
+       
+    </body>
+</html>

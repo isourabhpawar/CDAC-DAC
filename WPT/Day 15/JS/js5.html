@@ -1,0 +1,22 @@
+<html>
+    <head>
+        <script>
+            function table(){
+                var a=parseInt(document.getElementById("num").value);
+                var i=1;
+                while(i<=10){
+                    // alert(a+" "+i);
+                    document.getElementById("mydiv").innerHTML+=a+" * "+i+" = "+i*a+"<br>";
+                    i++;
+                }
+            }
+        </script>
+    </head>
+    <body>
+    
+        <label for="num">Enter number to print a table:</label>
+        <input type="text" name="num" id="num">
+        <button type="button" onclick="table()">answer</button>
+        <div id="mydiv"></div>
+    </body>
+</html>

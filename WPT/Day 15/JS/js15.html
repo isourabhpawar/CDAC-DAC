@@ -1,0 +1,42 @@
+<html>
+    <head>
+        <title>Reverse words</title>
+        <script>
+            function reverseWords() {
+                var inputNames = document.getElementById('words').value;
+                var wordsArray = inputNames.split(",");
+                var flag = validateCount(wordsArray);
+
+                if (flag) {
+                    var reversedWordsArray = [];
+
+                    for (var i = 0; i < wordsArray.length; i++) {
+                        var word = wordsArray[i];
+                        var revWord = word.split('').reverse().join('');
+                        reversedWordsArray.push(revWord);
+                    }
+
+                    reversedWordsArray.sort();
+                    document.getElementById('mydiv').innerHTML = reversedWordsArray.join(", ");
+                }
+            }
+
+            function validateCount(array) {
+                if (array.length !== 5) {
+                    document.getElementById('err').innerHTML = "Please enter 5 words.";
+                    return false;
+                }
+
+                document.getElementById('err').innerHTML = "";
+                return true;
+            }
+        </script>
+    </head>
+    <body>
+        <form>
+            Enter 5 words: <input type="text" name="words" id="words"><span>*</span><span id="err"></span><br>
+            <button type="button" onclick="reverseWords()">Reverse</button>
+        </form>
+        <div id="mydiv"></div>
+    </body>
+</html>

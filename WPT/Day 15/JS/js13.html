@@ -1,0 +1,160 @@
+<html>
+    <head>
+        <title>Employee Details</title>
+        <style>
+            table {
+                border-collapse: collapse;
+                width: 100%;
+            }            th, td {
+                border: 1px solid black;
+                padding: 8px;
+                text-align: left;
+            }
+        </style>
+
+        <script>
+            var employees = [
+                { empid: 101, ename: "Pranav Mankar", salary: 500000 },
+                { empid: 102, ename: "Sourabh P", salary: 999999 },
+                
+            ];
+
+            var str = '';
+
+            function displayTable() {
+                str = "<table> <tr><th>Id</th><th>Name</th><th>Salary</th><th>Action</th></tr>";
+                for (var i = 0; i < employees.length; i++) {
+                    str += `<tr>
+                                <td>${employees[i].empid}</td>
+                                <td>${employees[i].ename}</td>
+                                <td>${employees[i].salary}</td>
+                                <td>
+                                    <button type="button" onclick="editEmployee(${i})">Edit</button>
+                                    <button type="button" onclick="deleteEmployee(${i})">Delete</button>
+                                </td>
+                            </tr>`;
+                }
+                str += "</table>";
+                document.getElementById("mydiv").innerHTML = str;
+            }
+            function validateId(id) {
+                var eid = parseInt(id);
+                if (isNaN(eid) || id === '') {
+                    document.getElementById('err').innerHTML = "Enter a valid id";
+                    return false;
+                } else {
+                    var pos = employees.findIndex(emp => emp.empid === eid);
+                    if (pos !== -1) {
+                        document.getElementById('err').innerHTML = "Id already exists";
+                        return false;
+                    } else {
+                        document.getElementById('err').innerHTML = "";
+                        return true;
+                    }
+                }
+            }
+
+            function validateName(nm) {
+                if (nm !== '' && isNaN(nm)) {
+                    document.getElementById('err1').innerHTML = "";
+                    return true;
+                } else {
+                    document.getElementById('err1').innerHTML = "Enter a valid name";
+                    return false;
+                }
+            }
+
+            function validateSalary(sal) {
+                var esal = parseFloat(sal);
+                if (sal !== '' && !isNaN(esal)) {
+                    document.getElementById('err2').innerHTML = "";
+                    return true;
+                } else {
+                    document.getElementById('err2').innerHTML = "Enter a valid salary";
+                    return false;
+                }
+            }
+
+            function addEmployee() {
+                var a = parseInt(document.getElementById('id').value);
+                var b = document.getElementById('name').value;
+                var c = parseFloat(document.getElementById('sal').value);
+
+                var flag1 = validateId(a);
+                var flag2 = validateName(b);
+                var flag3 = validateSalary(c);
+
+                if (flag1 && flag2 && flag3) {
+                    var obj = { empid: a, ename: b, salary: c };
+                    employees.push(obj);
+                    displayTable();
+                    clearInputs();
+                    document.getElementById('id').focus();
+                }
+            }
+
+            
+            function editEmployee(index) {
+                var emp = employees[index];
+                document.getElementById('id').value = emp.empid;
+                document.getElementById('name').value = emp.ename;
+                document.getElementById('sal').value = emp.salary;
+                document.getElementById('id').disabled = true;
+                document.getElementById('addButton').disabled = true;
+                document.getElementById('updateButton').style.display = 'inline';
+                document.getElementById('cancelButton').style.display = 'inline';
+                document.getElementById('err').innerHTML = '';
+            }
+
+            function updateEmployee() {
+                var a = parseInt(document.getElementById('id').value);
+                var b = document.getElementById('name').value;
+                var c = parseFloat(document.getElementById('sal').value);
+                var index = employees.findIndex(o => o.empid === a);
+                if (index !== -1) {
+                    employees[index].ename = b;
+                    employees[index].salary = c;
+                    displayTable();
+                    clearInputs();
+                    document.getElementById('id').disabled = false;
+                    document.getElementById('addButton').disabled = false;
+                    document.getElementById('updateButton').style.display = 'none';
+                    document.getElementById('cancelButton').style.display = 'none';
+                } 
+            }
+
+            function deleteEmployee(index) {
+                employees.splice(index, 1);
+                displayTable();
+            }
+
+            function cancelUpdate() {
+                clearInputs();
+                document.getElementById('id').disabled = false;
+                document.getElementById('addButton').disabled = false;
+                document.getElementById('updateButton').style.display = 'none';
+                document.getElementById('cancelButton').style.display = 'none';
+                document.getElementById('err').innerHTML = '';
+            }
+
+            function clearInputs() {
+                document.getElementById("id").value = "";
+                document.getElementById("name").value = "";
+                document.getElementById("sal").value = "";
+            }
+        </script>
+    </head>
+    <body onload="displayTable()">
+       Employee Details
+            <form>
+                Enter Id : <input type="text" name="id" id="id"><span>*</span><span id="err"></span><br>
+                Enter Name : <input type="text" name="name" id="name"><span>*</span><span id="err1"></span><br>
+                Enter Salary : <input type="text" name="sal" id="sal"><span>*</span><span id="err2"></span><br>
+                <button type="button" id="addButton" onclick="addEmployee()">Add Employee</button> &emsp;
+                <button type="button" id="updateButton" style="display: none;" onclick="updateEmployee()">Update Detail</button> &emsp;
+                <button type="button" id="cancelButton" style="display: none;" onclick="cancelUpdate()">Cancel</button> &emsp;
+            </form>
+        
+        <div id="mydiv"></div>
+    </body>
+</html>

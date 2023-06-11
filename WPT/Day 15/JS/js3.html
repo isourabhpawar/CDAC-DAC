@@ -1,0 +1,28 @@
+<html>
+<head><title>All Even</title>
+    <style>
+       
+    </style>
+    <script>
+        function allEven(){
+            var num=parseInt(document.getElementById("n").value);
+            var i=0;
+            while(i<=num){
+                if(i%2==0){
+                    document.getElementById('mydiv').innerHTML+=i+","
+                }
+                i++;
+            }
+        }
+    </script>
+</head>
+<body>
+    Even numbers till<br>
+        <form name="even">
+            Enter Number : <input type="text" name="num" id="n"><br>
+            <button type="button" onclick="allEven()">Answer</button><br>
+        </form>
+        <div id="mydiv"></div>
+    
+</body>
+</html>

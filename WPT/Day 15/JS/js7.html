@@ -1,0 +1,49 @@
+<html>
+<head>
+    <script>
+        function min() {
+            var a = document.getElementById("num").value;
+            
+            var set = a.split(",");
+            for (var i = 0; i < set.length; i++) {
+                for (var j = i + 1; j < set.length; j++) {
+                    if (set[j] < set[i]) {
+                        temp = set[i];
+                        set[i] = set[j];
+                        set[j] = temp;
+                    }
+                }
+            }
+            var flag = true;
+            for (var k = 0; k < set.length; k++) {
+                var flag = validateNum(set[k]);
+                if (!flag) {
+                    break;
+                }
+            }
+            if (flag) {
+                document.getElementById('mydiv').innerHTML = "Minimum number : " + set[0];
+            }
+        }
+        
+        function validateNum(number) {
+            var num = parseFloat(number.trim());
+            if (isNaN(num)) {
+                document.getElementById('err').innerHTML = "Enter a valid number";
+                return false;
+            } else {
+                document.getElementById('err').innerHTML = "";
+                return true;
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <form>
+        Enter set of numbers comma seperated : <input type="text" name="num" id="num"><span>*</span><span id="err"></span><br>
+        <button type="button" onclick="min()">Minimum</button>
+    </form>
+    <div id="mydiv"></div>
+</body>
+</html>

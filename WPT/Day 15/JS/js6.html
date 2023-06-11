@@ -1,0 +1,33 @@
+<html>
+    <head>
+        <style>
+            
+        </style>
+        <script>
+            function digitSum(){
+                
+               
+                var a=parseInt(document.getElementById("num").value);
+                var sum=0;
+                var rem=0;
+                while(a>0){
+                    rem=a%10;
+                    sum+=rem;
+                    a=Math.floor(a/10);
+                }
+                document.getElementById('mydiv').innerHTML= "Sum = "+sum;
+
+                
+            }
+
+           
+        </script>
+    </head>
+    <body>
+    
+        <label for="num">Enter number to calculate sumdigit:</label>
+        <input type="text" name="num" id="num"><span id="err"></span><br>
+        <button type="button" onclick="digitSum()">answer</button>
+        <div id="mydiv"></div>
+    </body>
+</html>

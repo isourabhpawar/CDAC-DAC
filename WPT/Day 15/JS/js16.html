@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+ 
+  <style>
+    
+  </style>
+</head>
+<body>
+  <input type="text" id="searchInput" placeholder="Enter search term">
+  <button onclick="searchWebsites()">Search</button>
+  <ul id="resultsList"></ul>
+
+  <script>
+    function searchWebsites() {
+      var searchTerm = document.getElementById("searchInput").value;
+      var websites = [
+        "www.google.com",
+        "www.msn.com",
+        "www.amazon.co.in",
+        "in.answers.yahoo.com",
+        "en.m.wikipedia.com",
+        "codehs.gitbooks.io",
+        "www.coderanch.com"
+      ];
+
+      var resultsList = document.getElementById("resultsList");
+      resultsList.innerHTML = ""; // Clear previous results
+
+      var count = 0;
+      for (var i = 0; i < websites.length; i++) {
+        var website = websites[i];
+        if (website.startsWith("www") && website.includes(searchTerm)) {
+          var li = document.createElement("li");
+          li.textContent = website;
+          resultsList.appendChild(li);
+          count++;
+        }
+      }
+
+      if (count === 0) {
+        var li = document.createElement("li");
+        li.textContent = "No websites found.";
+        resultsList.appendChild(li);
+      }
+    }
+  </script>
+</body>
+</html>

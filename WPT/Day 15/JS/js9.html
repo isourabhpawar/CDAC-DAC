@@ -1,0 +1,34 @@
+<html>
+    <head>
+        
+        <script>
+           function calculateCompoundIntrest(){
+            // alert("calci")
+                
+                    var p=document.getElementById('principal').value;
+                    var r=document.getElementById('rate').value;
+                    var n=document.getElementById('years').value;
+                    var rn=1;
+                    for(var i=1;i<=n;i++){
+                        rn*=(1+r/100);
+                    }
+                    var ci=Math.floor((p*rn)-p);
+                    document.getElementById('mydiv').innerHTML="Compound Intrest = Rs."+ci;
+                
+
+            }
+            
+        </script>
+    </head>
+    <body>
+        Compound Intrest Calculator
+            <form name="calci">
+                Enter Principal : <input type="text" name="principal" i="principal"><span id="err1"></span><br>
+                Enter Rate : <input type="text" name="rate" id="rate"><span id="err2"></span><br>
+                Enter Period : <input type="text" name="year" id="years"><span id="err3"></span><br>
+                <button type="button" onclick="calculateCompoundIntrest()">Calculate</button><br>
+            </form>
+            <div id="mydiv"></div>
+       
+    </body>
+</html>
