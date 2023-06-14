@@ -1,0 +1,159 @@
+Day 1
+1. Confirm that MySql  DB is working fine , using cmd prompt OR mysql workbench
+
+2. Refer , to installation instructions , shared on 1st day of core Java.
+2.1 JDK version : JDK 11
+2.2 IDE : Eclipse STS 3.9.18
+2.3 Create NEW workspace , for advanced java.
+2.4 AS per the instructions : in "day1-data\day1_help\readmes\Installation steps for Tomcat.txt" add Apache Tomcat web server.
+2.5 Confirm if it's starting properly , without any exceptions
+2.6 Create dynamic web app n test index.html
+
+3. Extract Java EE docs from : "Advance Java Software n Help\\web_prog_prerequisites\softwares n docs\javaee-api-8.0-javadoc.jar"
+
+4. In index.html , add a link to test the servlet , deployed using annotations
+(Servlet1)
+
+5. In index.html , add another link to test the servlet , deployed using xml tags
+(Servlet2)
+
+Servlet1 should be loaded eagerly
+Servlet2 should be loaded lazily
+
+
+Confirm complete servlet life cycle
+(by printing messages on the server console)
+
+In individual labs , revise all of today's work .
+Go through :readme Java EE.txt
+If time permits : 
+1. Create  advjava db in mysql 
+Solve, using DB layered approach(Tester, DAO , DBUtils ,POJO,DB)
+
+User signin 
+Steps
+1.Tables : users 
+2. POJOs : User (voting status : boolean)
+3 Create DBUtils: edit DB user name n pwd
+openConnection : 
+closeConnection
+
+4. DAO
+4.1 UserDao
+User  authenticateUser(String email,String pwd) throws SqlException
+4.2 Implementation class
+5. Write a tester for testing this
+(main class n not a servlet !)
+
+Day 2
+1. import day2.1 as existing project in your workspace
+(Edit DBUtils as per your DB settings)
+
+Revise
+1.1 Servlet-JDBC integration
+1.2 Page Navigation : redirect scenario
+(MJUST check the net traffic: inspect option)
+
+2. Hands on
+Add a Cookie to perform session tracking.
+
+3. MUST solve : New Voter registration
+Add a link on login.html , New Voter
+Clicking on link , show Voter registration form
+Think about which request data , you will add in the form ?
+Options : id , first_name , last_name , email             , password , dob        , status , role
+Submit it to RegisterVoterServlet
+Here you add a validation rule. 
+Voter's age > 21 . If yes insert voter details in DB (using DAO n POJO , DBUtils)
+Otherwise , give suitable error mesg. 
+
+Reading exercise
+1. day2-data\day2_help\readmes\regarding HttpServlet.txt
+2. day2-data\day2_help\page navigation\page navigation techniques.txt
+(only client pull)
+3. day2-data\day2_help\session tracking\regarding session tracking.txt
+(till cookie based session tracking)
+
+Today's sequence.txt , will tell you what all we did today!
+
+Day 3
+MANDATORY REVISION
+1. import day3.1 as existing project in your workspace
+(Edit DBUtils as per your DB settings)
+Revise
+1.1 Servlet life cycle
+1.2 Redirect
+1.3 Session Tracking using HttpSession
+1.4 Dynamic form generation in Candidate List page
+
+2.OPTIONAL assignments
+2.1 New User registration (discussed yesterday)
+2.2 Complete admin flow of the online voting assignment
+2.3 IPL Player selection assignment
+
+Without taking pressure , try to solve any of above assignment , to get servlet practice.
+
+
+Day 4
+1.  import day4.1 as existing project in your workspace (student admission w/o DB)
+Revise RequestDispatcher's forward scenario
+
+2.  import day4.2 as existing project in your workspace (student admission w/o DB)
+Revise RequestDispatcher's include scenario
+
+3. import day4.3 as existing project in your workspace (online voting : voter's flow)
+What will you edit ? DBUtils or web.xml ???
+3.1 ServletConfig
+3.2 Revise entire servlet life cycle , in detail , including executor frmwork + servlet config
+3.3 Web app listeners
+
+4. MUST solve any of the assignments , discussed earlier.
+Servlet IPL assignment
+steps
+1. Copy teams n players tables in the DB
+2. Create Team n PLayer POJO.
+3. Copy your own working DBUtils under src/main/java (under utils pkg)
+4. Create DAO layer
+4.1 For the 1st page : get team id n abbreviation from all the teams
+List<Team> getSelectedDetails() throws SQLException
+
+4.2 Add a servlet to generate dynamic form , for adding player details
+dynamic part : options in the drop-down list.
+
+eg URL after adding a player : 
+
+http://localhost:8080/day4_ipl/process_form?team_id=2&full_name=Virat+Kohli&dob=2000-11-28&avg=78&wickets=10
+
+5. Mandatory reading exercise
+5.1 "day4-data\day4_help\readmes\page navigation techniques.txt"
+5.2 "day4-data\day4_help\diagrams\page navigation summary.png"
+5.3 "day4-data\day4_help\diagrams\servlet life cycle in detail.png"
+
+
+Day 5
+1. import day5.1 in your workspace n revise basic JSP synatax
+scripting elements , EL syntax n page directive err handling attributes.
+
+2. Solve student admission assignment in JSP
+
+3. Complete IPL assignment in servlet.
+
+Day 6
+1. import day6.1 in your workspace n revise 
+1.1 include directive
+1.2 forward n include actions
+
+2. import day6.2 in your workspace n revise
+JSP using Java Beans
+Layers involved : JSP  --- Java Bean --- DAO (uses DBUtils)  -- POJO --DB
+
+3. MANDATORY Solve 
+IPL 1st page (at least!) using JSP n Java Bean n DAO (uses DBUtils)  -- POJO --DB
+
+4. In the individual labs , with internet connection :
+EVERYONE MUST import the hibernate template project  , as existing Maven Project :
+"day6_data\day6_help\hibernate help\template project\test_hibernate_basic"
+to download all hibernate dependencies
+(You WON'T be able to work tomorrow , with hibernate otherwise!)
+
+
