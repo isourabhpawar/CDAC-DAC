@@ -1,0 +1,238 @@
+Advanced Hibernate
+Relationship between Entity n Entity 
+(Inheritance , Association : HAS-A)
+
+Types of associations
+one-to-one
+one-to-many
+many-to-one
+many-to-many
+
+Objective --Using  one-to-many & many-to-one assocition between entities
+
+eg : Course 1 <---->* Student
+Different type of relationships between entities
+One To One
+One To Many 
+Many To One
+Many To Many
+
+1. One To Many bi directional relationship between the entities
+JPA Annotations : @OneToMany & @ManyToOne
+
+eg : Course 1 <----->* Student
+Table Relationship
+courses  Table columns : id,title, start_date , end_date , fees , capacity
+students Table columns : id,name,email  + Foreign Key(FK) : course_id
+
+Since  courses table has a OneToMany relationship with the students table , a single course row can be referenced by multiple student rows. 
+
+The course_id  column in the students table , maps this relationship via a foreign key that references the primary key of the courses table. 
+
+Since you can't insert a student record , w/o course record 
+parent-side (@OneToMany) : course
+child-side (@ManyToOne) : student
+
+The @ManyToOne association is responsible for synchronizing the foreign key column with the Persistence Context (the First Level Cache).
+
+As a thumb rule (for perfomance benefits) : DO NOT use uni directional @OneToMany associations
+
+Owning side of the association
+The side having the join column in its table is called the owning side or the owner of the relationship. 
+
+Non owning (inverse side)
+The side that does not have the join column is called the nonowning or inverse side.
+
+
+Best Practices to code a bidirectional @OneToMany association
+eg : Course 1 <----->* Student
+Entity Relationships
+Course POJO properties : id,title, startDate , endDate , fees +
+@OneToMany(mappedBy="selectedCourse",cascade=CascadeType.ALL,orphanRemoval=true)
+private List<Student> students=new ArrayList<>();
+Note : Always init collection to empty one , to avoid null pointer excpetion
+
+Student POJO properties : id,name,email +
+@ManyToOne
+@JoinColumn(name="course_id")
+private Course selectedCourse
+
+Detailed explanation
+1.  Add Suitable mapping annotations : @OneToMany & @ManyToOne
+otherwise JPA / Hibernate throws MappingException
+
+2. Add mappedBy attribute in the inverse side of the association
+
+What is mappedBy & when it's mandatory?
+Mandatory only in case of bi-dir associations
+It's attribute of the @OneToMany / @ManyToMany / @OneToOne annotation.
+
+What will happen if you don't add this attribute , in case of one-to-many 
+ Additional table (un necessary for the relationship mapping) gets created
+
+It MUST appear in the inverse side of the association.
+What should be value of mappedBy ?
+name of the association property as it appears in the owning side.
+
+eg : In Course POJO  : inverse side
+@OneToMany(mappedBy="selectedCourse")
+public List<Student> getStudents() {..}
+
+3. Use @JoinColumn to Specify the Join Column Name (FK column)
+Use it to override hibernate's default naming strategy for column names.
+
+4. Cascade from Parent-Side to Child-Side
+If you don't add cascade option : what will happen ?
+eg : When try to save Course object, with multiple students, insert query gets fired only on courses table. 
+Reason -- default cascade type = none
+Solution --Add suitable cascade type & observe.
+eg : @OneToMany(mappedBy="selectedCourse",cascade=CascadeType.ALL)
+public List<Student> getStudents(){...}
+
+5. What will happen if simply add student reference into the list?
+eg : 
+eg : Course newCourse=new Course(....);
+newCourse.getStudents().add(newStudent1);
+newCourse.getStudents().add(newStudent2);
+newCourse.getStudents().add(newStudent3);
+session.persist(newCourse);
+
+
+Ans : 1 record will be inserted into courses table.  Thanks to cascade option , 3 records will be inserted into students table. BUT value of FK will be null.
+Why : No linking from child ----> parent &
+
+Which is the best way to establish bi-dir linking (As per THE founder of Hibernate : Gavin King)
+Add helper methods in the parent side of the POJO
+eg : In Course POJO
+public void addStudent(Student s)
+{
+  students.add(s);
+  s.setSelectedCourse(this);
+}
+
+For removing bi dir link
+public void removeStudent(Student s)
+{
+  students.remove(s);
+  s.setSelectedCourse(null);
+}
+Above approach is recommended to keep both sides of the association in sync.
+ 
+
+6. Set orphanRemoval on the Parent-Side
+Setting orphanRemoval on the parent-side guarantees the removal of children without references. 
+It is good for cleaning up dependent objects that should not exist without a reference from an owner object. 
+
+eg : Cancel Student admission
+
+Excellent reference : https://vladmihalcea.com/orphanremoval-jpa-hibernate/
+
+
+
+Objectives : 
+
+
+
+1. Objective : Launch new course
+DAO 
+ICourseDao
+String launchCourse(Course c);
+
+2. Admit student
+I/p -- student name, email, course name
+o/p -- student details inserted + linked with FK
+
+DAO --IStudentDao
+String admitNewStudent(String courseName,Student s);
+
+3. Cancel Course
+i/p : course id
+
+4. Objective : 
+Launch a new course , having no of students
+eg : Course : hibernate.....
+s1,s2,s3,s4 : have already paid the fees for the course
+Expected o/p : 1 rec should be inserted in course table & 4 recs in student tbl + linked with FK
+
+If you don't add cascade option : problem observed
+When try to save Course object, with multiple students, insert query gets fired only on courses table. 
+Reason -- def cascade type = none
+Solution --Add suitable cascade type & observe.
+eg : @OneToMany(mappedBy="selectedCourse",
+cascade=CascadeType.ALL)
+public List<Student> getStudents(){...}
+
+5. Cancel Admission
+String cancelAdmission(String courseName,int studentId);
+Hint : use helper method.
+Any problems ?????
+Solution : orphanRemoval
+
+
+6 Get Course Details 
+i/p : course name
+
+Display course details
+
+Display enrolled student details
+Any problems observed ? 
+
+
+Problem associated with one to many 
+org.hibernate.LazyInitializationException
+Trigger : GetCourseDetails : while accessing the Student details
+
+WHY ?
+
+Hibernate follows default fetching policies for different types of associations
+one-to-one : EAGER
+one-to-many : LAZY
+many-to-one : EAGER
+many-to-many : LAZY
+
+
+one-to-many : LAZY
+Meaning : If you try to fetch details of one side(eg : Course) , will it fetch auto details of many side ?
+NO (i.e select query will be fired only on courses table)
+Why ? : for performance 
+
+When will hibernate throw LazyInitializationException ?
+Any time you are trying to access un-fetched data from DB , in a detached manner(outside the session scope)
+cases : one-to-many
+many-many
+session's load
+
+un fetched data : i.e student list in  Course obj : represented by : proxy (substitution) : collection of proxies
+proxy => un fetched data from DB
+
+
+
+Solutions
+1. Change the fetching policy of hibernate for one-to-many to : EAGER
+eg : 
+@OneToMany(mappedBy = "selectedCourse",cascade = CascadeType.ALL,fetch=FetchType.EAGER)  
+	private List<Student> students=new ArrayList<>();
+
+Is it recommneded soln : NO (since even if you just want to access one side details , hib will fire query on many side) --will lead to worst performance. 
+
+
+
+2. 
+@OneToMany(mappedBy = "selectedCourse",cascade = CascadeType.ALL)  
+	private List<Student> students=new ArrayList<>();
+Solution : Access the size of the collection within session scope : soln will be applied in DAO layer
+
+Dis Adv : Hibernate fires multiple queries to get the complete details
+
+
+
+
+3. How to fetch the complete details , in a single join query ?
+Using "join fetch" keyword in JPQL
+String jpql = "select c from Course c join fetch c.students where c.title=:ti";
+
+
+Another trigger for lazy init exception 
+: Session's API 
+load.
+Understand get vs load.

@@ -1,0 +1,262 @@
+Today's topics
+
+Revise 
+Hibernate CRUD operations
+
+
+1. Update emp's salary 
+i/p --email , password , salary increment
+o/p : mesg indicating success or a failure
+
+
+1.5 Additional session API
+save vs persist vs saveOrUpdate vs merge
+evict / clear
+flush,close ,contains , refresh
+
+
+2. Update emp salary , who have joined before a specific date
+
+How ?
+jpql="select e from Employee e where e.joinDate < :dt"; //100
+List<Employee> emps=session.createQuery(jpql,Employee.class)
+.setParameter("dt", date).getResultList();//Q : select
+//emps : List of persistent entities
+emps.forEach(e -> e.setSal(e.getSal()+incr));
+tx.commit();//update : 100
+
+Better more efficient option : use bulk updation (single update query)
+Use update JPQL
+jpql="update Employee e set e.salary=e.salary+:incr where e.joinDate < :dt";
+Use single argument session.createQuery(String jpql);
+
+2.1 Session API
+public Query<T> createQuery(String jpql) throws HibernateException
+jpql -- DML
+
+2.2 Query API
+public int executeUpdate() throws HibernateException
+--use case --DML
+
+
+3. Delete Employee Details
+i/p emp id
+o/p emp details removed from DB
+ Session API : delete
+
+4. Lab work
+Objective --delete details of all emps of specified employment type
+via Bulk delete
+
+
+5. Save n restore image to / from DB : PENDING !!!!!!!!!!!!(will be covered later!)
+FileUtils from Apache supplied commons-io.jar
+<!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.11.0</version>
+		</dependency>
+Methods 
+
+1. public static byte[] readFileToByteArray(File file)
+                                  throws IOException
+Reads the contents of a file into a byte array. The file is closed after reading the contents.
+
+2. public static void writeByteArrayToFile(File file,
+                        byte[] data)
+                                 throws IOException
+Writes a byte array to a file creating the file if it does not exist.
+
+java.io.File : class representing path to a file or a folder.
+File class constructor
+File(String fileName)
+Methods 
+public boolean isFile()
+public boolean exists();
+public boolean canRead();
+
+Steps for storing image of a specific emp in DB
+1. i/p
+emp id , image file path
+ 2. get emp dtls
+session.get(...) --> emp --null chking 
+no -- PERSISTENT
+string file path --File --isFile n canRead -- readFileToByteArray(File file) --> byte[] : bytes
+emp.setImage(bytes);
+commit
+
+
+Steps for restoring image of a specific emp from DB
+1. i/p
+emp id , new file path for the restored image
+ 2. get emp dtls
+session.get(...) --> emp --null chking 
+no -- PERSISTENT
+emp.getImage() ---> byte[] : bytes
+
+writeByteArrayToFile(file,bytes);
+commit
+
+----------------------------------------------------------
+Advanced Hibernate 
+
+Inheritance in JPA/Hibernate
+
+First inheritance strategy : 
+1.Annotation : javax.persistence.MappedSuperclass
+Class level annotation , to be added on abstract or concrete super class
+Hibernate will NOT generate any table for it.
+One can add all common fields in this class
+All other entities can extend n inherit from the common super class
+
+
+2. Associations between Entities (HAS-A) : weaker form of association => aggregation (since Entities have a standalone life cycle , have a separate Identity : PK)
+
+Ref : EMS E-R diagram
+
+
+Technical terms : parent/child , one side/many , (non-owning)inverse side/owning
+
+owning side of the association -- side which contains the FK (physical mapping)
+non owning(inverse) side of the asso -- side which DOES NOT conatain the FK 
+
+2 Types of associations 
+uni directional
+OR
+bi directional
+
+Directionality concept exists ONLY in Object world
+
+Uni directional association : the one in which you can navigate only from 1side to another.
+
+Bi directional association : you can navigate the association from any side.
+
+Identify the relationship between : Department n Employee
+Bi dir relationship
+
+eg : Department 1 <------> * Employee
+
+Department : one , parent , non owning
+
+Employee : many , child , owning (contains FK dept_id ---> PK of depts table)
+
+
+Configure Entities 
+1. Department : extends BaseEntity
+Fields : name , location 
++private List<Employee> empList=new AL<>();//As per Gavin King's suggestion always init collection based property to empty collection (to avoid NPExc. while adding /removing the child elements)
+generate : setters n getters.
+
+
+2. Employee : extends BaseEntity
+Fields : firstName..... +
+private Deparment selectedDept;
+Add setter n getter
+
+Department : parent, one, inverse
+
+Employee : child,many, owning
+
+Summary : Department       1<-------->*    Employee
+
+eg : Department extends BaseEntity
+properties : location , name +
+private List<Employee> emps=new AL<>();//Always init the collection to empty collection , to avoid NPExc , while adding or removing emps.
+
+
+Employee extends BaseEntity
+properties : firstName..... +
+private Department dept;
+
+Problems n solutions
+
+1.What will happen if you don't add any association mapping annotations?
+Observation : org.hibernate.MappingException
+Why ? Hibernate is UNABLE to figure out the asso between entities.
+Solution : Add mapping annotations.
+
+JPA Annotations for E-R
+@OneToOne
+@ManyToOne
+@OneToMany
+@ManyToMany
+
+2. After adding @ManyToOne n @OneToMany , no MappingException.
+BUT how many tables were created by hibernate ?  3
+
+
+Is the link table  really required for establishing one to many bi dir asso ?  NO
+Simpler way : FK mapping
+
+
+3. Reason behind additional table : Hibernate. can't identify about owning n inverse side
+
+Solution : In a bi dir association : It's mandatory to   add mappedBy : property 
+in @OneToMany .
+ 
+Which side should it appear : inverse(eg : Department)
+What should be the value of mappedBy = Name of the asso property , as it appears in the owning side
+eg : In Department class : add
+@OneToMany(mappedBy = "assignedDept")
+private List<Employee> empList = new ArrayList<>();
+
+
+
+4. How to customize name of FK column ?
+eg : 
+@JoinColumn(name="dept_id")
+private Department assignedDept;
+
+
+5. Project Tip (suggestion from Gavin King)
+In case of bi-dir associations , instead of adding complex logic in DAO or Tester ,
+Add helper methods in the POJO layer itself 
+1. To add child entity
+2. To remove a child entity
+eg : In Department class ,
+addEmp n removeEmp
+
+Objectives 
+1. Launch a new department (w/o emps)
+i/p : dept details
+o/p : mesg
+
+2. Hire emp for a specific dept
+i/p : emp details....+dept id 
+
+3. Launch a new department (with emps)
+i/p : new dept details + list of emp details
+o/p : mesg
+
+Problem : What will happen if you don't add any cascading option?
+Default value : {} (i.e no cascading from parent ---> child)
+
+Result : Hibernate DOES NOT cascade the insert operation to emps 
+=> only 1 recored gets added in depts table 
+
+Solution : Simply add 1 more property in @OneToMany 
+cascade = CascadeType.ALL
+
+This will tell hibernate to cascade all operations(i.e save , update n delete) from parent (Department) ---> child (Employee)
+Resulting in 
+1 rec inserted in depts table 
++ n recs added in emps table 
++ FK values assigned automatically (thanks to helper method : addEmp)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
