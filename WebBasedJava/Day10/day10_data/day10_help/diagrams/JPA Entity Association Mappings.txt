@@ -1,0 +1,373 @@
+JPA/Hibernate associations between the entities
+
+These associations are  classified into One-to-One, One-to-Many/Many-to-One and Many-to-Many.
+
+eg : 
+one-one (Emp 1 ---1 EmpDetails)
+one-many (Dept 1---* Emp)
+many-one (Book *---1 Author)
+many-many (Emp *----* Project)
+
+The direction of a relationship can be either bidirectional or unidirectional.
+
+A bidirectional relationship has both an owning side and an inverse side.
+
+A unidirectional relationship has only an owning side. 
+
+The owning side of a relationship determines how the Persistence provider (eg : Hibernate, JPA implementor) makes updates to the relationship in the database.
+
+(It typically contains the physical association mapping , Foreign key column in case of one-to-one n many-to-one OR join table definition in case of many-to-many)
+
+Unidirectional Relationships:
+Unidirectional is a relation where one side does not know about the relation.
+
+In a unidirectional relationship, only one entity has a relationship field or property that refers to the other. 
+
+eg :  Order Item  has  a relationship field with  Product, but Product need not have a relationship field or property for Order Item.
+
+Meaning  Order Item knows about Product, but Product doesn’t know which Order Item instance refer to it.
+
+Summary : Order Item 1----->1 Product
+
+Bidirectional Relationships:
+
+Bidirectional relationship provides navigational access in both directions, so that you can access the other side without explicit queries.
+
+In a bidirectional relationship, each entity has a relationship field or property that refers to the other entity. 
+
+Through the relationship field or property, an entity class can access its related object. 
+
+eg : If Order knows what Order Item instances it has and if Order Item knows what Order it belongs to, they have a bidirectional relationship.
+
+
+Bidirectional relationships must follow these rules.
+
+1. The inverse side of a bidirectional relationship must refer to its owning side (i.e the Entity which contains the foreign key) by using the mappedBy element of the @OneToOne, @OneToMany, or @ManyToMany annotation.
+
+ The mappedBy element refers to  the property or field in the entity that is the owner of the relationship.
+
+The many side of @ManyToOne bidirectional relationships must not define the mappedBy element. The many side is always the owning side of the relationship.
+
+For @OneToOne bidirectional relationships, the owning side corresponds to the side that contains @JoinColumn i.e the corresponding foreign key.
+
+For @ManyToMany bidirectional relationships, either side may be the owning side.
+
+
+Best way to define a bi dir one <---> many between the entities
+
+Discussion of Bi directional association example for Deaprtment 1  <------> * Employee
+
+Department -- parent side , non owning (inverse) side
+Employee --(students) --child side , owning side (containing FK)
+
+Table Names
+departments , emps
+
+NOTE : A parent is the table that stores the primary key, A child is any table that references the parent with a foreign key. These tables are named as parents and children because the child inherits values from the parent 
+
+How to represent it in DB ?
+
+Typically using a FK constraint.
+owning side -- FK column appears -- (emps) 
+non owning(inverse side) -- depts
+
+
+
+POJO details 
+
+Department POJO --id,name ,location .....
++ List<Employee> emps=new ArrayList<>();
+
+Employee POJO -- id(Integer:PK),name ,email(unique)....
+Department dept;
+
+1. Problem Noticed : In absence of any mapping annotations , Hibernate throws org.hibernate.MappingException (since it's unable to figure out the association between the entities)
+
+Solution : add associtation related annotations.
+
+Options : 
+@OneToOne
+@OneToMany
+@ManyToOne
+@ManyToMany
+
+In current case , add 
+@OneToMany in Department side
+@ManyToOne in Employee side
+
+2. Next Problem : Additional table is created (which is un necessary)
+
+Why ? -- In a bi-dir association , you must supply  owning side n  inverse side information to hibernate.
+
+How to supply ? --Add  mappedBy attribute in  @OneToMany
+
+Where to add  -- in the inverse side.(eg : Department POJO)
+
+What should be value of mappedBy attribute?
+Name of the association property , as it appears in the owning side , i.e Employee side
+
+3.Next Problem : FK column name is generated as per  Hibernate's default strategy (name of the owning property+name of id property eg dept_id)
+
+How to specify the name of FK col name?
+Add : @JoinColumn(name="department_id") , in the many side.
+
+Objectives 
+1. Add a new department
+(session.save / persist(newDept))
+Observation : A new row gets inserted in departments  table (as expected!)
+
+2. Add a new department with some emps
+In Tester (AddDeptWithEmps.java) : Create a dept instance & add 3 emps references in the ArrayList.
+
+Observation(Problem) : A new row was inserted in deparements table (as expected!) BUT no records inserted in emps table.
+
+Why : NO cascading option was specified.
+
+One solution : Save department n then individually emp instances (by calling session.save(emp1),emp2,emp3)
+
+Any simpler solution ? YES 
+Use cascade option
+
+Cascading refers to the ability to automatically propagate the state of an entity  across associations between entities. 
+
+eg , In current scenario , if department is deleted , since it has  a one-to-many relationship with Employee , you can define cascading to specify that when a department is deleted, all of it's emps should be deleted as well. Or saved or updated.
+
+Cascading in Hibernate refers to the automatic persistence of related entities. 
+
+When a change is made to an entity, such as an save /update or delete the changes can be cascaded to related entities as well. 
+
+Cascading can be configured using annotations
+
+java.persistence.CascadeType : enum 
+Values :  ALL,PERSIST, MERGE, REMOVE, REFRESH, DETACH
+
+Solution : Add a cascade type.
+eg : @OneToMany (mappedBy = "dept",cascade = CascadeType.ALL)
+      private List<Employee> emps=new ArrayList<>();
+
+
+3. Next Problem : Records will be inserted in departments n emps tables BUT FK will be set to null.
+
+Why : We have not yet set the bi-dir association between the entities.
+
+Emps refs are  added in Department object(in the ArrayList) BUT Department details are not assighned in Emp. 
+
+NOTE : IN a bi-dir association , you have to establish both sides of the association.
+Solution : Apply this solution in POJO level
+As per Gavin King's suggestion , add helper methods.
+addChild n removeChild
+eg : addEmployee n removeEmployee
+
+
+4. Set orphanRemoval on the Parent-Side
+Setting orphanRemoval on the parent-side guarantees the removal of children without references. 
+It is good for cleaning up dependent objects that should not exist without a reference from an owner object. 
+
+eg :Remove emp details , using removeEmployee
+
+Excellent reference : https://vladmihalcea.com/orphanremoval-jpa-hibernate/	
+
+
+orphanRemoval : a property of @OneToMany
+(Optional) Whether to apply the remove operation to entities that have been removed from the relationship and to cascade the remove operation to those entities.
+
+5. Try to access department details , using it's name
+Print department details n it's emp details .
+Problem : org.hibernate.LazyInitializationException
+
+WHY ?
+
+Hibernate follows default fetching policies for different types of associations
+one-to-one : EAGER
+one-to-many : LAZY
+many-to-one : EAGER
+many-to-many : LAZY
+
+
+one-to-many : LAZY
+Meaning : If you try to fetch details of one side(eg : Department) , will it fetch auto details of many side(emps) ?
+NO (i.e select query will be fired only on departments table)
+Why ? : for performance 
+
+When will hibernate throw LazyInitializationException ?
+Any time you are trying to access un-fetched data from DB , in a detached manner(outside the session scope)
+cases : one-to-many
+many-many
+session's load
+
+un fetched data : i.e emp list in  Department obj : represented by : proxy (substitution) : collection of proxies
+proxy => un fetched data from DB
+
+Solutions
+1. Change the fetching policy of hibernate for one-to-many to : EAGER
+eg : 
+@OneToMany(mappedBy = "dept",cascade = CascadeType.ALL,fetch=FetchType.EAGER)  
+	private List<Employee> emps=new ArrayList<>();
+
+Is it recommneded soln : NO (since even if you just want to access one side details , hib will fire query on many side) --will lead to worst performance.
+Use Case : when the size of many is small 
+
+2. Keep the fetch type as default(=lazy)
+ @OneToMany(mappedBy = "dept",cascade = CascadeType.ALL)
+	private List<Employee> emps=new ArrayList<>();
+Solution : Simply access the size of the collection within session scope :  This soln will be applied in DAO layer
+Dis Adv : Hibernate fires multiple queries to get the complete details
+
+
+3. Most recommended soln to avoid select n+1 issue : 
+How to fetch the complete details , in a single join query ?
+Using "join fetch" keyword in JPQL
+String jpql = "select d from Department d join fetch d.emps where d.deptName=:nm";
+emps : POJO prop name
+Hibernate will fire SINGLE INNER JOIN  query to fetch dept + emps  details (not resulting in LazyInitializationException)	
+
+
+Another trigger for lazy init exception 
+: Session's API 
+load.
+
+
+2 triggers
+1.Any-To-Many(one-many n many-many) --hibernate rets collection of proxies
+2.Session's load method ---hibernate rets single proxy.
+
+------------------------------------------------
+Discuss dis advantages of typical bi-dir one-to-one association
+1. Un necessary creation of duplicate PK n FK
+2. Lazy Fetching not supported from the inverse side.
+
+Details : 
+If you configure in the conventional bi-dir Emp 1<--->1 Address
+The address table contains a Primary Key (PK) column (e.g. id) and a Foreign Key (FK) column (e.g. employee_id).
+
+Since, there can be only one address row associated with a Employee, so it makes more sense to have the address PK mirroring the Employee PK.
+
+This way, the address Primary Key is also a Foreign Key, and the two tables are sharing their PKs as well.
+
+PK and FK columns are most often indexed, so sharing the PK can reduce the index footprint by half, which is desirable since you want to store all your indexes into memory to speed up index scanning.
+
+While the unidirectional @OneToOne association can be fetched lazily, the parent-side(non owning) of a bidirectional @OneToOne association is not. The parent-side association behaves like a FetchType.EAGER relationship. And EAGER fetching is bad.
+
+This can be easily confirmed by simply fetching the Employee entity:
+
+
+Employee Employee = session.get(Employee.class, 1L);
+Hibernate fetches the child entity as well, so, instead of only one query, Hibernate requires two select statements:
+
+The most efficient mapping
+
+The best way to map a @OneToOne relationship is to use @MapsId. This way, you don’t even need a bidirectional association since you can always fetch the Address entity by using the Employee entity identifier.
+
+The mapping looks like this:
+
+@Entity
+@Table(name = "address")
+public class Address extends BaseEntity{
+ //city,state,country...
+    
+ 
+    @OneToOne(fetch = FetchType.LAZY)
+@JoinColumn(name="emp_id")
+    @MapsId //to tell hibernate , to share PK between emp n adr table + add FK constraint , which references --> PK of the emp table
+    private Employee employee;
+
+This way, the id property serves as both Primary Key and Foreign Key. 
+
+Instead of extending from BaseEntity , you can add @Id column without  @GeneratedValue annotation since the identifier is populated with the identifier of the Employee association.
+
+If you want to customize the Primary Key column name when using @MapsId, you need to use the @JoinColumn annotation
+
+The Address entity can be persisted as : 
+
+    Employee Employee = session.get(Employee.class, 1L);
+    Address details = new Address(......);
+    details.setEmployee(Employee);
+    session.persist(details);
+});
+
+And we can even fetch the Address using the Employee entity identifier, so there is no need for a bidirectional association:
+
+
+Address details = session.get(Address.class,Employee.getId())
+Try it out !
+
+3. Enter many-to-many association between entities
+ What will be the relationship between Project n Employee ? : many-many
+It can be configured as uni or bi dir also
+
+Bi dir asso : Many-to-Many
+
+3.1 Mandatory Annotation  : @ManyToMany
+3.2 Optional BUT recommended annotation : @JoinTable  : to specify the name of link/association table + name of owning side FK + name of inverse side FK
+
+In many-many 
+owning side : side containing @JoinTable
+other side : inverse side
+eg : Project : owning side (join table will be added here)
+Employee : inverse side.
+
+3.3 In a bi dir , many-many , MUST supply 
+mappedBy property (otherwise hibernate creates 2 child tables , instead of 1)
+where it appears? inverse
+what should be the value of mappedBy : the name of asso property , as it appears in the owing.
+
+3.4 For efficient removal of entities , choose Set type of Collection , instead of a list(since Set DOES NOT allow dups)
+Set <--- HashSet
+Must follow the contract between : hashCode n equals
+Don't Use : @Id property for overriding : hashCode n equals
+Choose natural (Business Key) id : eg : email / title...
+
+3.5 As per Gavin King's suggestion , add helper methods , to add / remove bi dir 
+associations.
+Where : owning side (can be added in in the inverse side)
+
+
+
+----------------
+
+Regarding Hibernate generated proxies 
+
+What is it ? 
+un fetched data from DB => un initialized proxy
+Who creates this proxy : Hibernate
+When : dynamically (@ run time)
+How : Hibernate uses helper libs (eg CGLIB,Byte Buddy...) to create sub class of the entity class
+=> Proxy class
+
+How to un proxy (i.e how to get inited proxy from the load)
+Simply invoke any non PK(non ID) getter --from within session scope.
+
+What will session.load(...) ret ?
+Always rets a proxy, in this case inited proxy
+Will not cause any exc : in case of valid id.
+Throws ObjectNotFoundException : in case of invalid id.
+
+How to avoid proxy generation in any-to-many scenario ?
+3 solutions.
+join fetch is the best
+
+--------------------
+Till Now , we were looking at association(HAS-A) relationship between multiple entities.
+Entities have a standalone existence(typically a separate table) , it's own PK.
+It's life cycle(transient, persistent,detached,removed) is independent of any other entity
+
+So this represents : weak association (aggregation)
+
+Can there be a strong association between hibernate managed POJOs ? YES
+
+Enter value types
+eg : 
+Employee HAS-A Adhar Card : demo of entity n value type (composite)
+
+Employee HAS-A PaymentCard (can have multiple credit/debit cards) : Collection of embeddable
+
+Employee HAS-A Skill : string (can have multiple skills eg : java,python,react...)
+: collection of basic value type
+
+
+Adhar Card : embeddable : @Embeddable
+field : cardNo , date , loc
+
+
+(collection of basic types)
+Annotations : @ElementCollection n @CollectionTable

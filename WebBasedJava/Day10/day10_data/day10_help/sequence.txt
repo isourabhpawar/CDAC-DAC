@@ -1,0 +1,169 @@
+1. Understanding Maven
+
+Ref : Regarding Maven.txt
+
+Revise 
+
+eg : Bi dir association between Author n Book
+Author 1<---->*  Book
+
+Describe using terms
+Author : one , parent ,inverse(=non owning)
+Book : many , child , owning
+
+MANDATORY in one-many : Child(many) MUST be : owning side(the side containinf FK : mapping info) , for normalization
+
+Author :id first name ,last name , email(unique) , pwd + 
+@oneToMany(mappedBy="bookAuthor",cascade=CascadeType.ALL)
+private List<Book> books=new AL<>();
+
+Book : id,title(unique), price + 
+@ManyToOne
+@JoinColumn("author_id")
+private Author bookAuthor;
+
+
+What will happen if you don't add any annotations ?
+Discuss further problems n solutions
+
+
+
+Objectives 
+1. Add new department
+
+2. Add emp to the existing dept
+i/p : emp details , dept id
+
+3. Add new dept + 3 emps
+(cascade on save)
+
+4. Delete dept details 
+i/p : dept name
+(cascade on delete)
+Steps in DAO layer : JPQL -- get persistent dept --session.delete(dept)
+
+5. Remove an emp from specific dept
+i/p : dept name , emp email
+Steps in DAO layer : JPQLs-- get persistent dept , get persistent emp --helper method : removeEmp
+
+(important point : orphanRemoval)
+
+5.5 Cascade on update 
+Change dept location n change salary of emps 
+(lab work !)
+
+6. Display Department details
+i/p : dept name
+
+
+6.1 Objective :
+Display all department details (to see select n+1 issue : with eager fetch n solve it !)
+(lab work !)
+
+
+
+7. Try to display dept n emp details
+i/p : dept name
+Problem n solutions
+
+
+8. get vs load
+Use case : AddNewEmpToExistingDept --later !!!!
+
+3. Resume with LazyInitializationException
+
+When will hibernate throw LazyInitExc?
+Any time , while accessing un fetched data from DB , outside the session scope.
+Triggers :
+1. 
+one-many : LAZY 
+OR
+many-many
+OR
+load
+
+eg : JPQL : "select c from Author c where c.title=:title"
+Author Author=.....
+tx.commit();
+Author : DETACHED
+sop(Author.getDesc());
+Author.getBooks().forEach(sop);//LazyInitExc
+
+
+Discuss different  solutions
+The best one : 
+Use join fetch , to avoid select n+1 issue
+
+
+Objective :  get all departments (lab work !)
+Problem n solutions
+
+Proceed to one-to-one 
+(Refer : JPA Entity Association Mappings)
+
+4. Employee 1<-----1 Address association mapping
+Desc : Uni dir one to one mapping between Emp n Address (USING Shared PK approach)
+Objective :
+4.1 Assign address to the existing employee
+i/p : adr details , emp id
+o/p : mesg
+Hint : get emp details from it's id (session.get) , form uni dir link adr --> emp , persist
+Problems n solutions
+If you don's assign emp ref to address , Hibernate throws : ID generationException (why : null id !!!)
+So MUST set up uni dir association from adr ---> emp (using a setter) n then persist adr details
+
+4.2 Display address details of a specific emp 
+i/p : emp id
+o/p : in case of success : adr details or null(err mesg)
+Hint : Simply use emp id itself as adr id (Thanks to @MapsId : shared PK approach) n use session.get(adr class , emp id)
+BUT since one-to-one , behaves by def in eager manner : if you DON't want to lift emp details , but ONLY adr details , use fetch type : LAZY 
+
+-----------PENDING ---------------
+
+(Refer : JPA Entity Association Mappings)
+5. Employee ------ Project association mapping
+
+
+6. Uni dir association : many-one (lab work !)
+
+-------------------------------------------------
+
+Till Now , we were looking at association(HAS-A) relationship between multiple entities.
+Entities have a standalone existence(typically a separate table) , it's own PK.
+It's life cycle(transient, persistent,detached,removed) is independent of any other entity
+
+So this represents : weak association (aggregation)
+
+Can there be a strong association between hibernate managed POJOs ? YES
+
+6. Enter value types
+
+Employee HAS-A Adhar Card : demo of entity n value type (composite)
+
+Employee HAS-A PaymentCard (can have multiple credit/debit cards) : Collection of embeddable
+
+Employee HAS-A Skill : string (can have multiple skills eg : java,python,react...)
+: collection of basic value type
+
+
+Adhar Card : embeddable : @Embeddable
+field : cardNo , date , loc
+
+
+(collection of basic types)
+Annotations : @ElementCollection n @CollectionTable
+
+
+Revise E-R n continue forward.
+
+Ref : JPA Entity Association Mappings.txt
+
+Excellent link for understanding Entity association mappings :
+1. https://thorben-janssen.com/ultimate-guide-association-mappings-jpa-hibernate/
+
+2. https://vladmihalcea.com/the-best-way-to-map-a-onetoone-relationship-with-jpa-and-hibernate/
+
+
+
+
+

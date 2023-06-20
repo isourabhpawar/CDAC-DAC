@@ -1,0 +1,99 @@
+Revise 
+1. Annotations in one-many bi dir association
+eg : Category 1<---->*  Product
+
+Which annotations will you add ?
+Category POJO : one , parent,inverse
+Props : ....+
+@OneToMany(mappedBy="selectedCategory",cascade=CascadeType.ALL,
+orphanRemoval=true,fetch=FetchType.EAGER)
+private List<Product> products=new AL<>();
+
+
+Product POJO :many,child,owning
+.....+
+@ManyToOne
+@JoinColumn(name="cat_id")
+private Category selectedCategory;
+
+In bi dir : Should add helper methods --addProduct n removeProduct
+
+
+2. get vs load
+Use case : AddNewEmpToExistingDept --later !!!!
+
+3. Resume with LazyInitializationException
+
+When will hibernate throw LazyInitExc?
+Any time , while accessing un fetched data from DB , outside the session scope.
+Triggers :
+1. 
+one-many : LAZY 
+OR
+many-many
+OR
+load
+
+eg : JPQL : "select c from Category c where c.title=:title"
+Category category=.....
+tx.commit();
+category : DETACHED
+sop(category.getDesc());
+category.getProducts().forEach(sop);//LazyInitExc
+
+
+Most recommended solution
+Use join fetch , to avoid select n+1 issue
+
+
+MUST go through : GetAllDepartments.java 
+(with eager fetch type : you will select n+1 issue , typical : join fetch)
+look at : distinct keyword in JPQL
+
+
+
+
+
+
+
+
+
+
+
+
+
+Problem n solutions
+
+4. Employee ----- Address association mapping
+
+5. Employee ------ Project association mapping
+
+
+5.5 Uni dir association : many-one
+
+-------------------------------------------------
+
+Till Now , we were looking at association(HAS-A) relationship between multiple entities.
+Entities have a standalone existence(typically a separate table) , it's own PK.
+It's life cycle(transient, persistent,detached,removed) is independent of any other entity
+
+So this represents : weak association (aggregation)
+
+Can there be a strong association between hibernate managed POJOs ? YES
+
+6. Enter value types
+
+Employee HAS-A Adhar Card : demo of entity n value type (composite)
+
+Employee HAS-A PaymentCard (can have multiple credit/debit cards) : Collection of embeddable
+
+Employee HAS-A Skill : string (can have multiple skills eg : java,python,react...)
+: collection of basic value type
+
+
+Adhar Card : embeddable : @Embeddable
+field : cardNo , date , loc
+
+
+(collection of basic types)
+Annotations : @ElementCollection n @CollectionTable
