@@ -1,0 +1,93 @@
+Spring Boot Image handling  : project objective
+
+Objective : Image upload n download --from server side folder
+
+Use multipart request 
+
+An HTTP multipart request is an HTTP request that HTTP clients construct to send files and data over to an HTTP Server. It is commonly used by browsers and HTTP clients to upload files to the server.
+
+org.springframework.web.multipart.MultipartFile => A representation of an uploaded file received in a multipart request.
+
+
+The file contents are either stored in memory or temporarily on disk. In either case, the programmer is responsible for copying file contents to a  persistent store The temporary storage will be cleared at the end of request processing.
+
+Stpes 
+0. Add a property in Entity (n DTO) , to store the image path
+eg : private String imagePath;
+
+1. To upload a file to a server side folder add the property (any property name)
+file.upload.location=images/ --add in application.properties
+(This will be a folder relative to current project)
+
+#limiting max file size for upload
+spring.servlet.multipart.max-file-size=10MB
+spring.servlet.multipart.max-request-size=15MB
+
+2. For File upload
+Create "images" folder , if not present
+
+Create ImageHandlingService : as singleton n eager service bean
+n create "images" folder , if not present
+API of java.nio.Path n Files 
+2.1 Path.of
+2.2 Files.exists
+2.3 Files.createDirectories
+
+
+3. Create a rest controller
+Other emp details are already stored in DB. image  path has to be stored in the table n image should be uploaded in the "images" folder.
+
+i/p : emp id : request param
+MultipartFile : request param
+resp : Emp DTO (with image file name set) or Simply ApiResponse
+eg : Method : POST
+http://localhost:8080/api/employees/images
+
+Add in @PostMapping : consumes = "multipart/form-data", along with value ,  for swagger .
+
+4. Image Handling Service 
+4.1  Create path  by appending image file's original file name to folder  location  
+API
+Path.of
+MultipartFile : getOriginalFilename
+4.2 Write byte[] to file
+Files.write(Path,byte[])
+
+5. Save  image path in Emp entity (to trigger update query) --setter
+
+6. Return Emp DTO OR ApiResponse DTO to the caller.(service --> controller --> JSON representation to clnt)
+
+5. Test it with postman or swagger or browser.
+
+----------------------------
+
+2. For  Serving images (download) from server side folder.
+i/p : emp id
+
+Steps 
+3.1 In Controller 
+Method = GET
+Add "produces" element in the annotation(@GetMapping): to include image MediaType : JPEG_VALUE , GIF_VALUE, PNG_VALUE
+eg : @GetMapping(value = "/{userId}/images", produces = { MediaType.IMAGE_GIF_VALUE, MediaType.IMAGE_JPEG_VALUE,MediaType.IMAGE_PNG_VALUE }) 
+
+
+3.2 In service layer
+1. get emp details from emp id
+2. Get  complete path of the image
+emp's getter
+Check for non null. If null raise suitable exception (eg : ResourceNotFoundException)
+
+3. API of java.nio.file.Files : helper class
+Method :
+public static byte[] readAllBytes​(Path path) throws IOException
+Reads all the bytes from a file. The method ensures that the file is closed when all bytes have been read or an I/O error, or other runtime exception, is thrown.
+
+For java.nio.file.Path : Path.of(String path)
+
+4. Return contents of image file(byte[]) to the controller
+
+
+From controller , simply add it in ResponseEntity n send it to the clnt.
+4. For react frontend , use : in <img> : src as 
+Method : GET
+http://localhost:8080/employees/{empId}/image

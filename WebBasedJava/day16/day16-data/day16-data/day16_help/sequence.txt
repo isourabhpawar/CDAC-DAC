@@ -1,0 +1,260 @@
+Revise REST concepts
+
+1. refer to : REST simplified.txt
+2. Diag : Full Stack Overview (Have you drawn the diagram?)
+3. Readme : RestController vs MVC Controller n Annotations.txt
+4. Revise annotations , including @CrossOrigin
+Refer : Regarding CORS
+Link : https://reflectoring.io/complete-guide-to-cors/
+
+
+Objective : Complete backend for Emp management CRUD front end
+
+1. Get All Employees : revise
+(Do you want to send password back in the de-serialized response ?  
+How ?)
+2. Add Emp Details : revise
+3. Delete Emp Details 
+
+What will be easier to parse from React front end , a string or JSON ? JSON
+Project tip :
+Better Practice : Instead of a plain string message , wrap it in the java object (eg : ApiResponse) n send it to front end
+ApiResponse : DTO pattern (Data transfer object)
+
+NOTE : SC (using Jackson=Spring boot's default vendor for marshalling n un marshalling support)
+It uses :
+getters : During serialization(=marshalling , java---> json)
+setters : During de-serialization (=un marshalling , json --> java)
+
+
+4. Update Emp details 
+4.1 Get Emp details By Id
+4.2 Update Emp details
+
+
+Test it with postman/swagger & then with React front end.
+(Add swagger dependency here)
+Steps 
+1. Add swagger dependency in pom.xml
+(Already added in spring boot backend template project)
+<!-- Swagger UI -->
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-ui</artifactId>
+			<version>1.6.4</version>
+		</dependency>
+
+2. From web browser , access swagger endpoint
+http://localhost:8080/swagger-ui/index.html
+
+
+More improvisations to the back end APIs
+
+0. Add Lombok library.
+
+ 
+1. Replace actual Resource(eg : Employee / Customer / User )  by ResponseEntity
+
+Standard design practice for back end : DO NOT directly send response body , instead wrap it in ResponseEntity, which represents ENTIRE HTTP response(sts code,header, body)
+
+Introduction to ResponseEntity
+o.s.http.ResponseEntity<T>  : generic class
+T : type of the response body
+Replace actual Resource(eg : User )  by ResponseEntity
+
+
+o.s.http.ResponseEntity<T>
+Ctor : ResponseEntity(T body, HttpStatus status);
+HttpStatus : enum containing Resp sts codes
+
+OR Methods
+ResponseEntity.status(HttpStatus status).body(T body)
+
+
+Objective : Employee signin endpoint 
+URL : http://host:port/employees/signin
+Method : POST (for adding email n pwd : in request body as additional security.)
+Rest Controller : method annotation : @PostMapping
+Request Body : DTO (eg : AuthRequestDTO)
+Resp : ResponseEntity
+Success : SC 200 + AuthRespDTO
+Failure : SC 404 + ApiResp : err mesg +timestamp
+
+
+
+In case of successful signin : REST server should ret Resp packet with : SC 200 n Emp details(id , firstname,lastname , salary) in resp body.
+
+In case of failure : Client SHOULD NOT see the error stack trace 
+INSTEAD
+REST server should ret Resp packet with : SC 404 n resp body containing : DTO 
+with time stamp n err mesg (Hint : Use ApiResponse DTO)
+
+Steps
+EmployeeController : add new method
+eg : http://host:port/employees/signin
+Req payload : SigninRequest : DTO 
+Resp : ResponseEntity(sts,body : SigninResponse)
+
+DAO : Optional<Emp> findByEmailAndPassword(em,pass);
+
+Project Tip : 
+2. Typically , do not use entities as request or response payloads.
+i.e DO NOT expose your entities directly to the REST client
+
+eg : Instead of returning JSON representation of Employee , use DTO pattern.
+
+3. Project Tip
+In order to automatically  convert Entity <-----> DTO , there are multiple 3rd party libs.
+eg : MapStruct , ModelMapper ...
+
+3.1 Add model mapper dependency in pom.xml
+<!-- https://mvnrepository.com/artifact/org.modelmapper/modelmapper -->
+		<dependency>
+			<groupId>org.modelmapper</groupId>
+			<artifactId>modelmapper</artifactId>
+			<version>3.0.0</version>
+		</dependency>
+
+3.2 How to configure ModelMapper class as a spring bean (so that it can be injected as a dependency in other spring beans ) ?
+Ans : Either use xml <bean> tag OR use
+@Bean annotated method , to ret ModelMapper instance to SC.
+
+What is the difference between @Bean vs @Component ?
+@Component n it's subtypes are Preferable for component scanning and automatic wiring.
+
+When should you use @Bean?
+
+Sometimes automatic configuration is not an option. 
+When? 
+Imagine that you want to wire components from 3rd-party libraries , eg : PasswordEncoder in SpringSecurity or ModelMapper, ViewResolver  (you don't have the source code so you can't annotate its classes with @Component), so automatic configuration is not possible.
+
+The @Bean , method level annotation returns an object that spring should register as bean in application context. 
+The body of the method should create the instance n ret it to the caller (SC) , for it's auto management as a spring bean.
+
+eg : 
+
+@Bean //equivalent to <bean id ..../> in xml file
+	public ModelMapper mapper() {
+		ModelMapper modelMapper = new ModelMapper();		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+		return modelMapper;
+	}
+
+3.3 Use ModelMapper's map method , to map Employee --> EmployeeRespDTO
+
+4. What will happen (Test this !)
+4.1 For adding emp (POST)
+in the JSON payload : send empty payload
+Observe n conclude -- 
+4.2 Add only password
+Observe n conclude --
+Any problem n any solution ?
+
+5. Enter :  REST Server side Validations
+(Refer to readme : templates.txt & "regarding spring boot exc handling n validations.txt")
+ 
+
+6. More Practice of Spring Data JPA along with Unit testing with spring boot.
+(refer : regarding Spring Data JPA)
+Ref : https://docs.spring.io/spring-data/jpa/docs/current/reference/html/
+
+6.1 Inherited APIs (eg : findAll , findById,save, deleteAll,count ....)
+6.2 Derived Query methods(derived finder methods)
+
+1. Write Service Layer tests for adding emp records
+@SpringBootTest 
+
+2. DAO layer tests
+Class level annotations over Test class
+@DataJpaTest
+@AutoConfigureTestDatabase(replace = Replace.NONE)
+=> DO NOT replace the actual DB by any test db.
+If you need to disable the rollback @ end of the test case , add 
+@RollBack(false) : over the test method
+
+Spring Data JPA 
+Custom Query Methods
+If you can't solve the requirement using inherited methods or finder methods , you can use custom query methods
+How  ?
+Can inject JPQL using @Query annotations n can pass named IN param using @Param .
+Simpler replacement of named IN param , will be positional IN params.
+Solve : Get emp complete names drawing salary > specific salary
+
+
+3. <!-- Swagger UI -->
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-ui</artifactId>
+			<version>1.6.4</version>
+		</dependency>
+
+--------------------------
+
+Project Tips : 
+
+1. If you see json response , you will see aadhar card : null , empty hobbies : []
+Currently for testing : set location : null 
+How to exclude null or absent values ?
+You can add at the POJO class level ,
+@JsonInclude(Include.NON_EMPTY)
+You can check other options also.
+
+2. How to control the property/field access during ser/de-serial
+@JsonProperty(access = Access.WRITE_ONLY) : property/field will be ignored during serialization
+@JsonProperty(access = Access.READ_ONLY) :  property/field will be ignored during de serialization
+
+Project Tip
+Problem : In case of bi-dir association , if you are NOT using DTP for sending a response ,  jackson will cause the recursion, during serialization(java--> json)
+
+Solution : How to tell SC using Jackson , to skip the properties
+Add field level annotation
+@JsonIgnoreProperties(name of the prop as it appears in the opposite side)
+More Details : 
+eg : User 1<----->1 Cart
+Problem : Infinite recursion (stack overflow !!!!!!!!!!!!!!)
+Cause : Jackson (converter) tries to serialize Cart object , during the serialization of User obj.
+AND
+Jackson (converter) tries to serialize User object , during the ser. of Cart obj.
+Soln : 
+In User entity, add 
+@JsonIgnorePropeties(value="cartOwner")
+private ShoppingCart cart;
+
+In ShoppingCart entity
+@JsonIgnorePropeties(value="cart")
+private User cartOwner;
+
+
+Same problem n solution for any bi-dir relationship.
+
+OR BETTER use DTO solution
+Project Tip
+As a standard design practice , do not expose entities directly to the REST client
+(i.e DO not return them from the RestController)
+Instead use DTO (data transfer object) , to separate entities from resources to be shared with the clnts.
+eg : Send User DTO as  resp , instead of User entity.
+
+
+Common Problems observed during project phase 
+No def ctor found , or empty JSON array of emps only with ids
+Root cause : lombok is not working
+If Lombok library is not working ,even after installing , DO NOT waste time on it currently.
+ 
+Comment the annotations n use earlier approach
+How to test , if Lombok annotations are working ?
+
+eg : In Employee POJO , if you have added lombok annotations , then try from some other class , if you can call the getter / setter
+This will be the confirmation test.
+
+
+
+Links
+1. https://www.javainuse.com/devOps/docker/docker-jar
+2. https://repo1.maven.org/maven2/org/springframework/spring-core/5.3.27/
+3. https://repo1.maven.org/maven2/org/springframework/boot/spring-boot/2.7.12/
+4. https://repo1.maven.org/maven2/org/springframework/data/spring-data-jpa/2.7.12/
+5. https://spring.io/projects/spring-data-jpa#learn
+6. https://docs.spring.io/spring-data/jpa/docs/2.7.12/reference/html/
+
+You tube tutorial 
+ES 6 object destructring 
+https://www.youtube.com/watch?v=i4vhNKihfto
