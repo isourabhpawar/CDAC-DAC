@@ -1,0 +1,14 @@
+Spring boot HTTPS
+
+keytool -genkey -alias spring-security -storetype JKS -keyalg RSA -keysize 2048 -validity 365 -keystore app.jks
+
+
+
+server:
+  ssl:
+    key-alias: spring-https
+    key-store: classpath:javatechie.jks
+    key-store-type: JKS
+    key-password: password
+    
+  port: 7777  

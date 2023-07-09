@@ -1,0 +1,227 @@
+Revise 
+1. Spring Boot validations
+Steps :
+1.1 Identify P.L validation annotations n add them in DTO
+eg : @NotBlank , @NotNull, @Size, @Pattern .....
+1.2 For validating RequestBody : @Valid
+1.3 In case of validation failures : MethodArgNotValidExc
+Can you catch this exc : MethodArgNotValidExc , using method level try-catch ? NO
+
+1.4 In case of B/L failures(eg ApiExc , Resourcenotfound...)  -- can you cathc them using try-catch ? YES
+=> That will mean : multiple try-catch blocks in all methods in all controllers !!!!
+Soln : write global/centralized exc handlier class
+
+What is the disadv of not writing global exc handler ?
+Spring boot supplies def exc handler --> sends ENTIRE err stack trace to clnt!
+un acceptable!!!!
+
+How ?
+1. Create a class : spring bean  --under base-pkg (eg : com.app)
+2. cls level anno : @RestControllerAdvice
+
+It's going to provide the common exc handling advice to all : RestControllers 
+@RestControllerAdvice = @ControllerAdvice: cls level + @RespBody : ret type of all exc handling methods
+Meaning : try{...} => Rest controller methods
+catch blcoks : global exc handler annotated with @RestControllerAdvice
+
+3. How do u add exc handling methods ?
+eg : MethodArgNotValidExc (related to validation failures)
+@ExceptionHandler(MethodArgNotValidExc.class)
+public ResponseEntoty<?> handleMethodArgNotValidExc(MethodArgNotValidExc e)
+{
+   //how to send map of affected field : err mesg
+   Map<String,String> errMap=e.getFieldErrors() //List<FieldErr>
+   .stream() //Stream<FieldErr>
+   .collect(Collectors.toMap(FieldError::getField,FieldError::getDefaultMessage));
+   return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errMap);
+
+
+2. Global Exception Handling
+3. ModelMapper , DTO , Entities
+4. Apply all of above concepts to Employee rgeistration (Add new emp) : lab work !
+
+Today's Topics 
+1. Continue with image handling
+Refer : readme
+
+Objective : upload the image of existing emp in server side folder
+i/p : emp id , multipart file => file data to be uploaded
+
+Steps :
+1.Check if folder for storing imgs exist --if no --create it !
+o.w continue with the existing
+eg : image handling service
+where : @PostConstruct : init style method
+folder name : app props file , as a custom property 
+eg : upload.location=images/
+How to inject this prop into spring bean : service layer? : SpEL
+@Value("${upload.location}")
+private String folder;
+
+@PostConstruct
+public void init()
+{
+....}
+
+2. Emp controller : 
+URL : http://host:port/employees/images
+method : POST
+2 req params : emp id , file
+
+
+
+
+1.5 Spring Data JPA : custom query methods : lab work
+@Query
+@Modifying
+
+
+
+2. Enter Spring security
+Understand spring security architecture
+(refer to spring security help)
+Steps
+1. Create spring boot application , w/o 
+Try to access some end points (eg : view products , add / delete products ..)
+Observation : All end points are un protected(not secured)
+
+2. Add spring security starter dependency in pom.xml , update maven project
+Observations
+2.1  : All end points are automatically PROTECTED (SECURED)
+i.e entire web app is under a lock (authentication lock).
+Un authenticated user CAN NOT access any of the APIs.
+2.2 It supplies def user name : user
+generate 128 bit randomly generated password on server console 
+You can test it using a browser. It will give you a ready made signin n signout form
+Understand this : By def spring security offers : form login n also authentication mechanism = Basic Authentication.
+What is Basic Authentication ?
+1. Client tries to access some secured end point (REST API)
+2. Server sends back SC 401 , along with response header : WWW-Authenticate : Basic realm="Realm", to tell the client to use Basic Authentication mechanism.
+3. Then Client has to set the authorization header with the value : Basic Base64 encoded username:password
+4. These credentials will be checked by spring security filter , in case of success , client will be able to access the secured  REST API.
+
+2.1 Servlet Filters overview (filter help)
+2.2 servletfilter-1 , servletfilter-2
+2.3 spring security architecture diagram
+2.4 detailed-flow diagram 
+(readme : Spring security flow)
+2.5 Continue to in mem based authentication
+2.6 Replace it by DB based authentication
+
+Copy User entity from ready code
+
+
+(refer : Regarding Spring Security)
+
+
+
+2.6 Enter JWT based 
+
+Endpoints to try
+1. Add new dept
+2. Add emp to dept
+3. Assign address
+4. Assign project
+
+
+
+
+
+
+6. More Practice of Spring Data JPA along with Unit testing with spring boot.
+(refer : regarding Spring Data JPA)
+Ref : https://docs.spring.io/spring-data/jpa/docs/current/reference/html/
+
+6.1 Inherited APIs (eg : findAll , findById,save, deleteAll,count ....)
+6.2 Derived Query methods(derived finder methods)
+
+1. Write Service Layer tests for adding emp records
+@SpringBootTest 
+
+2. DAO layer tests
+Class level annotations over Test class
+@DataJpaTest
+@AutoConfigureTestDatabase(replace = Replace.NONE)
+=> DO NOT replace the actual DB by any test db.
+If you need to disable the rollback @ end of the test case , add 
+@RollBack(false) : over the test method
+
+Spring Data JPA 
+Custom Query Methods
+If you can't solve the requirement using inherited methods or finder methods , you can use custom query methods
+How  ?
+Can inject JPQL using @Query annotations n can pass named IN param using @Param .
+Simpler replacement of named IN param , will be positional IN params.
+Solve : Get emp complete names drawing salary > specific salary
+
+
+
+
+Project Tips : 
+
+1. If you see json response , you will see aadhar card : null , empty hobbies : []
+Currently for testing : set location : null 
+How to exclude null or absent values ?
+You can add at the POJO class level ,
+@JsonInclude(Include.NON_EMPTY)
+You can check other options also.
+
+2. How to control the property/field access during ser/de-serial
+@JsonProperty(access = Access.WRITE_ONLY) : property/field will be ignored during serialization
+@JsonProperty(access = Access.READ_ONLY) :  property/field will be ignored during de serialization
+
+Project Tip
+Problem : In case of bi-dir association , if you are NOT using DTP for sending a response ,  jackson will cause the recursion, during serialization(java--> json)
+
+Solution : How to tell SC using Jackson , to skip the properties
+Add field level annotation
+@JsonIgnoreProperties(name of the prop as it appears in the opposite side)
+More Details : 
+eg : User 1<----->1 Cart
+Problem : Infinite recursion (stack overflow !!!!!!!!!!!!!!)
+Cause : Jackson (converter) tries to serialize Cart object , during the serialization of User obj.
+AND
+Jackson (converter) tries to serialize User object , during the ser. of Cart obj.
+Soln : 
+In User entity, add 
+@JsonIgnorePropeties(value="cartOwner")
+private ShoppingCart cart;
+
+In ShoppingCart entity
+@JsonIgnorePropeties(value="cart")
+private User cartOwner;
+
+
+Same problem n solution for any bi-dir relationship.
+
+OR still BETTER use DTO solution
+Project Tip
+As a standard design practice , do not expose entities directly to the REST client
+(i.e DO not return them from the RestController)
+Instead use DTO (data transfer object) , to separate entities from resources to be shared with the clnts.
+eg : Send User DTO as  resp , instead of User entity.
+
+
+
+4. Spring Data JPA more practice
+Add 3 data members : regDate , regAmount , desc (about user)
+DML : 
+update users_tbl set description='common desc' , reg_amount=500 ,reg_date='2020-1-1' where id < 5;
+update users_tbl set description='some other desc' , reg_amount=700 ,reg_date='2020-11-21' where id >= 5'
+(Finder methods , Custom Query Methods)
+Solve n Test it with DAO layer Tests (Later test it with service layer tests)
+4.1 Find the users by last name (add multiple users with same last name n test)
+eg : UserRepository
+4.2 Find the user by specific email n password (authentication)
+4.3 Find users with reg amounts between start value n end value
+4.4 Find users registered after a particular date , sorted as per their reg amount
+4.5 Find users whose description contains a keyword.
+
+Custom query
+Get first name n last names of all users under a specific role , paying reg amount > specified amount
+
+
+
+
+
+
